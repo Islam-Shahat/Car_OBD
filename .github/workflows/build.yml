@@ -1,0 +1,78 @@
+name: Windows build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Lint and format
+        run: |
+          npm run lint
+          npm run format:check
+
+      - name: Typecheck and unit tests
+        run: |
+          npm run typecheck
+          npm test
+
+      - name: Rust format and clippy
+        run: |
+          cargo fmt --manifest-path src-tauri/Cargo.toml --all -- --check
+          cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
+
+      - name: Build Tauri app
+        run: npm run tauri build
+
+      - name: Report installer size
+        shell: pwsh
+        run: |
+          $bundle = "src-tauri/target/release/bundle"
+          $app = Get-ChildItem "src-tauri/target/release" -Filter *.exe -File | Select-Object -First 1
+          $installers = Get-ChildItem -Path $bundle -Recurse -Include *.exe, *.msi
+
+          $lines = @("## Windows installer size", "", "| Artifact | Size |", "| --- | --- |")
+          $lines += "| $($app.Name) (app exe) | $([math]::Round($app.Length / 1MB, 2)) MB |"
+          foreach ($installer in $installers) {
+            $lines += "| $($installer.Name) | $([math]::Round($installer.Length / 1MB, 2)) MB |"
+          }
+
+          $lines | Add-Content -Path $env:GITHUB_STEP_SUMMARY
+          $lines | Write-Output
+        continue-on-error: true
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: |
+            src-tauri/target/release/bundle/nsis/*.exe
+            src-tauri/target/release/bundle/msi/*.msi
+          if-no-files-found: error

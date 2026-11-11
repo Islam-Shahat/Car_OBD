@@ -1,0 +1,117 @@
+import { create } from 'zustand';
+
+import {
+  connectToSerialPort,
+  type ConnectionInfo,
+  type SerialConnection,
+} from '../../lib/elm327/connect';
+import { errorMessage, isElmError, type ElmErrorCode } from '../../lib/elm327/errors';
+import type { Elm327Driver } from '../../lib/elm327/driver';
+import { listSerialPorts, type SerialPortInfo } from '../../lib/elm327/serialTransport';
+
+export type ConnectionErrorCode = ElmErrorCode | 'disconnected' | 'ports-unavailable' | 'unknown';
+
+export interface ConnectionFailure {
+  code: ConnectionErrorCode;
+  /** Technical detail from the OS/adapter, shown as secondary information. */
+  detail?: string;
+}
+
+export interface ConnectionState {
+  phase: 'idle' | 'connecting' | 'connected';
+  ports: SerialPortInfo[];
+  portsLoading: boolean;
+  selectedPort: string | null;
+  info: ConnectionInfo | null;
+  failure: ConnectionFailure | null;
+  driver: Elm327Driver | null;
+  refreshPorts: () => Promise<void>;
+  selectPort: (portName: string) => void;
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
+}
+
+let detachClosed: (() => void) | null = null;
+
+export const useConnectionStore = create<ConnectionState>((set, get) => ({
+  phase: 'idle',
+  ports: [],
+  portsLoading: false,
+  selectedPort: null,
+  info: null,
+  failure: null,
+  driver: null,
+
+  refreshPorts: async () => {
+    set({ portsLoading: true });
+
+    try {
+      const ports = await listSerialPorts();
+      set((state) => ({
+        ports,
+        portsLoading: false,
+        selectedPort:
+          state.selectedPort && ports.some((port) => port.name === state.selectedPort)
+            ? state.selectedPort
+            : (ports[0]?.name ?? null),
+        failure: state.failure?.code === 'ports-unavailable' ? null : state.failure,
+      }));
+    } catch (error) {
+      set({
+        portsLoading: false,
+        ports: [],
+        failure: { code: 'ports-unavailable', detail: errorMessage(error) },
+      });
+    }
+  },
+
+  selectPort: (portName) => set({ selectedPort: portName }),
+
+  connect: async () => {
+    const { selectedPort, phase } = get();
+    if (!selectedPort || phase !== 'idle') return;
+
+    set({ phase: 'connecting', failure: null });
+
+    let connection: SerialConnection;
+    try {
+      connection = await connectToSerialPort(selectedPort);
+    } catch (error) {
+      set({
+        phase: 'idle',
+        info: null,
+        driver: null,
+        failure: {
+          code: isElmError(error) ? error.code : 'unknown',
+          detail: errorMessage(error),
+        },
+      });
+      return;
+    }
+
+    const connectedDriver = connection.driver;
+    detachClosed = connection.transport.onClosed((reason) => {
+      detachClosed?.();
+      detachClosed = null;
+      void connectedDriver.close().catch(() => undefined);
+      set({
+        phase: 'idle',
+        info: null,
+        driver: null,
+        failure: { code: 'disconnected', detail: reason ?? undefined },
+      });
+    });
+
+    set({ phase: 'connected', info: connection.info, driver: connectedDriver, failure: null });
+  },
+
+  disconnect: async () => {
+    const { driver, phase } = get();
+    if (phase !== 'connected') return;
+
+    detachClosed?.();
+    detachClosed = null;
+    set({ phase: 'idle', info: null, driver: null, failure: null });
+    await driver?.close().catch(() => undefined);
+  },
+}));

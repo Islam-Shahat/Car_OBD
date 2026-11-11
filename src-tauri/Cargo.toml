@@ -1,0 +1,28 @@
+[package]
+name = "obd-diagnose"
+version = "0.1.0"
+description = "Offline-first OBD-II diagnostic scanner for Windows"
+authors = ["Islam Shahat"]
+edition = "2024"
+rust-version = "1.90"
+
+[lib]
+name = "obd_diagnose_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.7.4", features = [] }
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serialport = "4.10"
+tauri = { version = "2.12.5", features = [] }
+
+# The Rust side stays deliberately thin: it only owns the COM-port bridge.
+# Every piece of OBD/ELM327 logic lives in the TypeScript layer.
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

@@ -1,0 +1,105 @@
+{
+  "app": {
+    "name": "OBD Diagnose",
+    "tagline": "Car fault scanner",
+    "version": "Version {{version}}",
+    "offline": "Works offline",
+    "disclaimerShort": "Diagnosis only — clearing codes does not fix the fault"
+  },
+  "nav": {
+    "connect": "Connect",
+    "scan": "Scan",
+    "history": "History",
+    "settings": "Settings"
+  },
+  "common": {
+    "comingSoon": "In development",
+    "switchLanguage": "Switch language",
+    "toggleTheme": "Toggle theme"
+  },
+  "languages": {
+    "ar": "العربية",
+    "en": "English"
+  },
+  "pages": {
+    "connect": {
+      "title": "Connect to car",
+      "subtitle": "Pick the adapter port and start a diagnostic session."
+    },
+    "scan": {
+      "title": "Scan",
+      "subtitle": "Read stored and pending faults plus readiness monitors.",
+      "emptyTitle": "Scanning is not available yet",
+      "emptyBody": "Once connected, stored and pending codes appear here with Arabic and English explanations, plus a safe clear flow with an automatic backup."
+    },
+    "history": {
+      "title": "History",
+      "subtitle": "Every scan session saved on this device.",
+      "emptyTitle": "No saved sessions",
+      "emptyBody": "Each scan is stored locally: car, date, codes and clear status — nothing is sent to the internet."
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Language, appearance and app information.",
+      "language": "Language",
+      "appearance": "Appearance",
+      "themeLight": "Light",
+      "themeDark": "Dark",
+      "themeSystem": "System",
+      "about": "About",
+      "safetyTitle": "Note",
+      "safetyBody": "This app is a diagnostic tool. Clearing codes does not fix the fault; it resets readiness monitors and the freeze frame."
+    }
+  },
+  "connection": {
+    "title": "Adapter",
+    "port": "Connection port",
+    "selectPort": "Select a COM port",
+    "refresh": "Refresh ports",
+    "noPorts": "No COM port found. Plug in the adapter, then refresh.",
+    "connect": "Connect",
+    "connecting": "Connecting…",
+    "disconnect": "Disconnect",
+    "statusTitle": "Connection status",
+    "statusIdle": "Not connected. Pick a port and press Connect.",
+    "statusConnecting": "Initialising the adapter and checking the engine ECU…",
+    "adapter": "Adapter",
+    "description": "Description",
+    "protocol": "Protocol",
+    "protocolUnknown": "Unknown",
+    "ecu": "Engine ECU",
+    "ecuFound": "ECU found",
+    "ecuNotFound": "ECU did not answer",
+    "baud": "Baud rate",
+    "adapterTimeout": "Adapter timeout",
+    "ecuMissingTitle": "No engine connection",
+    "ecuMissingBody": "The adapter works but the engine ECU did not answer. Make sure the ignition is ON and the adapter is fully seated.",
+    "cloneTitle": "Warning: likely clone adapter",
+    "cloneBody": "Version {{version}} is common on cloned ELM327 adapters. Reading may work, but some commands or older protocols can fail.",
+    "limitedTitle": "Limited command support",
+    "limitedBody": "The adapter did not accept some initialisation commands; the app will rely on basic commands only.",
+    "portKind": {
+      "usb": "USB",
+      "bluetooth": "Bluetooth",
+      "pci": "PCI",
+      "unknown": "Unknown"
+    }
+  },
+  "errors": {
+    "timeout": "The adapter did not answer in time. Check the cable, make sure the ignition is ON, then retry.",
+    "no-data": "The adapter is connected but the engine ECU returned no data (NO DATA).",
+    "unable-to-connect": "Could not reach the car's protocol (UNABLE TO CONNECT). Check the adapter is fully seated and the ignition is ON.",
+    "bus-init-error": "Bus initialisation failed (BUS INIT ERROR). The adapter may not support this car's protocol.",
+    "can-error": "CAN bus error. Check the connection and retry.",
+    "buffer-full": "Adapter buffer overflow (BUFFER FULL). Reconnect and try again.",
+    "unknown-command": "The adapter rejected this command. It may be a clone or incompatible.",
+    "adapter-error": "The adapter reported an internal error (ERROR). Unplug and reconnect it.",
+    "empty-response": "The adapter returned an empty response.",
+    "transport": "Writing to the serial port failed.",
+    "open-failed": "Could not open the COM port. Another app may be using it.",
+    "closed": "The serial port was closed.",
+    "disconnected": "The adapter disconnected. Reconnect it, then connect again.",
+    "ports-unavailable": "Could not read the COM port list.",
+    "unknown": "An unexpected error occurred while connecting."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "identities": {
+    "genuineV14b": "ELM327 v1.4b",
+    "neverGenuineV15": "ELM327 v1.5",
+    "cloneV21": "ELM327 v2.1",
+    "genuineV22": "ELM327 v2.2",
+    "branded": "STN1170 v5.6.2",
+    "unknownVersion": "ELM327 v9.9"
+  },
+  "responses": {
+    "atz": "ATZ\r\r\rELM327 v1.5\r\r>",
+    "ati": "ATI\rELM327 v1.5\r\r>",
+    "at1": "AT@1\rOBDII to RS232 Interpreter\r\r>",
+    "ate0": "ATE0\rOK\r\r>",
+    "atsp0": "ATSP0\rOK\r\r>",
+    "atdp": "ATDP\rAUTO, ISO 15765-4 (CAN 11/500)\r\r>",
+    "pid0100": "0100\rSEARCHING...\r4100BE3FA813\r\r>",
+    "vin0902": "0902\r014\r0: 49 02 01 31 44 34\r1: 47 50 30 30 52 35 35\r2: 42 31 32 33 34 35 36\r>",
+    "storedDtc03": "03\r43 01 33 00 00 00 00\r\r>",
+    "noData": "03\rNO DATA\r\r>",
+    "unableToConnect": "ATSP5\rUNABLE TO CONNECT\r\r>",
+    "busInitError": "0100\rBUS INIT: ...ERROR\r\r>",
+    "busInitOk": "0100\rSEARCHING...\rBUS INIT: ...OK\r4100BE3FA813\r\r>",
+    "canError": "0100\rCAN ERROR\r\r>",
+    "bufferFull": "03\rBUFFER FULL\r\r>",
+    "unknownCommand": "AT@1\r?\r\r>",
+    "adapterError": "0100\rERROR\r\r>",
+    "dataError": "0100\r<DATA ERROR>\r\r>",
+    "stopped": "0100\rSTOPPED\r\r>",
+    "spaces": "AT Z\r\r\rELM327 v1.5\r\r>"
+  }
+}
