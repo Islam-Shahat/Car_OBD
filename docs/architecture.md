@@ -121,14 +121,58 @@ ConnectionPage → connectionStore (zustand)
 
 Emulator setup and the hardware assumptions still to validate are in `docs/emulator.md`.
 
+## OBD services and scan (phase 3)
+
+```
+ScanPage → ScanSession → ScanService ── operation lock, progress, backup → clear → verify
+                              │
+                          ObdService ── Mode 01/02/03/07/0A/09 reads, negative responses
+                              │
+                      pure decoders: frames, dtc, pids, readiness, vin
+                              │
+                        Elm327Driver (one command in flight)
+```
+
+- **Supported PIDs first.** `ObdService.readSupportedPids()` walks `0100`, `0120`, `0140` … until the
+  “next group” bit is clear (hard cap at 8 groups). The scan only requests PIDs that the bitmaps
+  claim; a missing bitmap or `NO DATA` becomes a `pids-unavailable` warning, never an assumption.
+- **Pure decoding.** `frames.ts` parses hex lines, reassembles ISO-TP `0:`/`1:` blocks, trims the
+  length line’s padding and separates answers from several ECUs. `dtc.ts` decodes SAE J2012 P/C/B/U
+  codes and distinguishes CAN answers (even payload, no count byte) from ISO 9141/14230 answers
+  (odd payload, count byte). `pids.ts` owns the Mode 01 decoders and the supported-PID bitmap;
+  `readiness.ts` owns PID 0101; `vin.ts` extracts the VIN and applies the ISO 3779 check digit.
+- **VIN check digit.** A non-numeric position 9 is reported as `applicable: false` and is not a
+  failure; only a numeric/`X` check digit can produce `vin-invalid`.
+- **Typed reads.** `ObdService` reads Mode 01 PIDs, MIL/readiness, Modes 03/07/0A, Mode 09 PID 02 and
+  Mode 02 freeze frames. ECU negative responses become `ObdError` with the NRC; `NO DATA` and
+  “service not supported” are classified as optional-read failures so a car that lacks Mode 07/0A/02
+  still produces a complete scan with warnings.
+- **One scan service.** `ScanService.runFullScan()` returns adapter info, protocol, VIN, MIL status,
+  stored/pending/permanent DTCs, freeze frames, live core PIDs, supported PIDs, warnings and timing,
+  and emits `ScanProgress` events. Freeze frames are read only when stored codes exist (capped at 5
+  frames). A DTC-count mismatch between PID 0101 and Mode 03 is reported, not hidden.
+- **Safe clear.** `ScanService.clearStoredCodes()` holds a single-operation lock, refuses without
+  `confirm: true`, runs a full pre-clear scan, saves the backup and verifies it before sending `04`,
+  requires the `44` confirmation, then re-scans and reports returning codes. A failed verification
+  scan is reported separately from a failed clear. Clear never runs during a scan.
+- **Backup repository seam.** `ScanBackupRepository` is the storage boundary. Until the SQLite phase
+  it is implemented by `LocalStorageScanBackupRepository`, which reads back and verifies its write
+  before `save()` resolves; Mode 04 is never sent after a silently failed backup.
+- **Scan UI.** `ScanPage` shows the not-connected state, runs the scan with step progress, renders
+  VIN/check-digit status, MIL and readiness, all three DTC groups, freeze frames, live readings,
+  warnings and timing, and gates Service 04 behind an explicit confirmation dialog. All labels,
+  units, monitors and warnings are translated in Arabic and English.
+
 ## Safety invariants (DTC clear)
 
 Clearing codes is the only write operation and must always follow this order:
 
 1. Show the warning and disclaimer (diagnosis only; clearing does not fix the fault; readiness
    monitors and freeze frame are reset).
-2. Persist a local snapshot of stored codes, pending codes and the freeze frame to SQLite.
-3. Require explicit confirmation.
+2. Persist a local snapshot of stored codes, pending codes and the freeze frame before anything is
+   sent. Today this is the verified localStorage repository; the SQLite repository replaces it in
+   the data phase.
+3. Require explicit confirmation (dialog in the UI, `confirm: true` in `ScanService`).
 4. Send Service 04, then re-scan and report whether codes returned (verification re-scan).
 
 A clear must never start while a scan is running, and a remote-config update must never interrupt an
@@ -151,14 +195,14 @@ No paywalls, no licensing: the app is free and fully client-side.
 
 ## Phase plan
 
-| Phase | Content                                                                 | Status |
-| ----- | ----------------------------------------------------------------------- | ------ |
-| 1     | Scaffold, tooling, app shell, i18n/RTL, theme, CI                       | done   |
-| 2     | Serial bridge + Transport abstraction + ELM327 emulator + connection UI | done   |
-| 3     | OBD services: DTC read, readiness monitors, DTC seed + decoder          | next   |
-| 4     | SQLite schema, repositories, scan history                               |        |
-| 5     | Safe clear flow with snapshot + verification re-scan                    |        |
-| 6     | Live data (uPlot)                                                       |        |
-| 7     | PDF reports                                                             |        |
-| 8     | Pre-purchase inspection mode                                            |        |
-| 9     | Signed remote config + auto-updater, real-car validation                |        |
+| Phase | Content                                                                      | Status |
+| ----- | ---------------------------------------------------------------------------- | ------ |
+| 1     | Scaffold, tooling, app shell, i18n/RTL, theme, CI                            | done   |
+| 2     | Serial bridge + Transport abstraction + ELM327 emulator + connection UI      | done   |
+| 3     | OBD services: PIDs, DTCs, readiness, VIN, freeze frames, scan UI, safe clear | done   |
+| 4     | SQLite schema, repositories, scan history                                    |        |
+| 5     | Safe clear persistence in SQLite + history reporting                         |        |
+| 6     | Live data (uPlot)                                                            |        |
+| 7     | PDF reports                                                                  |        |
+| 8     | Pre-purchase inspection mode                                                 |        |
+| 9     | Signed remote config + auto-updater, real-car validation                     |        |

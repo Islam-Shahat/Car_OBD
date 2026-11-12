@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import { PageHeader } from '../../app/PageHeader';
 import { IconAlert, IconPlug, IconRefresh } from '../../app/icons';
+import { ERROR_MESSAGE_KEYS } from '../../lib/i18n/errorKeys';
 import type { SerialPortInfo } from '../../lib/elm327/serialTransport';
-import { useConnectionStore, type ConnectionErrorCode } from './connectionStore';
+import { useConnectionStore } from './connectionStore';
 import { ConnectionStatusPanel } from './ConnectionStatusPanel';
 
 const PORT_KIND_KEYS = {
@@ -13,24 +14,6 @@ const PORT_KIND_KEYS = {
   pci: 'connection.portKind.pci',
   unknown: 'connection.portKind.unknown',
 } as const satisfies Record<SerialPortInfo['kind'], string>;
-
-const ERROR_KEYS = {
-  timeout: 'errors.timeout',
-  'no-data': 'errors.no-data',
-  'unable-to-connect': 'errors.unable-to-connect',
-  'bus-init-error': 'errors.bus-init-error',
-  'can-error': 'errors.can-error',
-  'buffer-full': 'errors.buffer-full',
-  'unknown-command': 'errors.unknown-command',
-  'adapter-error': 'errors.adapter-error',
-  'empty-response': 'errors.empty-response',
-  transport: 'errors.transport',
-  'open-failed': 'errors.open-failed',
-  closed: 'errors.closed',
-  disconnected: 'errors.disconnected',
-  'ports-unavailable': 'errors.ports-unavailable',
-  unknown: 'errors.unknown',
-} as const satisfies Record<ConnectionErrorCode, string>;
 
 export function ConnectionPage() {
   const { t } = useTranslation();
@@ -137,7 +120,7 @@ export function ConnectionPage() {
             >
               <p className="flex items-start gap-2">
                 <IconAlert className="mt-0.5 size-4 shrink-0" />
-                <span>{t(ERROR_KEYS[failure.code])}</span>
+                <span>{t(ERROR_MESSAGE_KEYS[failure.code])}</span>
               </p>
               {failure.detail && (
                 <p className="mt-2 ps-6 font-mono text-xs break-words opacity-80">

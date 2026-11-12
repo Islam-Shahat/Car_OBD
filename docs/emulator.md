@@ -38,13 +38,22 @@ The desktop app only speaks COM ports, so TCP mode is used by the opt-in integra
 
 ```powershell
 $env:ELM_EMULATOR = '1'
-npx vitest run tests/elm327-emulator.test.ts
+npx vitest run tests/elm327-emulator.test.ts tests/obd-emulator.test.ts
 Remove-Item Env:\ELM_EMULATOR
 ```
 
 The test starts the emulator itself, runs the real init sequence and `03`, then kills the
 emulator. Kill the emulator **before** closing the client socket: its TCP mode logs a
 `WinError 10053` error storm on abrupt disconnects.
+
+`tests/obd-emulator.test.ts` uses `scripts/emulator-dtc.py`, a thin wrapper that patches the
+emulator's module globals before starting its normal CLI. The patched scenario stores
+`P0143`, `P0196`, `P0234` (pending `P0300`, permanent `P0420`), so the live test exercises the full
+scan and the backup → Mode 04 → verification path with real frames:
+
+```powershell
+python scripts/emulator-dtc.py -n 35020 -s car
+```
 
 ## 3. Virtual COM pair (full end-to-end, needs admin)
 
@@ -76,8 +85,10 @@ a disconnect message.
 - The first `0100` can take several seconds while the emulator "searches" for a protocol. The
   ECU check therefore uses a 20 s timeout.
 - `ATDP` returns the protocol the emulator selected, e.g. `AUTO, ISO 15765-4 (CAN 11/500)`.
-- The stock `car` scenario stores no DTCs: `03` answers `4300`. To exercise DTC parsing, edit
-  `DTC_STORED` in the installed `elm/obd_message.py` or add a custom scenario.
+- The stock `car` scenario stores no DTCs: `03` answers `4300`. To exercise DTC parsing, use
+  `scripts/emulator-dtc.py` (patches `DTC_STORED`/`DTC_PENDING`/`DTC_PERMANENT` without editing
+  the installed package). Mode 02 freeze frames are mostly negative answers in this scenario, so
+  the scan reports `freeze-frame-unavailable` even when stored codes exist.
 - The emulator answers `?` to unknown AT commands. The driver treats this as
   `unknown-command` and only tolerates it for optional init commands (`ATI`, `AT@1`, `ATST`,
   `ATAT1`).
