@@ -1,0 +1,1073 @@
+{
+  "source": "NHTSA vPIC — GetWMIsForManufacturer API",
+  "sourceUrl": "https://vpic.nhtsa.dot.gov/api/vehicles/GetWMIsForManufacturer/{make}?format=json",
+  "license": "Public domain (U.S. Government work, 17 U.S.C. §105)",
+  "retrievedAt": "2026-11-12",
+  "notes": "Only WMIs returned by the NHTSA vPIC API for the listed makes are included. Ambiguous WMIs are omitted rather than inferred.",
+  "entries": {
+    "19U": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "19V": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "19X": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "1F1": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1F7": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1FA": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1FL": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1FM": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1FT": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1HG": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "1L1": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1LN": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1MB": {
+      "manufacturerName": "MERCEDES-BENZ TRUCK COMPANY INC",
+      "makeSlug": "mercedes-benz"
+    },
+    "1ME": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1MR": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "1N4": {
+      "manufacturerName": "NISSAN NORTH AMERICA, INC.",
+      "makeSlug": "nissan"
+    },
+    "1N6": {
+      "manufacturerName": "NISSAN NORTH AMERICA, INC.",
+      "makeSlug": "nissan"
+    },
+    "1V1": {
+      "manufacturerName": "VOLKSWAGEN GROUP OF AMERICA, INC.",
+      "makeSlug": "volkswagen"
+    },
+    "1V2": {
+      "manufacturerName": "VOLKSWAGEN GROUP OF AMERICA, INC.",
+      "makeSlug": "volkswagen"
+    },
+    "1VW": {
+      "manufacturerName": "VOLKSWAGEN GROUP OF AMERICA, INC.",
+      "makeSlug": "volkswagen"
+    },
+    "2FA": {
+      "manufacturerName": "FORD MOTOR COMPANY OF CANADA, LTD.",
+      "makeSlug": "ford"
+    },
+    "2FM": {
+      "manufacturerName": "FORD MOTOR COMPANY OF CANADA, LTD.",
+      "makeSlug": "ford"
+    },
+    "2FT": {
+      "manufacturerName": "FORD MOTOR COMPANY OF CANADA, LTD.",
+      "makeSlug": "ford"
+    },
+    "2HG": {
+      "manufacturerName": "HONDA OF CANADA MFG., A DIVISION OF HONDA CANADA INC.",
+      "makeSlug": "honda"
+    },
+    "2HH": {
+      "manufacturerName": "HONDA OF CANADA MFG., A DIVISION OF HONDA CANADA INC.",
+      "makeSlug": "honda"
+    },
+    "2HJ": {
+      "manufacturerName": "HONDA OF CANADA MFG., A DIVISION OF HONDA CANADA INC.",
+      "makeSlug": "honda"
+    },
+    "2HK": {
+      "manufacturerName": "HONDA OF CANADA MFG., A DIVISION OF HONDA CANADA INC.",
+      "makeSlug": "honda"
+    },
+    "2HN": {
+      "manufacturerName": "HONDA OF CANADA MFG., A DIVISION OF HONDA CANADA INC.",
+      "makeSlug": "honda"
+    },
+    "2HU": {
+      "manufacturerName": "HONDA OF CANADA MFG., A DIVISION OF HONDA CANADA INC.",
+      "makeSlug": "honda"
+    },
+    "2LM": {
+      "manufacturerName": "FORD MOTOR COMPANY OF CANADA, LTD.",
+      "makeSlug": "ford"
+    },
+    "2LN": {
+      "manufacturerName": "FORD MOTOR COMPANY OF CANADA, LTD.",
+      "makeSlug": "ford"
+    },
+    "2ME": {
+      "manufacturerName": "FORD MOTOR COMPANY OF CANADA, LTD.",
+      "makeSlug": "ford"
+    },
+    "2MR": {
+      "manufacturerName": "FORD MOTOR COMPANY OF CANADA, LTD.",
+      "makeSlug": "ford"
+    },
+    "2S2": {
+      "manufacturerName": "SUZUKI MOTOR OF AMERICA, INC",
+      "makeSlug": "suzuki"
+    },
+    "2S3": {
+      "manufacturerName": "SUZUKI MOTOR OF AMERICA, INC",
+      "makeSlug": "suzuki"
+    },
+    "2T1": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING CANADA",
+      "makeSlug": "toyota"
+    },
+    "2T2": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING CANADA",
+      "makeSlug": "toyota"
+    },
+    "2T3": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING CANADA",
+      "makeSlug": "toyota"
+    },
+    "3CZ": {
+      "manufacturerName": "HONDA DE MEXICO, S.A. DE C.V.",
+      "makeSlug": "honda"
+    },
+    "3DH": {
+      "manufacturerName": "HONDA DE MEXICO, S.A. DE C.V.",
+      "makeSlug": "honda"
+    },
+    "3FA": {
+      "manufacturerName": "FORD MOTOR COMPANY, MEXICO",
+      "makeSlug": "ford"
+    },
+    "3FM": {
+      "manufacturerName": "FORD MOTOR COMPANY, MEXICO",
+      "makeSlug": "ford"
+    },
+    "3FT": {
+      "manufacturerName": "FORD MOTOR COMPANY, MEXICO",
+      "makeSlug": "ford"
+    },
+    "3HD": {
+      "manufacturerName": "HONDA DE MEXICO, S.A. DE C.V.",
+      "makeSlug": "honda"
+    },
+    "3HG": {
+      "manufacturerName": "HONDA DE MEXICO, S.A. DE C.V.",
+      "makeSlug": "honda"
+    },
+    "3KM": {
+      "manufacturerName": "KIA MEXICO S.A. DE C.V.",
+      "makeSlug": "kia"
+    },
+    "3KP": {
+      "manufacturerName": "KIA MEXICO S.A. DE C.V.",
+      "makeSlug": "kia"
+    },
+    "3LN": {
+      "manufacturerName": "FORD MOTOR COMPANY, MEXICO",
+      "makeSlug": "ford"
+    },
+    "3MA": {
+      "manufacturerName": "FORD MOTOR COMPANY, MEXICO",
+      "makeSlug": "ford"
+    },
+    "3MD": {
+      "manufacturerName": "MAZDA MOTOR MANUFACTURING DE MEXICO S.A. DE C.V.",
+      "makeSlug": "mazda"
+    },
+    "3ME": {
+      "manufacturerName": "FORD MOTOR COMPANY, MEXICO",
+      "makeSlug": "ford"
+    },
+    "3MF": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "3MV": {
+      "manufacturerName": "MAZDA MOTOR MANUFACTURING DE MEXICO S.A. DE C.V.",
+      "makeSlug": "mazda"
+    },
+    "3MW": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "3MY": {
+      "manufacturerName": "MAZDA MOTOR MANUFACTURING DE MEXICO S.A. DE C.V.",
+      "makeSlug": "mazda"
+    },
+    "3MZ": {
+      "manufacturerName": "MAZDA MOTOR MANUFACTURING DE MEXICO S.A. DE C.V.",
+      "makeSlug": "mazda"
+    },
+    "3N1": {
+      "manufacturerName": "NISSAN MEXICANA, S.A. DE C.V.",
+      "makeSlug": "nissan"
+    },
+    "3N6": {
+      "manufacturerName": "NISSAN MEXICANA, S.A. DE C.V.",
+      "makeSlug": "nissan"
+    },
+    "3N8": {
+      "manufacturerName": "NISSAN MEXICANA, S.A. DE C.V.",
+      "makeSlug": "nissan"
+    },
+    "3PC": {
+      "manufacturerName": "NISSAN NORTH AMERICA, INC.",
+      "makeSlug": "nissan"
+    },
+    "3TM": {
+      "manufacturerName": "TOYOTA MOTOR MFG DE BAJA CALIFORNIA S DE RL DE CV",
+      "makeSlug": "toyota"
+    },
+    "3TY": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING DE GUANAJUATO",
+      "makeSlug": "toyota"
+    },
+    "3VV": {
+      "manufacturerName": "VOLKSWAGEN DE MEXICO SA DE CV",
+      "makeSlug": "volkswagen"
+    },
+    "3VW": {
+      "manufacturerName": "VOLKSWAGEN DE MEXICO SA DE CV",
+      "makeSlug": "volkswagen"
+    },
+    "4A3": {
+      "manufacturerName": "MITSUBISHI MOTORS NORTH AMERICA",
+      "makeSlug": "mitsubishi"
+    },
+    "4A4": {
+      "manufacturerName": "MITSUBISHI MOTORS NORTH AMERICA",
+      "makeSlug": "mitsubishi"
+    },
+    "4F2": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "4F3": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "4F4": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "4JG": {
+      "manufacturerName": "MERCEDES-BENZ OF NORTH AMERICA, INC.",
+      "makeSlug": "mercedes-benz"
+    },
+    "4M2": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "4M4": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "4N2": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "4N4": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "4P3": {
+      "manufacturerName": "MITSUBISHI MOTORS NORTH AMERICA",
+      "makeSlug": "mitsubishi"
+    },
+    "4S1": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "4S2": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "4S3": {
+      "manufacturerName": "SUBARU OF AMERICA, INC",
+      "makeSlug": "subaru"
+    },
+    "4S4": {
+      "manufacturerName": "SUBARU OF AMERICA, INC",
+      "makeSlug": "subaru"
+    },
+    "4S6": {
+      "manufacturerName": "ISUZU MANUFACTURING SERVICES OF AMERICA, INC.",
+      "makeSlug": "isuzu"
+    },
+    "4T1": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, KENTUCKY, INC.",
+      "makeSlug": "toyota"
+    },
+    "4T3": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, KENTUCKY, INC.",
+      "makeSlug": "toyota"
+    },
+    "4T4": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, NORTHERN KENTUCKY, INC.",
+      "makeSlug": "toyota"
+    },
+    "4US": {
+      "manufacturerName": "BMW MANUFACTURER CORPORATION / BMW NORTH AMERICA",
+      "makeSlug": "bmw"
+    },
+    "55S": {
+      "manufacturerName": "MERCEDES-BENZ CARS",
+      "makeSlug": "mercedes-benz"
+    },
+    "58A": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, KENTUCKY, INC.",
+      "makeSlug": "toyota"
+    },
+    "5FN": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5FP": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5FR": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5FS": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5J6": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5J7": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5J8": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5KB": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5KC": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "5L1": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "5LM": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "5LT": {
+      "manufacturerName": "FORD MOTOR COMPANY",
+      "makeSlug": "ford"
+    },
+    "5N1": {
+      "manufacturerName": "NISSAN NORTH AMERICA, INC.",
+      "makeSlug": "nissan"
+    },
+    "5N3": {
+      "manufacturerName": "NISSAN NORTH AMERICA, INC.",
+      "makeSlug": "nissan"
+    },
+    "5NM": {
+      "manufacturerName": "HYUNDAI MOTOR MANUFACTURING ALABAMA LLC (HMMA)",
+      "makeSlug": "hyundai"
+    },
+    "5NT": {
+      "manufacturerName": "HYUNDAI MOTOR MANUFACTURING ALABAMA LLC (HMMA)",
+      "makeSlug": "hyundai"
+    },
+    "5TB": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, INDIANA, INC.",
+      "makeSlug": "toyota"
+    },
+    "5TD": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, INDIANA, INC.",
+      "makeSlug": "toyota"
+    },
+    "5TE": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, CALIFORNIA, INC.",
+      "makeSlug": "toyota"
+    },
+    "5TF": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, TEXAS, INC.",
+      "makeSlug": "toyota"
+    },
+    "5UM": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "5UX": {
+      "manufacturerName": "BMW MANUFACTURER CORPORATION / BMW NORTH AMERICA",
+      "makeSlug": "bmw"
+    },
+    "5XX": {
+      "manufacturerName": "KIA GEORGIA, INC",
+      "makeSlug": "kia"
+    },
+    "5XY": {
+      "manufacturerName": "KIA GEORGIA, INC",
+      "makeSlug": "kia"
+    },
+    "5YF": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, MISSISSIPPI, INC.",
+      "makeSlug": "toyota"
+    },
+    "5YJ": {
+      "manufacturerName": "TESLA, INC.",
+      "makeSlug": "tesla"
+    },
+    "5YM": {
+      "manufacturerName": "BMW MANUFACTURER CORPORATION / BMW NORTH AMERICA",
+      "makeSlug": "bmw"
+    },
+    "5Z6": {
+      "manufacturerName": "SUZUKI MOTOR OF AMERICA, INC",
+      "makeSlug": "suzuki"
+    },
+    "6MM": {
+      "manufacturerName": "MITSUBISHI MOTORS AUSTRALIA LTD.",
+      "makeSlug": "mitsubishi"
+    },
+    "6MP": {
+      "manufacturerName": "FORD MOTOR CO OF AUSTRALIA LTD.",
+      "makeSlug": "ford"
+    },
+    "7FA": {
+      "manufacturerName": "AMERICAN HONDA MOTOR CO., INC.",
+      "makeSlug": "honda"
+    },
+    "7G2": {
+      "manufacturerName": "TESLA, INC.",
+      "makeSlug": "tesla"
+    },
+    "7JD": {
+      "manufacturerName": "VOLVO CAR USA, LLC",
+      "makeSlug": "volvo"
+    },
+    "7JR": {
+      "manufacturerName": "VOLVO CAR USA, LLC",
+      "makeSlug": "volvo"
+    },
+    "7SA": {
+      "manufacturerName": "TESLA, INC.",
+      "makeSlug": "tesla"
+    },
+    "7SV": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, TEXAS, INC.",
+      "makeSlug": "toyota"
+    },
+    "7YA": {
+      "manufacturerName": "HYUNDAI MOTOR GROUP METAPLANT AMERICA",
+      "makeSlug": "hyundai"
+    },
+    "8BT": {
+      "manufacturerName": "MERCEDES-BENZ USA, LLC (SPRINTER)",
+      "makeSlug": "mercedes-benz"
+    },
+    "8BU": {
+      "manufacturerName": "MERCEDES-BENZ USA, LLC (SPRINTER)",
+      "makeSlug": "mercedes-benz"
+    },
+    "9BF": {
+      "manufacturerName": "FORD MOTOR COMPANY BRASIL LTDA.",
+      "makeSlug": "ford"
+    },
+    "9BW": {
+      "manufacturerName": "VOLKSWAGEN GROUP OF AMERICA, INC.",
+      "makeSlug": "volkswagen"
+    },
+    "9DB": {
+      "manufacturerName": "MERCEDES-BENZ TRUCK COMPANY INC",
+      "makeSlug": "mercedes-benz"
+    },
+    "J81": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "J87": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "J8Z": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "JA3": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JA4": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JA7": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JAA": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "JAB": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "JAC": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "JAE": {
+      "manufacturerName": "ISUZU MOTORS LIMITED, JAPAN",
+      "makeSlug": "isuzu"
+    },
+    "JB4": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JB7": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JC1": {
+      "manufacturerName": "MAZDA MOTOR CORPORATION",
+      "makeSlug": "mazda"
+    },
+    "JC2": {
+      "manufacturerName": "MAZDA MOTOR CORPORATION",
+      "makeSlug": "mazda"
+    },
+    "JD1": {
+      "manufacturerName": "DAIHATSU MOTOR CO., LTD.",
+      "makeSlug": "daihatsu"
+    },
+    "JD2": {
+      "manufacturerName": "DAIHATSU MOTOR CO., LTD.",
+      "makeSlug": "daihatsu"
+    },
+    "JE4": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JF1": {
+      "manufacturerName": "SUBARU CORPORATION",
+      "makeSlug": "subaru"
+    },
+    "JF2": {
+      "manufacturerName": "SUBARU CORPORATION",
+      "makeSlug": "subaru"
+    },
+    "JF3": {
+      "manufacturerName": "FUJI HEAVY INDUSTRIES U.S.A., INC. (C/O SUBARU OF AMERICA)",
+      "makeSlug": "subaru"
+    },
+    "JF4": {
+      "manufacturerName": "FUJI HEAVY INDUSTRIES U.S.A., INC. (C/O SUBARU OF AMERICA)",
+      "makeSlug": "subaru"
+    },
+    "JG7": {
+      "manufacturerName": "SUZUKI MOTOR OF AMERICA, INC",
+      "makeSlug": "suzuki"
+    },
+    "JH1": {
+      "manufacturerName": "HONDA MOTOR CO., LTD.",
+      "makeSlug": "honda"
+    },
+    "JH4": {
+      "manufacturerName": "HONDA MOTOR CO., LTD.",
+      "makeSlug": "honda"
+    },
+    "JHL": {
+      "manufacturerName": "HONDA MOTOR CO., LTD.",
+      "makeSlug": "honda"
+    },
+    "JHM": {
+      "manufacturerName": "HONDA MOTOR CO., LTD.",
+      "makeSlug": "honda"
+    },
+    "JJ3": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JM1": {
+      "manufacturerName": "MAZDA MOTOR CORPORATION",
+      "makeSlug": "mazda"
+    },
+    "JM2": {
+      "manufacturerName": "MAZDA MOTOR CORPORATION",
+      "makeSlug": "mazda"
+    },
+    "JM3": {
+      "manufacturerName": "MAZDA MOTOR CORPORATION",
+      "makeSlug": "mazda"
+    },
+    "JN1": {
+      "manufacturerName": "NISSAN MOTOR COMPANY, LTD",
+      "makeSlug": "nissan"
+    },
+    "JN6": {
+      "manufacturerName": "NISSAN MOTOR COMPANY, LTD",
+      "makeSlug": "nissan"
+    },
+    "JN8": {
+      "manufacturerName": "NISSAN MOTOR COMPANY, LTD",
+      "makeSlug": "nissan"
+    },
+    "JNK": {
+      "manufacturerName": "NISSAN MOTOR COMPANY, LTD",
+      "makeSlug": "nissan"
+    },
+    "JNR": {
+      "manufacturerName": "NISSAN MOTOR COMPANY, LTD",
+      "makeSlug": "nissan"
+    },
+    "JNT": {
+      "manufacturerName": "NISSAN MOTOR COMPANY, LTD",
+      "makeSlug": "nissan"
+    },
+    "JP3": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JP4": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JP7": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "JR2": {
+      "manufacturerName": "HONDA MOTOR CO., LTD.",
+      "makeSlug": "honda"
+    },
+    "JS2": {
+      "manufacturerName": "SUZUKI MOTOR OF AMERICA, INC",
+      "makeSlug": "suzuki"
+    },
+    "JS3": {
+      "manufacturerName": "SUZUKI MOTOR OF AMERICA, INC",
+      "makeSlug": "suzuki"
+    },
+    "JS4": {
+      "manufacturerName": "SUZUKI MOTOR OF AMERICA, INC",
+      "makeSlug": "suzuki"
+    },
+    "JT2": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JT3": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JT4": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JT5": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JT6": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JT8": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JTD": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JTE": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JTH": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JTJ": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JTK": {
+      "manufacturerName": "TOYOTA MOTOR NORTH AMERICA, INC",
+      "makeSlug": "toyota"
+    },
+    "JTL": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JTM": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JTN": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "JW7": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "KL5": {
+      "manufacturerName": "SUZUKI MOTOR OF AMERICA, INC",
+      "makeSlug": "suzuki"
+    },
+    "KLA": {
+      "manufacturerName": "GM DAEWOO AUTO & TECHNOLOGY COMPANY",
+      "makeSlug": "daewoo"
+    },
+    "KM8": {
+      "manufacturerName": "HYUNDAI MOTOR CO",
+      "makeSlug": "hyundai"
+    },
+    "KME": {
+      "manufacturerName": "HYUNDAI MOTOR CO",
+      "makeSlug": "hyundai"
+    },
+    "KMF": {
+      "manufacturerName": "HYUNDAI MOTOR CO",
+      "makeSlug": "hyundai"
+    },
+    "KMH": {
+      "manufacturerName": "HYUNDAI MOTOR CO",
+      "makeSlug": "hyundai"
+    },
+    "KMT": {
+      "manufacturerName": "HYUNDAI MOTOR CO",
+      "makeSlug": "hyundai"
+    },
+    "KMU": {
+      "manufacturerName": "HYUNDAI MOTOR CO",
+      "makeSlug": "hyundai"
+    },
+    "KNA": {
+      "manufacturerName": "KIA CORPORATION",
+      "makeSlug": "kia"
+    },
+    "KND": {
+      "manufacturerName": "KIA CORPORATION",
+      "makeSlug": "kia"
+    },
+    "KNM": {
+      "manufacturerName": "RENAULT SAMSUNG MOTORS CO., LTD",
+      "makeSlug": "renault"
+    },
+    "KPH": {
+      "manufacturerName": "HYUNDAI MOTOR CO",
+      "makeSlug": "hyundai"
+    },
+    "KPS": {
+      "manufacturerName": "SSANGYONG MOTOR CO. LTD",
+      "makeSlug": "ssangyong"
+    },
+    "LGX": {
+      "manufacturerName": "BYD AUTO CO., LTD.",
+      "makeSlug": "byd"
+    },
+    "LPE": {
+      "manufacturerName": "BYD AUTO INDUSTRY COMPANY LIMITED",
+      "makeSlug": "byd"
+    },
+    "LVY": {
+      "manufacturerName": "DAQING VOLVO CAR MANUFACTURING CO LTD",
+      "makeSlug": "volvo"
+    },
+    "LYV": {
+      "manufacturerName": "DAQING VOLVO CAR MANUFACTURING CO LTD",
+      "makeSlug": "volvo"
+    },
+    "MAJ": {
+      "manufacturerName": "FORD INDIA LTD",
+      "makeSlug": "ford"
+    },
+    "ML3": {
+      "manufacturerName": "MITSUBISHI MOTORS CORPORATION (MMC)",
+      "makeSlug": "mitsubishi"
+    },
+    "MP3": {
+      "manufacturerName": "MITSUBISHI MOTORS (THAILAND) CO LTD",
+      "makeSlug": "mitsubishi"
+    },
+    "NM0": {
+      "manufacturerName": "FORD OTOMOTIV SANAYI A.S., TURKEY",
+      "makeSlug": "ford"
+    },
+    "NMT": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING,TURKEY ,INC.",
+      "makeSlug": "toyota"
+    },
+    "PFD": {
+      "manufacturerName": "HYUNDAI MOTOR GROUP INNOVATION CENTRE IN SINGAPORE",
+      "makeSlug": "hyundai"
+    },
+    "SB1": {
+      "manufacturerName": "TOYOTA MOTOR CORPORATION",
+      "makeSlug": "toyota"
+    },
+    "SFZ": {
+      "manufacturerName": "TESLA, INC.",
+      "makeSlug": "tesla"
+    },
+    "SHH": {
+      "manufacturerName": "HONDA OF THE U.K. MFG., LTD.",
+      "makeSlug": "honda"
+    },
+    "SHS": {
+      "manufacturerName": "HONDA OF THE U.K. MFG., LTD.",
+      "makeSlug": "honda"
+    },
+    "SJK": {
+      "manufacturerName": "NISSAN MOTOR MANUFACTURING (UK) LTD",
+      "makeSlug": "nissan"
+    },
+    "TRU": {
+      "manufacturerName": "AUDI AG",
+      "makeSlug": "audi"
+    },
+    "VF1": {
+      "manufacturerName": "RENAULT GROUP",
+      "makeSlug": "renault"
+    },
+    "VF3": {
+      "manufacturerName": "AUTOMOBILES PEUGEOT",
+      "makeSlug": "peugeot"
+    },
+    "VNK": {
+      "manufacturerName": "TOYOTA MOTOR MANUFACTURING, FRANCE, S.A.S.",
+      "makeSlug": "toyota"
+    },
+    "W04": {
+      "manufacturerName": "ADAM OPEL AG",
+      "makeSlug": "opel"
+    },
+    "W06": {
+      "manufacturerName": "ADAM OPEL AG",
+      "makeSlug": "opel"
+    },
+    "W08": {
+      "manufacturerName": "ADAM OPEL AG",
+      "makeSlug": "opel"
+    },
+    "W0L": {
+      "manufacturerName": "ADAM OPEL AG",
+      "makeSlug": "opel"
+    },
+    "W1A": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1H": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1K": {
+      "manufacturerName": "MERCEDES-BENZ CARS",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1L": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1M": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1N": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1P": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1R": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1W": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W1Y": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W2W": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "W2Y": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "WA1": {
+      "manufacturerName": "AUDI AG",
+      "makeSlug": "audi"
+    },
+    "WAP": {
+      "manufacturerName": "BMW OF NORTH AMERICA, LLC",
+      "makeSlug": "bmw"
+    },
+    "WAU": {
+      "manufacturerName": "AUDI AG",
+      "makeSlug": "audi"
+    },
+    "WB5": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "WBA": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "WBS": {
+      "manufacturerName": "BMW M GMBH",
+      "makeSlug": "bmw"
+    },
+    "WBX": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "WBY": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "WD0": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "WD3": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "WD4": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "WD8": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "WDB": {
+      "manufacturerName": "MERCEDES-BENZ CARS",
+      "makeSlug": "mercedes-benz"
+    },
+    "WDC": {
+      "manufacturerName": "MERCEDES-BENZ CARS",
+      "makeSlug": "mercedes-benz"
+    },
+    "WDD": {
+      "manufacturerName": "MERCEDES-BENZ CARS",
+      "makeSlug": "mercedes-benz"
+    },
+    "WF0": {
+      "manufacturerName": "FORD WERKE AG",
+      "makeSlug": "ford"
+    },
+    "WF1": {
+      "manufacturerName": "FORD WERKE AG",
+      "makeSlug": "ford"
+    },
+    "WME": {
+      "manufacturerName": "MERCEDES-BENZ CARS",
+      "makeSlug": "mercedes-benz"
+    },
+    "WMW": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "WMZ": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "WP0": {
+      "manufacturerName": "DR. ING. H.C.F. PORSCHE AG",
+      "makeSlug": "porsche"
+    },
+    "WP1": {
+      "manufacturerName": "DR. ING. H.C.F. PORSCHE AG",
+      "makeSlug": "porsche"
+    },
+    "WU1": {
+      "manufacturerName": "AUDI SPORT GMBH",
+      "makeSlug": "audi"
+    },
+    "WUA": {
+      "manufacturerName": "AUDI SPORT GMBH",
+      "makeSlug": "audi"
+    },
+    "WV1": {
+      "manufacturerName": "VOLKSWAGEN GROUP OF AMERICA, INC.",
+      "makeSlug": "volkswagen"
+    },
+    "WV2": {
+      "manufacturerName": "VOLKSWAGEN GROUP OF AMERICA, INC.",
+      "makeSlug": "volkswagen"
+    },
+    "WVG": {
+      "manufacturerName": "VOLKSWAGEN AG",
+      "makeSlug": "volkswagen"
+    },
+    "WVW": {
+      "manufacturerName": "VOLKSWAGEN AG",
+      "makeSlug": "volkswagen"
+    },
+    "WYB": {
+      "manufacturerName": "MERCEDES-BENZ, AG",
+      "makeSlug": "mercedes-benz"
+    },
+    "WZ1": {
+      "manufacturerName": "BMW AG",
+      "makeSlug": "bmw"
+    },
+    "YV1": {
+      "manufacturerName": "VOLVO CAR CORPORATION",
+      "makeSlug": "volvo"
+    },
+    "YV4": {
+      "manufacturerName": "VOLVO CAR CORPORATION",
+      "makeSlug": "volvo"
+    }
+  }
+}

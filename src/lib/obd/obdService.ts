@@ -31,6 +31,7 @@ import {
 } from './pids';
 import { decodeReadinessStatus, type ReadinessStatus } from './readiness';
 import { decodeVin, type VinResult } from './vin';
+import { decodeVehicleIdentity, type VehicleIdentity } from './vinDecode';
 
 /** The ELM327 driver's send() is the only transport capability OBD needs. */
 export type CommandPort = Pick<Elm327Driver, 'send'>;
@@ -143,6 +144,19 @@ export class ObdService {
       throw new ObdError('malformed-response', 'No VIN was found in the 0902 answer');
     }
     return vin;
+  }
+
+  /**
+   * Reads and decodes the VIN identity. Any failure (no VIN, unsupported Mode
+   * 09, transport hiccup) returns `null` and never blocks connection or scan.
+   */
+  async readVehicleIdentity(): Promise<VehicleIdentity | null> {
+    try {
+      const vin = await this.readVin();
+      return decodeVehicleIdentity(vin.vin);
+    } catch {
+      return null;
+    }
   }
 
   /**

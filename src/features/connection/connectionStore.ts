@@ -8,6 +8,7 @@ import {
 import { errorMessage, isElmError, type ElmErrorCode } from '../../lib/elm327/errors';
 import type { Elm327Driver } from '../../lib/elm327/driver';
 import { listSerialPorts, type SerialPortInfo } from '../../lib/elm327/serialTransport';
+import { VehicleIdentityCache } from '../../lib/obd/vehicleIdentity';
 
 export type ConnectionErrorCode = ElmErrorCode | 'disconnected' | 'ports-unavailable' | 'unknown';
 
@@ -25,6 +26,8 @@ export interface ConnectionState {
   info: ConnectionInfo | null;
   failure: ConnectionFailure | null;
   driver: Elm327Driver | null;
+  /** One VIN identity per connection, warmed right after a successful init. */
+  identityCache: VehicleIdentityCache | null;
   refreshPorts: () => Promise<void>;
   selectPort: (portName: string) => void;
   connect: () => Promise<void>;
@@ -41,6 +44,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
   info: null,
   failure: null,
   driver: null,
+  identityCache: null,
 
   refreshPorts: async () => {
     set({ portsLoading: true });
@@ -81,6 +85,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
         phase: 'idle',
         info: null,
         driver: null,
+        identityCache: null,
         failure: {
           code: isElmError(error) ? error.code : 'unknown',
           detail: errorMessage(error),
@@ -98,11 +103,22 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
         phase: 'idle',
         info: null,
         driver: null,
+        identityCache: null,
         failure: { code: 'disconnected', detail: reason ?? undefined },
       });
     });
 
-    set({ phase: 'connected', info: connection.info, driver: connectedDriver, failure: null });
+    const identityCache = new VehicleIdentityCache(connectedDriver);
+    set({
+      phase: 'connected',
+      info: connection.info,
+      driver: connectedDriver,
+      identityCache,
+      failure: null,
+    });
+    // Warm the cache right after a successful connection; a missing VIN is
+    // never an error and the promise is reused by the first scan.
+    void identityCache.load();
   },
 
   disconnect: async () => {
@@ -111,7 +127,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
 
     detachClosed?.();
     detachClosed = null;
-    set({ phase: 'idle', info: null, driver: null, failure: null });
+    set({ phase: 'idle', info: null, driver: null, identityCache: null, failure: null });
     await driver?.close().catch(() => undefined);
   },
 }));
