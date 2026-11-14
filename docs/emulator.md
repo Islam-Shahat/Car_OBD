@@ -49,11 +49,16 @@ emulator. Kill the emulator **before** closing the client socket: its TCP mode l
 `tests/obd-emulator.test.ts` uses `scripts/emulator-dtc.py`, a thin wrapper that patches the
 emulator's module globals before starting its normal CLI. The patched scenario stores
 `P0143`, `P0196`, `P0234` (pending `P0300`, permanent `P0420`), so the live test exercises the full
-scan and the backup → Mode 04 → verification path with real frames:
+scan and the backup → Mode 04 → verification path with real frames. It also patches Mode 02 so
+freeze-frame 0 returns its DTC, coolant, RPM and speed, and the scan asserts the drive-history PIDs:
 
 ```powershell
 python scripts/emulator-dtc.py -n 35020 -s car
 ```
+
+The stock Mode 02 request patterns only accept one trailing frame byte (`^020C` + footer), while the
+app sends the full `02 <pid> <frame>` request (`020C00`). The wrapper widens those patterns for the
+patched entries; without it, the emulator answers `NO DATA`.
 
 ## 3. Virtual COM pair (full end-to-end, needs admin)
 
@@ -87,8 +92,11 @@ a disconnect message.
 - `ATDP` returns the protocol the emulator selected, e.g. `AUTO, ISO 15765-4 (CAN 11/500)`.
 - The stock `car` scenario stores no DTCs: `03` answers `4300`. To exercise DTC parsing, use
   `scripts/emulator-dtc.py` (patches `DTC_STORED`/`DTC_PENDING`/`DTC_PERMANENT` without editing
-  the installed package). Mode 02 freeze frames are mostly negative answers in this scenario, so
-  the scan reports `freeze-frame-unavailable` even when stored codes exist.
+  the installed package). The same wrapper patches Mode 02 for frame 0 only; frames 1+ return no
+  supported-PID bitmap, so a scan reports one `freeze-frame-unavailable` warning and keeps frame 0.
+- The patched scan enables `ATH1` for the CAN 11-bit session (the driver initialises with `ATH0`),
+  so the live test also parses `7E8` headers. The emulator has one ECU, so multi-ECU separation is
+  covered by unit fixtures, not by this scenario.
 - The emulator answers `?` to unknown AT commands. The driver treats this as
   `unknown-command` and only tolerates it for optional init commands (`ATI`, `AT@1`, `ATST`,
   `ATAT1`).
@@ -106,3 +114,5 @@ Real hardware still has to confirm:
 - Multi-second `0100` searches on older ISO/KWP buses and `ATST` values below ~20.
 - Whether `ATE0`/`ATL0`/`ATS0`/`ATH0` all take effect on the first try, and whether a clone
   needs a longer inter-command gap than the driver's queue provides.
+- Multi-ECU header separation on a real car, 29-bit CAN, and more than one freeze frame: the
+  scenario has one ECU and patches frame 0 only.

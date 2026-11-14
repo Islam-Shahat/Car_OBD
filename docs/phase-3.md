@@ -46,8 +46,8 @@ full-scan orchestration, the scan UI, and the only permitted write flow (Service
 ## Proof
 
 - **OBD unit tests**: 68 tests across `tests/obd-{frames,dtc,pids,readiness,vin,service,scan}.test.ts`.
-  Full suite: **109 passed, 3 skipped** (the two opt-in emulator files are skipped without
-  `ELM_EMULATOR=1`).
+  Full suite: **101 passed, 3 skipped, 104 total** (the two opt-in emulator files are skipped
+  without `ELM_EMULATOR=1`).
 - **Acceptance examples covered**:
   - `43 01 33` → `P0133` (and P/C/B/U plus P1xxx/P2xxx/P3xxx ranges);
   - `4100 BE3F A813`, `4120 901F F015`, `4140 7A1C 8021` bitmap decoding;
@@ -69,17 +69,17 @@ full-scan orchestration, the scan UI, and the only permitted write flow (Service
 
 ## Emulator-only / fixture-only verification
 
-| Area                                       | Verified against                                    |
-| ------------------------------------------ | --------------------------------------------------- |
-| Frame parsing, multi-ECU answers           | Unit fixtures only                                  |
-| ISO 9141/14230 DTC count byte              | Unit fixtures only (emulator uses CAN)              |
-| Mode 02 freeze frames                      | Unit fixtures only; emulator answers `NO DATA`/`7F` |
-| Supported-PID walk `0100`…`0160`           | Unit fixtures + live emulator                       |
-| Mode 01 decoders (RPM, temps, trims, O2…)  | Unit fixtures + live emulator where claimed         |
-| PID 0101 readiness (spark, complete flags) | Unit fixtures + live emulator (MIL off/on)          |
-| Mode 03/07/0A DTC decoding                 | Unit fixtures + live emulator (patched scenario)    |
-| VIN multi-frame + checksum                 | Unit fixtures + live emulator                       |
-| Service 04 clear + verification            | Unit fixtures + live emulator (patched scenario)    |
+| Area                                       | Verified against                                                         |
+| ------------------------------------------ | ------------------------------------------------------------------------ |
+| Frame parsing, multi-ECU answers           | Unit fixtures only                                                       |
+| ISO 9141/14230 DTC count byte              | Unit fixtures only (emulator uses CAN)                                   |
+| Mode 02 freeze frames                      | Unit fixtures only at Phase 3; Phase 3.5 patches frame 0 in the emulator |
+| Supported-PID walk `0100`…`0160`           | Unit fixtures + live emulator                                            |
+| Mode 01 decoders (RPM, temps, trims, O2…)  | Unit fixtures + live emulator where claimed                              |
+| PID 0101 readiness (spark, complete flags) | Unit fixtures + live emulator (MIL off/on)                               |
+| Mode 03/07/0A DTC decoding                 | Unit fixtures + live emulator (patched scenario)                         |
+| VIN multi-frame + checksum                 | Unit fixtures + live emulator                                            |
+| Service 04 clear + verification            | Unit fixtures + live emulator (patched scenario)                         |
 
 Still hardware-only: real ELM327/vehicle timing, clone-adapter quirks, unplug/replug, non-CAN
 protocols, multi-ECU cars and freeze-frame support on real ECUs.
@@ -89,8 +89,9 @@ protocols, multi-ECU cars and freeze-frame support on real ECUs.
 - **Backup storage is interim.** `LocalStorageScanBackupRepository` keeps the last 20 backups in the
   WebView's localStorage; SQLite repositories, scan history and export arrive in Phase 4. The
   `ScanBackupRepository` seam already isolates this change.
-- **Freeze frames are fixture-proven only.** The stock emulator does not implement positive Mode 02
-  answers, so real-ECU frame layouts (frame echo, bitmap, DTC) remain unverified on hardware.
+- **Freeze frames were fixture-proven in Phase 3.** The stock emulator does not implement positive
+  Mode 02 answers; Phase 3.5 patches frame 0 and covers it live, while real-ECU multi-frame layouts
+  remain unverified on hardware. See `docs/phase-3-5.md`.
 - **VIN checksum applicability** is a heuristic: a non-numeric position 9 is treated as
   "not applicable", never as a checksum failure.
 - **DTC count mismatch** can be a false positive on ECUs that report a different count convention;

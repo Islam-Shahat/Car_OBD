@@ -141,27 +141,42 @@ ScanPage → ScanSession → ScanService ── operation lock, progress, backup
   codes and distinguishes CAN answers (even payload, no count byte) from ISO 9141/14230 answers
   (odd payload, count byte). `pids.ts` owns the Mode 01 decoders and the supported-PID bitmap;
   `readiness.ts` owns PID 0101; `vin.ts` extracts the VIN and applies the ISO 3779 check digit.
+- **Vehicle identity.** `vinDecode.ts` adds the WMI (`manufacturerName`, canonical `makeSlug`) from
+  the verified NHTSA vPIC table in `src/data/wmi.json`, plus both model-year candidates encoded by
+  VIN position 10. `VehicleIdentityCache` is created by the connection store and shared with the
+  scan; the VIN is read once per connection, concurrent callers share the promise, and a missing
+  VIN is cached as `null` and never blocks a scan. Dataset provenance is in `docs/data-sources.md`.
 - **VIN check digit.** A non-numeric position 9 is reported as `applicable: false` and is not a
   failure; only a numeric/`X` check digit can produce `vin-invalid`.
+- **Multi-ECU headers.** For CAN 11-bit sessions the scan sends `ATH1`, keeps the `7E8`–`7EF`
+  response identifier as `ecuId`, reassembles frames per ECU, and restores `ATH0` in a `finally`
+  block. `readPidAll()` returns one reading per ECU; DTCs show their `ecuId`. 29-bit CAN and legacy
+  buses stay header-off, and a rejected `ATH1` produces a `headers-unavailable` warning without
+  failing the scan.
 - **Typed reads.** `ObdService` reads Mode 01 PIDs, MIL/readiness, Modes 03/07/0A, Mode 09 PID 02 and
   Mode 02 freeze frames. ECU negative responses become `ObdError` with the NRC; `NO DATA` and
   “service not supported” are classified as optional-read failures so a car that lacks Mode 07/0A/02
-  still produces a complete scan with warnings.
-- **One scan service.** `ScanService.runFullScan()` returns adapter info, protocol, VIN, MIL status,
-  stored/pending/permanent DTCs, freeze frames, live core PIDs, supported PIDs, warnings and timing,
-  and emits `ScanProgress` events. Freeze frames are read only when stored codes exist (capped at 5
-  frames). A DTC-count mismatch between PID 0101 and Mode 03 is reported, not hidden.
+  still produces a complete scan with warnings. NRCs are mapped to translated messages.
+- **One scan service.** `ScanService.runFullScan()` returns adapter info, protocol, VIN identity, MIL
+  status, stored/pending/permanent DTCs, freeze frames, live core PIDs, drive-history PIDs, supported
+  PIDs, warnings and timing, and emits `ScanProgress` events. Freeze frames are read only when stored
+  codes exist (capped at 5 frames). A DTC-count mismatch between PID 0101 and Mode 03 is reported,
+  not hidden.
 - **Safe clear.** `ScanService.clearStoredCodes()` holds a single-operation lock, refuses without
   `confirm: true`, runs a full pre-clear scan, saves the backup and verifies it before sending `04`,
-  requires the `44` confirmation, then re-scans and reports returning codes. A failed verification
-  scan is reported separately from a failed clear. Clear never runs during a scan.
+  requires the `44` confirmation, then re-scans and classifies the result as `codes_returned`,
+  `no_codes_returned` or `verification_failed`. Readiness is snapshotted before and after, and RPM
+  above zero adds an engine-running warning without blocking. A failed verification scan is reported
+  separately from a failed clear. Clear never runs during a scan.
 - **Backup repository seam.** `ScanBackupRepository` is the storage boundary. Until the SQLite phase
   it is implemented by `LocalStorageScanBackupRepository`, which reads back and verifies its write
-  before `save()` resolves; Mode 04 is never sent after a silently failed backup.
+  before `save()` resolves; Mode 04 is never sent after a silently failed backup. `ScanBackup` stores
+  explicit DTC groups, freeze frames and readiness for the Phase 4 tables.
 - **Scan UI.** `ScanPage` shows the not-connected state, runs the scan with step progress, renders
-  VIN/check-digit status, MIL and readiness, all three DTC groups, freeze frames, live readings,
-  warnings and timing, and gates Service 04 behind an explicit confirmation dialog. All labels,
-  units, monitors and warnings are translated in Arabic and English.
+  VIN/WMI/year/check-digit status, MIL and readiness, all three DTC groups with ECU identifiers,
+  freeze frames, live readings, drive history, warnings and timing, and gates Service 04 behind an
+  explicit confirmation dialog. All labels, units, monitors, warnings and NRC messages are
+  translated in Arabic and English.
 
 ## Safety invariants (DTC clear)
 
@@ -195,14 +210,15 @@ No paywalls, no licensing: the app is free and fully client-side.
 
 ## Phase plan
 
-| Phase | Content                                                                      | Status |
-| ----- | ---------------------------------------------------------------------------- | ------ |
-| 1     | Scaffold, tooling, app shell, i18n/RTL, theme, CI                            | done   |
-| 2     | Serial bridge + Transport abstraction + ELM327 emulator + connection UI      | done   |
-| 3     | OBD services: PIDs, DTCs, readiness, VIN, freeze frames, scan UI, safe clear | done   |
-| 4     | SQLite schema, repositories, scan history                                    |        |
-| 5     | Safe clear persistence in SQLite + history reporting                         |        |
-| 6     | Live data (uPlot)                                                            |        |
-| 7     | PDF reports                                                                  |        |
-| 8     | Pre-purchase inspection mode                                                 |        |
-| 9     | Signed remote config + auto-updater, real-car validation                     |        |
+| Phase | Content                                                                            | Status |
+| ----- | ---------------------------------------------------------------------------------- | ------ |
+| 1     | Scaffold, tooling, app shell, i18n/RTL, theme, CI                                  | done   |
+| 2     | Serial bridge + Transport abstraction + ELM327 emulator + connection UI            | done   |
+| 3     | OBD services: PIDs, DTCs, readiness, VIN, freeze frames, scan UI, safe clear       | done   |
+| 3.5   | Review fixes: VIN/WMI identity, PID audit, multi-ECU headers, NRC, clear reporting | done   |
+| 4     | SQLite schema, repositories, scan history                                          |        |
+| 5     | Safe clear persistence in SQLite + history reporting                               |        |
+| 6     | Live data (uPlot)                                                                  |        |
+| 7     | PDF reports                                                                        |        |
+| 8     | Pre-purchase inspection mode                                                       |        |
+| 9     | Signed remote config + auto-updater, real-car validation                           |        |

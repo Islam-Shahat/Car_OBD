@@ -88,6 +88,29 @@ describe.skipIf(!enabled)('OBD scan against the ELM327 emulator (live)', () => {
     });
     expect(result.supportedPids).toContain(0x0c);
     expect(result.live.length).toBeGreaterThan(0);
+    expect(result.freezeFrames).toHaveLength(1);
+    expect(result.freezeFrames[0]).toMatchObject({
+      frame: 0,
+      dtc: { code: 'P0143' },
+    });
+    expect(
+      result.freezeFrames[0]?.readings.map((reading) => [
+        reading.pid,
+        reading.measurements[0]?.value,
+      ]),
+    ).toEqual([
+      [0x05, 55],
+      [0x0c, 1726],
+      [0x0d, 10],
+    ]);
+    expect(result.driveHistory).toEqual({
+      runTimeSeconds: 117,
+      distanceWithMilKm: 0,
+      warmupsSinceCleared: 4,
+      distanceSinceClearedKm: 50,
+      timeWithMilMinutes: 0,
+      timeSinceClearedMinutes: 91,
+    });
     expect(result.durationMs).toBeGreaterThanOrEqual(0);
   }, 90000);
 
