@@ -8,7 +8,12 @@ import { LocalStorageScanBackupRepository } from '../../lib/db/localBackupReposi
 import type { Elm327Driver } from '../../lib/elm327/driver';
 import type { ConnectionInfo } from '../../lib/elm327/connect';
 import { errorMessage, isElmError } from '../../lib/elm327/errors';
-import { ERROR_MESSAGE_KEYS, type ErrorMessageKey } from '../../lib/i18n/errorKeys';
+import {
+  ERROR_MESSAGE_KEYS,
+  nrcMessageKey,
+  type ErrorMessageKey,
+  type NrcMessageKey,
+} from '../../lib/i18n/errorKeys';
 import { isObdError } from '../../lib/obd/errors';
 import { ScanService } from '../../lib/obd/scanService';
 import type { ClearResult, ScanProgress, ScanResult, ScanStep } from '../../lib/obd/scanTypes';
@@ -38,7 +43,8 @@ const SCAN_ERROR_KEYS = {
   malformed: 'scan.errors.malformed',
 } as const;
 
-type FailureKey = ErrorMessageKey | (typeof SCAN_ERROR_KEYS)[keyof typeof SCAN_ERROR_KEYS];
+type FailureKey =
+  ErrorMessageKey | NrcMessageKey | (typeof SCAN_ERROR_KEYS)[keyof typeof SCAN_ERROR_KEYS];
 
 interface Failure {
   key: FailureKey;
@@ -49,25 +55,29 @@ function failureFor(error: unknown, kind: 'scan' | 'clear'): Failure {
   let key: FailureKey = kind === 'clear' ? SCAN_ERROR_KEYS.clearFailed : SCAN_ERROR_KEYS.scanFailed;
 
   if (isObdError(error)) {
-    switch (error.code) {
-      case 'busy':
-        key = SCAN_ERROR_KEYS.busy;
-        break;
-      case 'clear-refused':
-        key = SCAN_ERROR_KEYS.refused;
-        break;
-      case 'backup-failed':
-        key = SCAN_ERROR_KEYS.backupFailed;
-        break;
-      case 'clear-failed':
-        key = SCAN_ERROR_KEYS.clearFailed;
-        break;
-      case 'service-rejected':
-        key = SCAN_ERROR_KEYS.rejected;
-        break;
-      case 'malformed-response':
-        key = SCAN_ERROR_KEYS.malformed;
-        break;
+    if (error.nrc !== undefined) {
+      key = nrcMessageKey(error.nrc);
+    } else {
+      switch (error.code) {
+        case 'busy':
+          key = SCAN_ERROR_KEYS.busy;
+          break;
+        case 'clear-refused':
+          key = SCAN_ERROR_KEYS.refused;
+          break;
+        case 'backup-failed':
+          key = SCAN_ERROR_KEYS.backupFailed;
+          break;
+        case 'clear-failed':
+          key = SCAN_ERROR_KEYS.clearFailed;
+          break;
+        case 'service-rejected':
+          key = SCAN_ERROR_KEYS.rejected;
+          break;
+        case 'malformed-response':
+          key = SCAN_ERROR_KEYS.malformed;
+          break;
+      }
     }
   } else if (isElmError(error)) {
     // Serial/protocol failures already have friendly Arabic and English messages.

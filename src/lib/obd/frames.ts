@@ -6,11 +6,30 @@ export interface ObdMessage {
   bytes: number[];
   /** Adapter lines that produced this message, kept for diagnostics. */
   lines: string[];
+  /** CAN response identifier (7E8–7EF) when the adapter printed headers. */
+  ecuId?: string;
 }
 
 const HEX = /^[0-9A-F]+$/;
 const FRAME_PREFIX = /^(\d+):\s*(.*)$/;
 const LENGTH_LINE = /^[0-9A-F]{1,3}$/;
+/** ISO 15765-4 11-bit response identifiers: 7E8 through 7EF. */
+const CAN_RESPONSE_ID = /^7E[89A-F]$/;
+
+/**
+ * Splits an `ATH1` line such as `7E8 06 41 00 BE 3F A8 13` (spaces optional)
+ * into the CAN identifier and the remaining ISO-TP frame. Only the generic
+ * powertrain 11-bit response range is recognised; 29-bit and K-line headers
+ * are left alone, so scans stay header-off unless the protocol is supported.
+ */
+function splitCanHeader(line: string): { ecuId: string; rest: string } | null {
+  const compact = line.replace(/\s+/g, '').toUpperCase();
+  if (compact.length <= 3) return null;
+
+  const ecuId = compact.slice(0, 3);
+  if (!CAN_RESPONSE_ID.test(ecuId)) return null;
+  return { ecuId, rest: compact.slice(3) };
+}
 
 function isIsoTpLengthLine(line: string, next: string | undefined): boolean {
   if (!LENGTH_LINE.test(line.toUpperCase())) return false;
@@ -50,6 +69,10 @@ export function parseHexBytes(text: string): number[] | null {
  * multi-frame answers as `0: ...`, `1: ...` blocks (the preceding line is the
  * ISO-TP length, e.g. `014`). A new `0:` block starts a new message so that
  * answers from several ECUs are not merged.
+ *
+ * With headers on (`ATH1`), each line starts with the CAN identifier and the
+ * ISO-TP PCI byte (`7E8 06 41 00 ...`). The identifier becomes `ecuId`, the
+ * PCI is removed and frames are reassembled using the ISO-TP length.
  */
 export function decodeMessages(lines: readonly string[]): ObdMessage[] {
   const messages: ObdMessage[] = [];
@@ -71,6 +94,40 @@ export function decodeMessages(lines: readonly string[]): ObdMessage[] {
   };
 
   for (const [index, line] of lines.entries()) {
+    const header = splitCanHeader(line);
+    if (header) {
+      const bytes = parseHexBytes(header.rest);
+      if (!bytes || bytes.length === 0) {
+        flush();
+        continue;
+      }
+
+      const pci = (bytes[0] ?? 0) >> 4;
+      if (pci === 0) {
+        // Single frame: the low nibble is the payload length.
+        flush();
+        const length = (bytes[0] ?? 0) & 0x0f;
+        const body = bytes.slice(1, 1 + length);
+        if (body.length > 0) {
+          messages.push({ bytes: body, lines: [line], ecuId: header.ecuId });
+        }
+      } else if (pci === 1) {
+        // First frame: 12-bit payload length, then the first data bytes.
+        flush();
+        const length = (((bytes[0] ?? 0) & 0x0f) << 8) | (bytes[1] ?? 0);
+        current = { bytes: bytes.slice(2), lines: [line], ecuId: header.ecuId };
+        currentLength = length;
+      } else if (pci === 2 && current && current.ecuId === header.ecuId) {
+        // Consecutive frame from the same ECU.
+        current.bytes.push(...bytes.slice(1));
+        current.lines.push(line);
+      } else {
+        flush();
+      }
+      pendingLength = null;
+      continue;
+    }
+
     const framed = FRAME_PREFIX.exec(line);
 
     if (framed) {

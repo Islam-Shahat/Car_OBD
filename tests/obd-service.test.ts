@@ -115,10 +115,71 @@ describe('ObdService Mode 09 VIN', () => {
     expect(vin.applicable).toBe(false);
   });
 
+  it('decodes the WMI and year candidates from the VIN', async () => {
+    const { service } = await openService();
+    const identity = await service.readVehicleIdentity();
+
+    expect(identity).toMatchObject({
+      wmi: 'WP0',
+      manufacturerName: 'DR. ING. H.C.F. PORSCHE AG',
+      makeSlug: 'porsche',
+      yearCandidates: [1996, 2026],
+    });
+  });
+
+  it('returns null instead of failing when the VIN is unavailable', async () => {
+    const { service } = await openService({ '0902': reply('NO DATA') });
+    await expect(service.readVehicleIdentity()).resolves.toBeNull();
+  });
+
   it('fails loudly when the answer contains no VIN', async () => {
     const { service } = await openService({ '0902': reply('4901') });
     await expect(service.readVin()).rejects.toMatchObject({ code: 'malformed-response' });
   });
+});
+
+describe('ObdService multi-ECU answers', () => {
+  it('keeps a separate reading and ecuId for each ECU', async () => {
+    const { service } = await openService({
+      '010C': reply('7E8 04 41 0C 1A F8\r7E9 04 41 0C 0F A0'),
+    });
+
+    const readings = await service.readPidAll(0x0c);
+
+    expect(readings.map((reading) => reading.ecuId)).toEqual(['7E8', '7E9']);
+    expect(readings.map((reading) => reading.measurements[0]?.value)).toEqual([1726, 1000]);
+  });
+
+  it('keeps the ecuId on DTCs reported by different ECUs', async () => {
+    const { service } = await openService({
+      '03': reply('7E8 04 43 01 33\r7E9 04 43 02 34'),
+    });
+
+    const codes = await service.readDtcGroup(3);
+
+    expect(codes.map((dtc) => [dtc.code, dtc.ecuId])).toEqual([
+      ['P0133', '7E8'],
+      ['P0234', '7E9'],
+    ]);
+  });
+});
+
+describe('ObdService negative responses', () => {
+  it.each([
+    [3, '7F0322', 0x22],
+    [7, '7F0711', 0x11],
+    [10, '7F0A31', 0x31],
+  ] as const)(
+    'maps a Mode %i rejection to service-rejected with its NRC',
+    async (mode, text, nrc) => {
+      const { service } = await openService({ [mode === 10 ? '0A' : `0${mode}`]: reply(text) });
+
+      await expect(service.readDtcGroup(mode)).rejects.toMatchObject({
+        code: 'service-rejected',
+        nrc,
+      });
+    },
+  );
 });
 
 describe('ObdService Mode 02 freeze frame', () => {

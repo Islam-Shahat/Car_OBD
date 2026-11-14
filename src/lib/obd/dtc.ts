@@ -8,6 +8,8 @@ export interface Dtc {
   bytes: readonly [number, number];
   /** Two encoded bytes as hex, e.g. `0133`. */
   raw: string;
+  /** CAN identifier of the ECU that reported the code, when headers were on. */
+  ecuId?: string;
 }
 
 export const DTC_MODE_REQUEST: Readonly<Record<DtcMode, string>> = {

@@ -120,7 +120,28 @@ export class ObdService {
   }
 
   async readPid(pid: number): Promise<PidReading> {
-    return decodePid(pid, await this.readPidData(pid));
+    const [reading] = await this.readPidAll(pid);
+    if (!reading) {
+      throw new ObdError('malformed-response', `The answer does not contain PID ${pidLabel(pid)}`);
+    }
+    return reading;
+  }
+
+  /**
+   * Every ECU that answered the same PID, each tagged with its CAN response
+   * identifier. The first reading is the one used for scalar displays.
+   */
+  async readPidAll(pid: number): Promise<PidReading[]> {
+    const messages = await this.read(commandWithPid(0x01, pid), 0x41);
+    const matches = messagesFor(messages, 0x41, pid);
+    if (matches.length === 0) {
+      throw new ObdError('malformed-response', `The answer does not contain PID ${pidLabel(pid)}`);
+    }
+
+    return matches.map((message) => {
+      const reading = decodePid(pid, message.bytes.slice(2));
+      return message.ecuId ? { ...reading, ecuId: message.ecuId } : reading;
+    });
   }
 
   async readDtcGroup(mode: DtcMode): Promise<Dtc[]> {
@@ -131,7 +152,9 @@ export class ObdService {
     // Each message is one ECU's answer. Decoding them separately keeps the
     // ISO 9141/14230 count byte meaningful when several ECUs answer.
     for (const message of messagesFor(messages, service)) {
-      codes.push(...decodeDtcPayload(message.bytes.slice(1)));
+      for (const dtc of decodeDtcPayload(message.bytes.slice(1))) {
+        codes.push(message.ecuId ? { ...dtc, ecuId: message.ecuId } : dtc);
+      }
     }
 
     return uniqueDtcs(codes);

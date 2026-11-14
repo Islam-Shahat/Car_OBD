@@ -151,6 +151,7 @@
     "permanentTitle": "Permanent — Mode 0A",
     "noCodes": "None",
     "modeUnsupported": "Not supported by this ECU",
+    "ecuId": "ECU {{id}}",
     "systems": {
       "P": "Powertrain",
       "C": "Chassis",
@@ -251,6 +252,19 @@
     "closed": "The serial port was closed.",
     "disconnected": "The adapter disconnected. Reconnect it, then connect again.",
     "ports-unavailable": "Could not read the COM port list.",
-    "unknown": "An unexpected error occurred while connecting."
+    "unknown": "An unexpected error occurred while connecting.",
+    "nrc": {
+      "generalReject": "The ECU rejected the request (general rejection).",
+      "serviceNotSupported": "This service is not supported by the ECU.",
+      "subFunctionNotSupported": "The ECU does not support this sub-function or data format.",
+      "incorrectLength": "The request length or format is not accepted by the ECU.",
+      "busy": "The ECU is busy. Wait a moment and retry.",
+      "conditionsNotCorrect": "The ECU refused because the conditions are not correct (for example the engine state or ignition position).",
+      "requestOutOfRange": "The request is outside the range supported by the ECU.",
+      "securityDenied": "The ECU refused the request for security reasons.",
+      "responsePending": "The ECU is still processing the request. Wait and retry.",
+      "serviceNotSupportedInSession": "The service is not supported in the current session.",
+      "unknown": "The ECU rejected the request with code {{nrc}}."
+    }
   }
 }

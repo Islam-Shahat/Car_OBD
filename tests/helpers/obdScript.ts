@@ -36,6 +36,8 @@ const VIN_RESPONSE = '014\r0: 490201575030\r1: 5A5A5A39395A54\r2: 53333930303030
 
 export function fullScanScript(overrides: Script = {}): Script {
   return {
+    ATH1: reply('OK'),
+    ATH0: reply('OK'),
     '0100': reply('4100BE3FA813'),
     '0120': reply('4120901FF015'),
     '0140': reply('41407A1C8021'),

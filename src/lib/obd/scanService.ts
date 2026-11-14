@@ -197,12 +197,47 @@ export class ScanService {
     }
   }
 
+  /** CAN 11-bit scans use ATH1 so several ECUs can be told apart. */
+  private scanUsesHeaders(): boolean {
+    const protocol = this.adapter.protocol ?? '';
+    return /15765|\bCAN\b/i.test(protocol) && !/\b29\b/.test(protocol);
+  }
+
+  private async enableHeaders(warnings: ScanWarning[]): Promise<boolean> {
+    if (!this.scanUsesHeaders()) return false;
+    try {
+      await this.port.send('ATH1');
+      return true;
+    } catch (error) {
+      // A clone that rejects ATH1 can still answer; keep the scan working.
+      warnings.push({ code: 'headers-unavailable', detail: errorMessage(error) });
+      return false;
+    }
+  }
+
+  private async disableHeaders(): Promise<void> {
+    await this.port.send('ATH0').catch(() => undefined);
+  }
+
   private async scan(
     onProgress?: ScanProgressListener,
     includeFreezeFrames = true,
   ): Promise<ScanResult> {
-    const started = this.now();
     const warnings: ScanWarning[] = [];
+    const headers = await this.enableHeaders(warnings);
+    try {
+      return await this.scanBody(warnings, onProgress, includeFreezeFrames);
+    } finally {
+      if (headers) await this.disableHeaders();
+    }
+  }
+
+  private async scanBody(
+    warnings: ScanWarning[],
+    onProgress?: ScanProgressListener,
+    includeFreezeFrames = true,
+  ): Promise<ScanResult> {
+    const started = this.now();
     const modeSupport: DtcModeSupport = {
       stored: false,
       pending: false,
@@ -300,7 +335,7 @@ export class ScanService {
       emit(onProgress, { step: 'live', completed: 0, total: livePids.length });
       for (const [index, pid] of livePids.entries()) {
         try {
-          live.push(await this.service.readPid(pid));
+          live.push(...(await this.service.readPidAll(pid)));
         } catch (error) {
           if (!handledAsWarning(error, warnings, { code: 'pid-no-data', pid })) {
             throw error;

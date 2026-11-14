@@ -182,6 +182,14 @@ function DtcGroup({
               <span className="text-xs text-slate-500 dark:text-slate-400">
                 {t(SYSTEM_KEYS[dtc.system])}
               </span>
+              {dtc.ecuId && (
+                <span
+                  dir="ltr"
+                  className="font-mono text-[11px] text-slate-400 dark:text-slate-500"
+                >
+                  {t('scan.ecuId', { id: dtc.ecuId })}
+                </span>
+              )}
             </li>
           ))}
         </ul>

@@ -132,19 +132,90 @@ describe('ScanService.runFullScan', () => {
       expect.objectContaining({ code: 'mode-unsupported', mode: 10 }),
     );
   });
+
+  it('leaves drive-history fields null when the bitmaps do not claim those PIDs', async () => {
+    const script = fullScanScript({
+      '0100': reply('410080100000'),
+      '0120': reply('412000000000'),
+      '0140': reply('414000000000'),
+    });
+    const { transport, driver, log } = createScriptedAdapter(script);
+    await transport.open();
+    const service = new ScanService(driver, TEST_ADAPTER, { now: nextNow });
+
+    const result = await service.runFullScan();
+
+    expect(result.driveHistory).toEqual({
+      runTimeSeconds: null,
+      distanceWithMilKm: null,
+      warmupsSinceCleared: null,
+      distanceSinceClearedKm: null,
+      timeWithMilMinutes: null,
+      timeSinceClearedMinutes: null,
+    });
+    expect(log).not.toContain('011F');
+    expect(log).not.toContain('0121');
+    expect(log).not.toContain('0130');
+    expect(log).not.toContain('014D');
+  });
+
+  it('warns when the MIL count and Mode 03 disagree', async () => {
+    const script = fullScanScript({ '0101': reply('41010207A100') });
+    const { transport, driver } = createScriptedAdapter(script);
+    await transport.open();
+    const service = new ScanService(driver, TEST_ADAPTER, { now: nextNow });
+
+    const result = await service.runFullScan();
+
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({ code: 'dtc-count-mismatch', reported: 2, received: 1 }),
+    );
+  });
+
+  it('reports headers-unavailable but still completes the scan', async () => {
+    const script = fullScanScript({ ATH1: reply('?') });
+    const { transport, driver } = createScriptedAdapter(script);
+    await transport.open();
+    const service = new ScanService(driver, TEST_ADAPTER, { now: nextNow });
+
+    const result = await service.runFullScan();
+
+    expect(result.stored.map((dtc) => dtc.code)).toEqual(['P0133']);
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({ code: 'headers-unavailable' }),
+    );
+  });
+
+  it('reuses the connection VIN cache instead of reading the VIN again', async () => {
+    const { transport, driver, log } = createScriptedAdapter(fullScanScript());
+    await transport.open();
+    const identityCache = new VehicleIdentityCache(driver);
+    await identityCache.load();
+    const service = new ScanService(driver, TEST_ADAPTER, { now: nextNow, identityCache });
+
+    const result = await service.runFullScan();
+
+    expect(result.vin?.makeSlug).toBe('porsche');
+    expect(log.filter((command) => command === '0902')).toHaveLength(1);
+  });
 });
 
 function clearScript(overrides: Script = {}): Script {
   let cleared = false;
 
   return {
-    '0100': () => reply(cleared ? '410000100000' : '410000100000'),
+    ATH1: reply('OK'),
+    ATH0: reply('OK'),
+    '0100': reply('410080100000'),
+    '0101': () => reply(cleared ? '41010007A100' : '41018107A100'),
     '010C': reply('410C1AF8'),
     '03': () => reply(cleared ? '4300' : '430133'),
     '07': reply('4700'),
     '0A': reply('4A00'),
     '0902': reply('NO DATA'),
-    '020000': reply('NO DATA'),
+    '020000': reply('42000000100000'),
+    '020200': () => reply(cleared ? 'NO DATA' : '4202000133'),
+    '020C00': reply('420C001AF8'),
     '04': () => {
       cleared = true;
       return reply('44');
