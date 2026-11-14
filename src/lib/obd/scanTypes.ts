@@ -69,6 +69,9 @@ export interface ScanResult {
   durationMs: number;
 }
 
+/** Right after clearing, only a returning code proves anything; silence proves nothing. */
+export type ClearOutcome = 'codes_returned' | 'no_codes_returned' | 'verification_failed';
+
 export interface ClearResult {
   backupId: string;
   clearedAt: string;
@@ -77,4 +80,10 @@ export interface ClearResult {
   after: ScanResult | null;
   verificationError: string | null;
   returningCodes: Dtc[];
+  outcome: ClearOutcome;
+  /** RPM was above zero before Service 04; the UI warns but never blocks. */
+  engineRunning: boolean;
+  /** Readiness snapshots taken before and after the clear (Phase 4 table rows). */
+  readinessBefore: ReadinessStatus | null;
+  readinessAfter: ReadinessStatus | null;
 }

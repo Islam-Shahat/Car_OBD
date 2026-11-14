@@ -43,6 +43,12 @@ function defaultIdFactory(): string {
   return `scan-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+/** True only when PID 010C is supported, decoded and above idle. */
+function engineIsRunning(result: ScanResult): boolean {
+  const rpm = result.live.find((reading) => reading.pid === 0x0c)?.measurements[0]?.value;
+  return rpm !== undefined && rpm > 0;
+}
+
 function emit(listener: ScanProgressListener | undefined, progress: ScanProgress): void {
   if (!listener) return;
   try {
@@ -116,10 +122,16 @@ export class ScanService {
         throw new ObdError('clear-refused', 'There are no stored or pending codes to clear');
       }
 
+      const running = engineIsRunning(before);
       const backup: ScanBackup = {
         id: this.idFactory(),
         createdAt: new Date(this.now()).toISOString(),
         adapter: this.adapter,
+        stored: before.stored,
+        pending: before.pending,
+        permanent: before.permanent,
+        freezeFrames: before.freezeFrames,
+        readiness: before.status,
         result: before,
       };
 
@@ -173,13 +185,24 @@ export class ScanService {
       emit(options.onProgress, { step: 'verify', completed: 1, total: 1 });
       emit(options.onProgress, { step: 'done', completed: 1, total: 1 });
 
+      const returningCodes = after ? uniqueDtcs([...after.stored, ...after.pending]) : [];
+      const outcome = after
+        ? returningCodes.length > 0
+          ? 'codes_returned'
+          : 'no_codes_returned'
+        : 'verification_failed';
+
       return {
         backupId: backup.id,
         clearedAt: new Date(this.now()).toISOString(),
         before,
         after,
         verificationError,
-        returningCodes: after ? uniqueDtcs([...after.stored, ...after.pending]) : [],
+        returningCodes,
+        outcome,
+        engineRunning: running,
+        readinessBefore: before.status,
+        readinessAfter: after?.status ?? null,
       };
     });
   }

@@ -245,15 +245,24 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
             })}
           </p>
 
-          {clearResult.verificationError ? (
+          <p
+            dir="ltr"
+            className="mt-2 rounded-lg bg-white/70 px-3 py-2 font-mono text-xs font-semibold text-slate-800 dark:bg-slate-950/40 dark:text-slate-100"
+          >
+            {t(`scan.clearOutcomes.${clearResult.outcome}`)}
+          </p>
+
+          {clearResult.outcome === 'verification_failed' && clearResult.verificationError && (
             <p className="mt-2 rounded-lg bg-amber-100 px-3 py-2 text-amber-900 dark:bg-amber-500/15 dark:text-amber-200">
               {t('scan.verificationFailed')}
               <span dir="ltr" className="mt-1 block font-mono text-xs opacity-80">
                 {clearResult.verificationError}
               </span>
             </p>
-          ) : clearResult.returningCodes.length > 0 ? (
-            <div className="mt-2">
+          )}
+
+          {clearResult.returningCodes.length > 0 && (
+            <div className="mt-3">
               <p className="font-medium">{t('scan.returningCodesTitle')}</p>
               <ul className="mt-1 flex flex-wrap gap-2">
                 {clearResult.returningCodes.map((dtc) => (
@@ -266,9 +275,11 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
                 ))}
               </ul>
             </div>
-          ) : (
-            <p className="mt-2 text-slate-700 dark:text-slate-200">{t('scan.clearVerified')}</p>
           )}
+
+          <p className="mt-3 text-xs leading-6 text-slate-600 dark:text-slate-300">
+            {t('scan.clearOutcomeNote')}
+          </p>
         </section>
       )}
 

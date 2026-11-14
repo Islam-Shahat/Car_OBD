@@ -245,9 +245,18 @@ describe('ScanService.clearStoredCodes', () => {
     expect(result.after?.stored).toEqual([]);
     expect(result.after?.pending).toEqual([]);
     expect(result.returningCodes).toEqual([]);
+    expect(result.outcome).toBe('no_codes_returned');
+    expect(result.engineRunning).toBe(true);
+    expect(result.readinessBefore?.mil).toEqual({ on: true, dtcCount: 1 });
+    expect(result.readinessAfter?.mil).toEqual({ on: false, dtcCount: 0 });
     expect(result.verificationError).toBeNull();
     expect(repository.saved).toHaveLength(1);
     expect(repository.saved[0]?.result.stored[0]?.code).toBe('P0133');
+    expect(repository.saved[0]?.stored.map((dtc) => dtc.code)).toEqual(['P0133']);
+    expect(repository.saved[0]?.pending).toEqual([]);
+    expect(repository.saved[0]?.permanent).toEqual([]);
+    expect(repository.saved[0]?.freezeFrames).toHaveLength(1);
+    expect(repository.saved[0]?.readiness?.mil).toEqual({ on: true, dtcCount: 1 });
 
     const saveIndex = log.indexOf('save');
     const clearIndex = log.indexOf('04');
@@ -300,9 +309,9 @@ describe('ScanService.clearStoredCodes', () => {
     expect(log).not.toContain('04');
   });
 
-  it('reports a rejected Mode 04 and does not run the verification scan', async () => {
+  it('reports a rejected Mode 04 with its NRC and does not run the verification scan', async () => {
     const log: string[] = [];
-    const script = clearScript({ '04': reply('7F0411') });
+    const script = clearScript({ '04': reply('7F0422') });
     const { transport, driver } = createScriptedAdapter(script, log);
     await transport.open();
     const service = new ScanService(driver, TEST_ADAPTER, { now: nextNow });
@@ -310,11 +319,35 @@ describe('ScanService.clearStoredCodes', () => {
 
     await expect(
       service.clearStoredCodes({ backupRepository: repository, confirm: true }),
-    ).rejects.toMatchObject({ code: 'clear-failed' });
+    ).rejects.toMatchObject({ code: 'clear-failed', nrc: 0x22 });
 
     const clearIndex = log.indexOf('04');
     expect(log.indexOf('save')).toBeLessThan(clearIndex);
     expect(log.slice(clearIndex + 1)).not.toContain('0100');
+  });
+
+  it('reports codes_returned when the verification scan still finds a code', async () => {
+    let cleared = false;
+    const script = clearScript({
+      '04': () => {
+        cleared = true;
+        return reply('44');
+      },
+      '03': () => reply('430133'),
+    });
+    const { transport, driver } = createScriptedAdapter(script);
+    await transport.open();
+    const service = new ScanService(driver, TEST_ADAPTER, { now: nextNow });
+    const repository = new FakeBackupRepository([]);
+
+    const result = await service.clearStoredCodes({
+      backupRepository: repository,
+      confirm: true,
+    });
+
+    expect(cleared).toBe(true);
+    expect(result.outcome).toBe('codes_returned');
+    expect(result.returningCodes.map((dtc) => dtc.code)).toEqual(['P0133']);
   });
 
   it('reports a clear that succeeded but could not be verified', async () => {
@@ -340,6 +373,8 @@ describe('ScanService.clearStoredCodes', () => {
     expect(result.after).toBeNull();
     expect(result.verificationError).not.toBeNull();
     expect(result.returningCodes).toEqual([]);
+    expect(result.outcome).toBe('verification_failed');
+    expect(result.readinessAfter).toBeNull();
     expect(repository.saved).toHaveLength(1);
   });
 
