@@ -1,8 +1,8 @@
 import type { AdapterInfo } from '../elm327/driver';
 import type { Dtc } from './dtc';
-import type { PidReading } from './pids';
+import type { DriveHistory, PidReading } from './pids';
 import type { ReadinessStatus } from './readiness';
-import type { VinResult } from './vin';
+import type { VehicleIdentity } from './vinDecode';
 
 export type ScanWarningCode =
   | 'pids-unavailable'
@@ -12,6 +12,7 @@ export type ScanWarningCode =
   | 'vin-invalid'
   | 'freeze-frame-unavailable'
   | 'dtc-count-mismatch'
+  | 'headers-unavailable'
   | 'malformed-response';
 
 export interface ScanWarning {
@@ -52,7 +53,7 @@ export interface DtcModeSupport {
 export interface ScanResult {
   adapter: AdapterInfo;
   protocol: string | null;
-  vin: VinResult | null;
+  vin: VehicleIdentity | null;
   status: ReadinessStatus | null;
   stored: Dtc[];
   pending: Dtc[];
@@ -60,6 +61,7 @@ export interface ScanResult {
   modeSupport: DtcModeSupport;
   freezeFrames: FreezeFrame[];
   live: PidReading[];
+  driveHistory: DriveHistory;
   supportedPids: number[];
   warnings: ScanWarning[];
   startedAt: string;

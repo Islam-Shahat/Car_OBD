@@ -172,7 +172,13 @@
       "fuelLevel": "مستوى الوقود",
       "moduleVoltage": "جهد وحدة التحكم",
       "ambientTemp": "حرارة الهواء المحيط",
-      "oilTemp": "حرارة زيت المحرك"
+      "oilTemp": "حرارة زيت المحرك",
+      "runTime": "زمن التشغيل منذ بدء المحرك",
+      "distanceWithMil": "المسافة المقطوعة ولمبة الأعطال مضيئة",
+      "warmupsSinceCleared": "دورات التسخين منذ مسح الأكواد",
+      "distanceSinceCleared": "المسافة منذ مسح الأكواد",
+      "timeWithMil": "الزمن ولمبة الأعطال مضيئة",
+      "timeSinceCleared": "الزمن منذ مسح الأكواد"
     },
     "units": {
       "percent": "%",
@@ -180,12 +186,17 @@
       "kmh": "كم/س",
       "celsius": "°م",
       "gps": "غ/ث",
-      "volts": "فولت"
+      "volts": "فولت",
+      "seconds": "ث",
+      "minutes": "د",
+      "km": "كم",
+      "count": "دورة"
     },
     "freezeTitle": "إطار التجميد",
     "freezeFrame": "الإطار {{frame}}",
     "freezeDtc": "الكود الذي أنشأ الإطار: {{code}}",
     "liveTitle": "البيانات الحية وقت الفحص",
+    "driveHistoryTitle": "سجل القيادة",
     "warningsTitle": "ملاحظات",
     "warnings": {
       "pidsUnavailable": "لم تُبلغ وحدة المحرك عن معرفات PIDs المدعومة؛ تمت قراءة الأكواد ورقم الهيكل فقط.",
@@ -195,6 +206,7 @@
       "vinInvalid": "رقم تحقق VIN غير مطابق.",
       "freezeFrameUnavailable": "لم توفر وحدة المحرك إطار تجميد.",
       "dtcCountMismatch": "الأكواد المسجلة حسب حالة لمبة الأعطال: {{reported}}؛ المستلمة: {{received}}.",
+      "headersUnavailable": "لم يُفعّل المحول رؤوس الردود، لذا لا يمكن تمييز ردود وحدات التحكم المختلفة.",
       "malformedResponse": "تم تجاهل رد غير صالح."
     },
     "clearConfirmTitle": "مسح الأكواد المسجلة؟",
@@ -205,9 +217,15 @@
     "clearResultTitle": "نتيجة المسح",
     "backupSaved": "تم حفظ النسخة الاحتياطية {{id}} قبل المسح.",
     "clearedAt": "تم المسح في {{time}}",
+    "engineRunningWarning": "يبدو أن المحرك يعمل (دورات المحرك أكبر من صفر). إطفاء المحرك قبل المسح أكثر أمانًا. يمكنك المتابعة على أي حال.",
+    "clearOutcomes": {
+      "codes_returned": "codes_returned — عادت أكواد في فحص التحقق",
+      "no_codes_returned": "no_codes_returned — لم يجد فحص التحقق أي أكواد مسجلة أو معلقة",
+      "verification_failed": "verification_failed — قبلت الوحدة المسح، لكن فحص التحقق فشل"
+    },
+    "clearOutcomeNote": "فحص نظيف مباشرة بعد المسح لا يثبت أن العطل أُصلح. كثير من الأكواد تعود فقط بعد القيادة، لذا أعد الفحص بعد عدة دورات قيادة.",
     "verificationFailed": "قبلت الوحدة أمر المسح، لكن فحص التحقق فشل. أجرِ فحصًا جديدًا بعد استعادة الاتصال.",
     "returningCodesTitle": "أكواد عادت بعد المسح",
-    "clearVerified": "لم يجد فحص التحقق أي أكواد مسجلة أو معلقة.",
     "errors": {
       "scanFailed": "تعذّر إكمال الفحص.",
       "clearFailed": "تعذّر إكمال عملية المسح. قد تكون الأكواد مُسحت أو لا؛ أجرِ فحصًا جديدًا للتأكد.",

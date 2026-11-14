@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { ScanBackup, ScanBackupRepository } from '../src/lib/obd/backup';
 import { ScanService } from '../src/lib/obd/scanService';
 import type { ScanProgress } from '../src/lib/obd/scanTypes';
+import { VehicleIdentityCache } from '../src/lib/obd/vehicleIdentity';
 import {
   createScriptedAdapter,
   fullScanScript,
@@ -48,6 +49,8 @@ describe('ScanService.runFullScan', () => {
     expect(result.adapter.identity).toBe('ELM327 v1.5');
     expect(result.protocol).toContain('ISO 15765');
     expect(result.vin?.vin).toBe('WP0ZZZ99ZTS390000');
+    expect(result.vin?.makeSlug).toBe('porsche');
+    expect(result.vin?.yearCandidates).toEqual([1996, 2026]);
     expect(result.status?.mil).toEqual({ on: true, dtcCount: 1 });
     expect(result.stored.map((dtc) => dtc.code)).toEqual(['P0133']);
     expect(result.pending.map((dtc) => dtc.code)).toEqual(['P0300']);
@@ -65,6 +68,14 @@ describe('ScanService.runFullScan', () => {
     expect(result.live.find((reading) => reading.pid === 0x42)?.measurements[0]?.value).toBe(
       14.667,
     );
+    expect(result.driveHistory).toEqual({
+      runTimeSeconds: 3600,
+      distanceWithMilKm: 100,
+      warmupsSinceCleared: 5,
+      distanceSinceClearedKm: 200,
+      timeWithMilMinutes: 30,
+      timeSinceClearedMinutes: 100,
+    });
     expect(result.supportedPids).toContain(0x20);
     expect(result.supportedPids).toContain(0x60);
     expect(result.warnings).toEqual([]);

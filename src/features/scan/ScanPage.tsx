@@ -77,12 +77,19 @@ function failureFor(error: unknown, kind: 'scan' | 'clear'): Failure {
   return { key, detail: errorMessage(error) };
 }
 
+/** PID 010C is displayed live only when the ECU claims it; above zero means running. */
+function engineIsRunning(result: ScanResult): boolean {
+  const rpm = result.live.find((reading) => reading.pid === 0x0c)?.measurements[0]?.value;
+  return rpm !== undefined && rpm > 0;
+}
+
 /**
  * Mounted only while a connection is open, so every session starts with empty
  * scan state; disconnecting unmounts this subtree and discards the old car.
  */
 function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionInfo }) {
   const { t, i18n } = useTranslation();
+  const identityCache = useConnectionStore((state) => state.identityCache);
 
   const [result, setResult] = useState<ScanResult | null>(null);
   const [progress, setProgress] = useState<ScanProgress | null>(null);
@@ -92,7 +99,10 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
   const [clearResult, setClearResult] = useState<ClearResult | null>(null);
   const [failure, setFailure] = useState<Failure | null>(null);
 
-  const service = useMemo(() => new ScanService(driver, info), [driver, info]);
+  const service = useMemo(
+    () => new ScanService(driver, info, identityCache ? { identityCache } : {}),
+    [driver, info, identityCache],
+  );
   const busy = scanning || clearing;
   const canClear = !busy && result !== null && result.stored.length + result.pending.length > 0;
 
@@ -275,6 +285,12 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
                 pending: result.pending.length,
               })}
             </p>
+            {engineIsRunning(result) && (
+              <p className="mt-3 flex items-start gap-2 rounded-lg bg-amber-100 px-3 py-2 text-xs leading-6 text-amber-900 dark:bg-amber-500/15 dark:text-amber-200">
+                <IconAlert className="mt-1 size-3.5 shrink-0" />
+                <span>{t('scan.engineRunningWarning')}</span>
+              </p>
+            )}
             <div className="mt-5 flex flex-wrap justify-end gap-2">
               <button
                 type="button"

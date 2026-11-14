@@ -1,6 +1,7 @@
 import { ObdError } from './errors';
 
-export type PidUnit = 'percent' | 'rpm' | 'kmh' | 'celsius' | 'gps' | 'volts';
+export type PidUnit =
+  'percent' | 'rpm' | 'kmh' | 'celsius' | 'gps' | 'volts' | 'seconds' | 'minutes' | 'km' | 'count';
 
 /** i18n keys of the measurement labels; keeps `t()` calls type-checked. */
 export type PidLabelKey =
@@ -18,7 +19,13 @@ export type PidLabelKey =
   | 'scan.pids.fuelLevel'
   | 'scan.pids.moduleVoltage'
   | 'scan.pids.ambientTemp'
-  | 'scan.pids.oilTemp';
+  | 'scan.pids.oilTemp'
+  | 'scan.pids.runTime'
+  | 'scan.pids.distanceWithMil'
+  | 'scan.pids.warmupsSinceCleared'
+  | 'scan.pids.distanceSinceCleared'
+  | 'scan.pids.timeWithMil'
+  | 'scan.pids.timeSinceCleared';
 
 export interface PidMeasurement {
   /** i18n key for the measurement label. */
@@ -41,6 +48,40 @@ export interface PidReading {
   measurements: PidMeasurement[];
   /** Raw data bytes after the PID byte, useful for reports and debugging. */
   data: number[];
+  /** CAN identifier of the ECU that answered, when headers were on. */
+  ecuId?: string;
+}
+
+/** Pre-purchase / service-history PIDs; every unsupported field stays `null`. */
+export interface DriveHistory {
+  runTimeSeconds: number | null;
+  distanceWithMilKm: number | null;
+  warmupsSinceCleared: number | null;
+  distanceSinceClearedKm: number | null;
+  timeWithMilMinutes: number | null;
+  timeSinceClearedMinutes: number | null;
+}
+
+export type DriveHistoryKey = keyof DriveHistory;
+
+export const DRIVE_HISTORY_PIDS: readonly { key: DriveHistoryKey; pid: number }[] = [
+  { key: 'runTimeSeconds', pid: 0x1f },
+  { key: 'distanceWithMilKm', pid: 0x21 },
+  { key: 'warmupsSinceCleared', pid: 0x30 },
+  { key: 'distanceSinceClearedKm', pid: 0x31 },
+  { key: 'timeWithMilMinutes', pid: 0x4d },
+  { key: 'timeSinceClearedMinutes', pid: 0x4e },
+];
+
+export function emptyDriveHistory(): DriveHistory {
+  return {
+    runTimeSeconds: null,
+    distanceWithMilKm: null,
+    warmupsSinceCleared: null,
+    distanceSinceClearedKm: null,
+    timeWithMilMinutes: null,
+    timeSinceClearedMinutes: null,
+  };
 }
 
 export interface SupportedPidGroup {
@@ -71,6 +112,10 @@ function single(
   labelParams?: Record<string, string | number>,
 ): PidMeasurement[] {
   return [{ labelKey, value, unit, decimals, ...(labelParams ? { labelParams } : {}) }];
+}
+
+function word(data: readonly number[], offset = 0): number {
+  return (data[offset] ?? 0) * 256 + (data[offset + 1] ?? 0);
 }
 
 function o2Sensor(pid: number, bank: number, sensor: number): PidDefinition {
@@ -240,9 +285,60 @@ const DEFINITIONS: readonly PidDefinition[] = [
   },
 ];
 
+const DRIVE_HISTORY_DEFINITIONS: readonly PidDefinition[] = [
+  {
+    pid: 0x1f,
+    bytes: 2,
+    decode: (data) => {
+      requireBytes(data, 2);
+      return single('scan.pids.runTime', word(data), 'seconds', 0);
+    },
+  },
+  {
+    pid: 0x21,
+    bytes: 2,
+    decode: (data) => {
+      requireBytes(data, 2);
+      return single('scan.pids.distanceWithMil', word(data), 'km', 0);
+    },
+  },
+  {
+    pid: 0x30,
+    bytes: 1,
+    decode: (data) => {
+      requireBytes(data, 1);
+      return single('scan.pids.warmupsSinceCleared', data[0] ?? 0, 'count', 0);
+    },
+  },
+  {
+    pid: 0x31,
+    bytes: 2,
+    decode: (data) => {
+      requireBytes(data, 2);
+      return single('scan.pids.distanceSinceCleared', word(data), 'km', 0);
+    },
+  },
+  {
+    pid: 0x4d,
+    bytes: 2,
+    decode: (data) => {
+      requireBytes(data, 2);
+      return single('scan.pids.timeWithMil', word(data), 'minutes', 0);
+    },
+  },
+  {
+    pid: 0x4e,
+    bytes: 2,
+    decode: (data) => {
+      requireBytes(data, 2);
+      return single('scan.pids.timeSinceCleared', word(data), 'minutes', 0);
+    },
+  },
+];
+
 export const PID_DEFINITIONS = DEFINITIONS;
 export const PID_BY_ID: ReadonlyMap<number, PidDefinition> = new Map(
-  DEFINITIONS.map((definition) => [definition.pid, definition]),
+  [...DEFINITIONS, ...DRIVE_HISTORY_DEFINITIONS].map((definition) => [definition.pid, definition]),
 );
 /** PIDs read for the live snapshot and used to decode freeze frames. */
 export const CORE_PID_IDS: readonly number[] = DEFINITIONS.map((definition) => definition.pid);

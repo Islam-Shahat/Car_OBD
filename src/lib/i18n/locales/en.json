@@ -172,7 +172,13 @@
       "fuelLevel": "Fuel level",
       "moduleVoltage": "Control-module voltage",
       "ambientTemp": "Ambient air temperature",
-      "oilTemp": "Engine oil temperature"
+      "oilTemp": "Engine oil temperature",
+      "runTime": "Run time since engine start",
+      "distanceWithMil": "Distance traveled with MIL on",
+      "warmupsSinceCleared": "Warm-up cycles since codes cleared",
+      "distanceSinceCleared": "Distance since codes cleared",
+      "timeWithMil": "Time with MIL on",
+      "timeSinceCleared": "Time since codes cleared"
     },
     "units": {
       "percent": "%",
@@ -180,12 +186,17 @@
       "kmh": "km/h",
       "celsius": "°C",
       "gps": "g/s",
-      "volts": "V"
+      "volts": "V",
+      "seconds": "s",
+      "minutes": "min",
+      "km": "km",
+      "count": "cycles"
     },
     "freezeTitle": "Freeze frame",
     "freezeFrame": "Frame {{frame}}",
     "freezeDtc": "Code that triggered the frame: {{code}}",
     "liveTitle": "Live data at scan time",
+    "driveHistoryTitle": "Drive history",
     "warningsTitle": "Notes",
     "warnings": {
       "pidsUnavailable": "The ECU did not report its supported PIDs; only the codes and VIN were read.",
@@ -195,6 +206,7 @@
       "vinInvalid": "The VIN check digit does not match.",
       "freezeFrameUnavailable": "The ECU did not provide a freeze frame.",
       "dtcCountMismatch": "MIL status reported stored codes: {{reported}}; received: {{received}}.",
+      "headersUnavailable": "The adapter did not enable response headers, so answers from different ECUs cannot be told apart.",
       "malformedResponse": "A malformed answer was ignored."
     },
     "clearConfirmTitle": "Clear stored codes?",
@@ -205,9 +217,15 @@
     "clearResultTitle": "Clear result",
     "backupSaved": "Backup {{id}} saved before clearing.",
     "clearedAt": "Cleared at {{time}}",
+    "engineRunningWarning": "The engine appears to be running (RPM above zero). Switching the engine off before clearing is safer. You can still continue.",
+    "clearOutcomes": {
+      "codes_returned": "codes_returned — the verification scan found codes again",
+      "no_codes_returned": "no_codes_returned — the verification scan found no stored or pending codes",
+      "verification_failed": "verification_failed — the ECU accepted the clear, but the verification scan failed"
+    },
+    "clearOutcomeNote": "A clean re-scan right after clearing does not prove the fault is repaired. Many codes return only after driving, so re-check after a few drive cycles.",
     "verificationFailed": "The ECU accepted the clear, but the verification scan failed. Run a new scan when the connection recovers.",
     "returningCodesTitle": "Codes that returned",
-    "clearVerified": "The verification scan found no stored or pending codes.",
     "errors": {
       "scanFailed": "The scan could not finish.",
       "clearFailed": "The clear flow could not finish. The codes may or may not have been cleared; run a new scan to check.",

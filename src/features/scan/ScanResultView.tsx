@@ -2,8 +2,14 @@ import { useTranslation } from 'react-i18next';
 
 import { IconAlert, IconCheck } from '../../app/icons';
 import type { Dtc } from '../../lib/obd/dtc';
+import type {
+  DriveHistory,
+  PidLabelKey,
+  PidMeasurement,
+  PidReading,
+  PidUnit,
+} from '../../lib/obd/pids';
 import type { MonitorKey } from '../../lib/obd/readiness';
-import type { PidMeasurement, PidReading } from '../../lib/obd/pids';
 import type { ScanResult, ScanWarning, ScanWarningCode } from '../../lib/obd/scanTypes';
 
 const MONITOR_KEYS = {
@@ -40,8 +46,22 @@ const WARNING_KEYS = {
   'vin-invalid': 'scan.warnings.vinInvalid',
   'freeze-frame-unavailable': 'scan.warnings.freezeFrameUnavailable',
   'dtc-count-mismatch': 'scan.warnings.dtcCountMismatch',
+  'headers-unavailable': 'scan.warnings.headersUnavailable',
   'malformed-response': 'scan.warnings.malformedResponse',
 } as const satisfies Record<ScanWarningCode, string>;
+
+const DRIVE_HISTORY_FIELDS: readonly {
+  key: keyof DriveHistory;
+  labelKey: PidLabelKey;
+  unit: PidUnit;
+}[] = [
+  { key: 'runTimeSeconds', labelKey: 'scan.pids.runTime', unit: 'seconds' },
+  { key: 'distanceWithMilKm', labelKey: 'scan.pids.distanceWithMil', unit: 'km' },
+  { key: 'warmupsSinceCleared', labelKey: 'scan.pids.warmupsSinceCleared', unit: 'count' },
+  { key: 'distanceSinceClearedKm', labelKey: 'scan.pids.distanceSinceCleared', unit: 'km' },
+  { key: 'timeWithMilMinutes', labelKey: 'scan.pids.timeWithMil', unit: 'minutes' },
+  { key: 'timeSinceClearedMinutes', labelKey: 'scan.pids.timeSinceCleared', unit: 'minutes' },
+];
 
 function hex(value: number, width = 2): string {
   return value.toString(16).toUpperCase().padStart(width, '0');
@@ -98,6 +118,35 @@ function ReadingsList({ readings }: { readings: readonly PidReading[] }) {
   );
 }
 
+function DriveHistoryList({ history }: { history: DriveHistory }) {
+  const { t, i18n } = useTranslation();
+  const rows = DRIVE_HISTORY_FIELDS.filter(({ key }) => history[key] !== null);
+  if (rows.length === 0) return null;
+
+  return (
+    <ul className="grid gap-2 sm:grid-cols-2">
+      {rows.map(({ key, labelKey, unit }) => {
+        const value = history[key];
+        if (value === null) return null;
+        return (
+          <li
+            key={key}
+            className="flex items-baseline justify-between gap-4 rounded-lg bg-slate-50 px-3 py-2 dark:bg-slate-950/60"
+          >
+            <span className="text-sm text-slate-600 dark:text-slate-300">{t(labelKey)}</span>
+            <span dir="ltr" className="font-mono text-sm font-semibold tabular-nums">
+              {new Intl.NumberFormat(i18n.resolvedLanguage).format(value)}
+              <span className="ms-1 text-xs font-normal text-slate-500 dark:text-slate-400">
+                {t(`scan.units.${unit}`)}
+              </span>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 function DtcGroup({
   title,
   codes,
@@ -145,6 +194,7 @@ export function ScanResultView({ result }: { result: ScanResult }) {
   const { t, i18n } = useTranslation();
   const seconds = (result.durationMs / 1000).toFixed(1);
   const vin = result.vin;
+  const hasDriveHistory = Object.values(result.driveHistory).some((value) => value !== null);
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -176,6 +226,16 @@ export function ScanResultView({ result }: { result: ScanResult }) {
                 : vin.valid
                   ? t('scan.vinValid')
                   : t('scan.vinInvalid')}
+            </dd>
+          )}
+          {vin && (vin.manufacturerName || vin.makeSlug) && (
+            <dd className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              {t('scan.vinManufacturer')}: {vin.manufacturerName ?? vin.makeSlug}
+            </dd>
+          )}
+          {vin && vin.yearCandidates.length > 0 && (
+            <dd className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              {t('scan.vinYearCandidates', { years: vin.yearCandidates.join(' / ') })}
             </dd>
           )}
         </div>
@@ -300,6 +360,17 @@ export function ScanResultView({ result }: { result: ScanResult }) {
           </h3>
           <div className="mt-2">
             <ReadingsList readings={result.live} />
+          </div>
+        </div>
+      )}
+
+      {hasDriveHistory && (
+        <div className="mt-5">
+          <h3 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+            {t('scan.driveHistoryTitle')}
+          </h3>
+          <div className="mt-2">
+            <DriveHistoryList history={result.driveHistory} />
           </div>
         </div>
       )}

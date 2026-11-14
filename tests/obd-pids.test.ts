@@ -4,6 +4,8 @@ import {
   CORE_PID_IDS,
   decodePid,
   decodeSupportedPidGroup,
+  DRIVE_HISTORY_PIDS,
+  emptyDriveHistory,
   type PidMeasurement,
 } from '../src/lib/obd/pids';
 
@@ -33,6 +35,8 @@ describe('Mode 01 PID decoding', () => {
     expect(first(0x06, [0x80]).labelParams).toEqual({ bank: 1 });
     expect(first(0x08, [0x80]).labelParams).toEqual({ bank: 2 });
     expect(first(0x07, [0x80]).labelKey).toBe('scan.pids.longFuelTrim');
+    expect(first(0x09, [0x40]).value).toBeCloseTo(-50);
+    expect(first(0x09, [0x40]).labelParams).toEqual({ bank: 2 });
   });
 
   it('decodes RPM and vehicle speed', () => {
@@ -78,6 +82,29 @@ describe('Mode 01 PID decoding', () => {
     );
   });
 
+  it('decodes all eight oxygen-sensor PIDs with the shared formula', () => {
+    const fixtures = [
+      [0x14, 1, 1],
+      [0x15, 1, 2],
+      [0x16, 1, 3],
+      [0x17, 1, 4],
+      [0x18, 2, 1],
+      [0x19, 2, 2],
+      [0x1a, 2, 3],
+      [0x1b, 2, 4],
+    ] as const;
+
+    for (const [pid, bank, sensor] of fixtures) {
+      const [voltage, trim] = decodePid(pid, [0x80, 0xa0]).measurements;
+      expect(voltage).toMatchObject({
+        value: 0.64,
+        unit: 'volts',
+        labelParams: { bank, sensor },
+      });
+      expect(trim).toMatchObject({ value: 25, unit: 'percent', labelParams: { bank, sensor } });
+    }
+  });
+
   it('covers every core PID with at least one measurement', () => {
     const samples: Record<number, number[]> = {
       0x04: [0xff],
@@ -111,6 +138,58 @@ describe('Mode 01 PID decoding', () => {
       expect(data, `sample for PID 0x${pid.toString(16)}`).toBeDefined();
       expect(decodePid(pid, data ?? []).measurements.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('drive-history PIDs', () => {
+  it('decodes run time and distance values', () => {
+    expect(first(0x1f, [0x0e, 0x10]).value).toBe(3600);
+    expect(first(0x21, [0x00, 0x64]).value).toBe(100);
+    expect(first(0x31, [0x00, 0xc8]).value).toBe(200);
+  });
+
+  it('decodes warm-ups and time counters', () => {
+    expect(first(0x30, [0x05]).value).toBe(5);
+    expect(first(0x4d, [0x00, 0x1e]).value).toBe(30);
+    expect(first(0x4e, [0x00, 0x64]).value).toBe(100);
+  });
+
+  it('uses the right units and nulls for unsupported values', () => {
+    expect(first(0x1f, [0x0e, 0x10])).toMatchObject({
+      labelKey: 'scan.pids.runTime',
+      unit: 'seconds',
+    });
+    expect(first(0x21, [0x00, 0x64])).toMatchObject({
+      labelKey: 'scan.pids.distanceWithMil',
+      unit: 'km',
+    });
+    expect(first(0x30, [0x05])).toMatchObject({
+      labelKey: 'scan.pids.warmupsSinceCleared',
+      unit: 'count',
+    });
+    expect(first(0x4d, [0x00, 0x1e])).toMatchObject({
+      labelKey: 'scan.pids.timeWithMil',
+      unit: 'minutes',
+    });
+    expect(emptyDriveHistory()).toEqual({
+      runTimeSeconds: null,
+      distanceWithMilKm: null,
+      warmupsSinceCleared: null,
+      distanceSinceClearedKm: null,
+      timeWithMilMinutes: null,
+      timeSinceClearedMinutes: null,
+    });
+  });
+
+  it('maps every drive-history field to its PID', () => {
+    expect(DRIVE_HISTORY_PIDS).toEqual([
+      { key: 'runTimeSeconds', pid: 0x1f },
+      { key: 'distanceWithMilKm', pid: 0x21 },
+      { key: 'warmupsSinceCleared', pid: 0x30 },
+      { key: 'distanceSinceClearedKm', pid: 0x31 },
+      { key: 'timeWithMilMinutes', pid: 0x4d },
+      { key: 'timeSinceClearedMinutes', pid: 0x4e },
+    ]);
   });
 });
 

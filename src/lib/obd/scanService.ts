@@ -4,10 +4,10 @@ import type { ScanBackup, ScanBackupRepository } from './backup';
 import { uniqueDtcs, type Dtc, type DtcMode } from './dtc';
 import { ObdError, isObdError } from './errors';
 import { decodeMessages, hexByte, negativeResponse } from './frames';
-import { CORE_PID_IDS } from './pids';
+import { CORE_PID_IDS, DRIVE_HISTORY_PIDS, emptyDriveHistory, type DriveHistory } from './pids';
 import { isOptionalReadError, ObdService, type CommandPort } from './obdService';
 import type { ReadinessStatus } from './readiness';
-import type { VinResult } from './vin';
+import { VehicleIdentityCache } from './vehicleIdentity';
 import type {
   ClearResult,
   DtcModeSupport,
@@ -22,6 +22,8 @@ export interface ScanServiceOptions {
   now?: () => number;
   /** Injected in tests for deterministic backup identifiers. */
   idFactory?: () => string;
+  /** Shared with the connection store so the VIN is read once per connection. */
+  identityCache?: VehicleIdentityCache;
 }
 
 export interface ClearOptions {
@@ -80,6 +82,7 @@ export class ScanService {
   private readonly port: CommandPort;
   private readonly adapter: AdapterInfo;
   private readonly service: ObdService;
+  private readonly identityCache: VehicleIdentityCache;
   private readonly now: () => number;
   private readonly idFactory: () => string;
   private busy = false;
@@ -88,6 +91,7 @@ export class ScanService {
     this.port = port;
     this.adapter = adapter;
     this.service = new ObdService(port);
+    this.identityCache = options.identityCache ?? new VehicleIdentityCache(port);
     this.now = options.now ?? (() => Date.now());
     this.idFactory = options.idFactory ?? defaultIdFactory;
   }
@@ -276,19 +280,17 @@ export class ScanService {
     }
 
     emit(onProgress, { step: 'vin', completed: 0, total: 1 });
-    let vin: VinResult | null = null;
-    try {
-      vin = await this.service.readVin();
-      if (vin.applicable && !vin.valid) {
-        warnings.push({
-          code: 'vin-invalid',
-          detail: `check digit ${vin.checkDigit}, expected ${vin.expectedCheckDigit}`,
-        });
-      }
-    } catch (error) {
-      if (!handledAsWarning(error, warnings, { code: 'vin-unavailable' })) {
-        throw error;
-      }
+    const vin = await this.identityCache.load();
+    if (!vin) {
+      warnings.push({
+        code: 'vin-unavailable',
+        detail: 'The ECU did not report a decodable VIN',
+      });
+    } else if (vin.applicable && !vin.valid) {
+      warnings.push({
+        code: 'vin-invalid',
+        detail: `check digit ${vin.checkDigit}, expected ${vin.expectedCheckDigit}`,
+      });
     }
     emit(onProgress, { step: 'vin', completed: 1, total: 1 });
 
@@ -309,6 +311,19 @@ export class ScanService {
           completed: index + 1,
           total: livePids.length,
         });
+      }
+    }
+
+    const driveHistory: DriveHistory = emptyDriveHistory();
+    for (const entry of DRIVE_HISTORY_PIDS) {
+      if (!supportedSet.has(entry.pid)) continue;
+      try {
+        const reading = await this.service.readPid(entry.pid);
+        driveHistory[entry.key] = reading.measurements[0]?.value ?? null;
+      } catch (error) {
+        if (!handledAsWarning(error, warnings, { code: 'pid-no-data', pid: entry.pid })) {
+          throw error;
+        }
       }
     }
 
@@ -357,6 +372,7 @@ export class ScanService {
       modeSupport,
       freezeFrames,
       live,
+      driveHistory,
       supportedPids: supported.pids,
       warnings,
       startedAt: new Date(started).toISOString(),
