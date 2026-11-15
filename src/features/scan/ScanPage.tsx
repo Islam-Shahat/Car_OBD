@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { EmptyState } from '../../app/EmptyState';
 import { PageHeader } from '../../app/PageHeader';
 import { IconAlert, IconCheck, IconScan } from '../../app/icons';
-import { LocalStorageScanBackupRepository } from '../../lib/db/localBackupRepository';
+import { useStorage } from '../../lib/db/StorageProvider';
 import type { Elm327Driver } from '../../lib/elm327/driver';
 import type { ConnectionInfo } from '../../lib/elm327/connect';
 import { errorMessage, isElmError } from '../../lib/elm327/errors';
@@ -41,6 +41,7 @@ const SCAN_ERROR_KEYS = {
   backupFailed: 'scan.errors.backupFailed',
   rejected: 'scan.errors.rejected',
   malformed: 'scan.errors.malformed',
+  storageUnavailable: 'scan.errors.storageUnavailable',
 } as const;
 
 type FailureKey =
@@ -100,6 +101,7 @@ function engineIsRunning(result: ScanResult): boolean {
 function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionInfo }) {
   const { t, i18n } = useTranslation();
   const identityCache = useConnectionStore((state) => state.identityCache);
+  const { repositories, status: storageStatus, error: storageError } = useStorage();
 
   const [result, setResult] = useState<ScanResult | null>(null);
   const [progress, setProgress] = useState<ScanProgress | null>(null);
@@ -114,7 +116,11 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
     [driver, info, identityCache],
   );
   const busy = scanning || clearing;
-  const canClear = !busy && result !== null && result.stored.length + result.pending.length > 0;
+  const canClear =
+    !busy &&
+    repositories !== null &&
+    result !== null &&
+    result.stored.length + result.pending.length > 0;
 
   const runScan = async () => {
     if (busy) return;
@@ -134,13 +140,21 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
 
   const runClear = async () => {
     if (busy) return;
+    if (!repositories) {
+      setConfirmOpen(false);
+      setFailure({
+        key: SCAN_ERROR_KEYS.storageUnavailable,
+        detail: storageError ?? 'SQLite storage is not ready',
+      });
+      return;
+    }
     setConfirmOpen(false);
     setClearing(true);
     setFailure(null);
     setProgress(null);
     try {
       const cleared = await service.clearStoredCodes({
-        backupRepository: new LocalStorageScanBackupRepository(),
+        backupRepository: repositories.scanBackups,
         confirm: true,
         onProgress: setProgress,
       });
@@ -160,6 +174,17 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
 
   return (
     <div className="space-y-4">
+      {storageStatus === 'error' && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-200">
+          <p className="font-semibold">{t('scan.storageUnavailable')}</p>
+          {storageError && (
+            <p dir="ltr" className="mt-1 font-mono text-xs opacity-70">
+              {storageError}
+            </p>
+          )}
+        </div>
+      )}
+
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex flex-wrap items-center gap-2">
           <button

@@ -24,4 +24,8 @@ export interface ScanBackup {
 export interface ScanBackupRepository {
   /** Must resolve only after the backup is durable. */
   save(backup: ScanBackup): Promise<void>;
+  list(): Promise<ScanBackup[]>;
+  get(id: string): Promise<ScanBackup | null>;
+  /** Soft delete only; backups are never pruned automatically. */
+  delete(id: string): Promise<void>;
 }

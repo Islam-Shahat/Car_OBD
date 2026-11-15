@@ -17,6 +17,7 @@ tauri-build = { version = "2.7.4", features = [] }
 serde = { version = "1", features = ["derive"] }
 serialport = "4.10"
 tauri = { version = "2.12.5", features = [] }
+tauri-plugin-sql = { version = "2.6.0", features = ["sqlite"] }
 
 # The Rust side stays deliberately thin: it only owns the COM-port bridge.
 # Every piece of OBD/ELM327 logic lives in the TypeScript layer.

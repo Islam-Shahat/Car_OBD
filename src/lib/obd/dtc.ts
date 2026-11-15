@@ -1,5 +1,6 @@
 export type DtcMode = 3 | 7 | 10;
 export type DtcSystem = 'P' | 'C' | 'B' | 'U';
+export type DtcCategory = 'powertrain' | 'body' | 'chassis' | 'network';
 
 export interface Dtc {
   /** SAE J2012 display form, e.g. `P0133`. */
@@ -72,6 +73,25 @@ export function decodeDtcPayload(payload: readonly number[]): Dtc[] {
   }
 
   return codes;
+}
+
+/** Normalizes user/ECU input to the SAE display form used by every table. */
+export function normalizeDtcCode(code: string): string {
+  return code.trim().toUpperCase().replace(/\s+/g, '');
+}
+
+/** P = powertrain, B = body, C = chassis, U = network. */
+export function dtcCategory(code: string): DtcCategory {
+  switch (normalizeDtcCode(code)[0]) {
+    case 'B':
+      return 'body';
+    case 'C':
+      return 'chassis';
+    case 'U':
+      return 'network';
+    default:
+      return 'powertrain';
+  }
 }
 
 /** Keeps the first occurrence of each code (several ECUs can report the same DTC). */

@@ -9,6 +9,7 @@
   "nav": {
     "connect": "Connect",
     "scan": "Scan",
+    "vehicles": "Cars",
     "history": "History",
     "settings": "Settings"
   },
@@ -33,6 +34,10 @@
       "notConnectedTitle": "Connect the adapter first",
       "notConnectedBody": "Open the Connect page, choose the COM port and start a session. The scan then reads stored, pending and permanent codes, readiness monitors, the VIN, freeze frames and live PIDs."
     },
+    "vehicles": {
+      "title": "Cars",
+      "subtitle": "Pick the car you are diagnosing. Cars and choices stay on this device."
+    },
     "history": {
       "title": "History",
       "subtitle": "Every scan session saved on this device.",
@@ -50,6 +55,45 @@
       "about": "About",
       "safetyTitle": "Note",
       "safetyBody": "This app is a diagnostic tool. Clearing codes does not fix the fault; it resets readiness monitors and the freeze frame."
+    }
+  },
+  "vehicles": {
+    "selectedTitle": "Selected car",
+    "selectedNone": "No car selected yet. Pick one below or add a new car.",
+    "clearSelection": "Clear selection",
+    "selectedBadge": "Selected",
+    "use": "Use this car",
+    "remove": "Remove",
+    "savedTitle": "Saved cars",
+    "savedEmpty": "No saved cars yet.",
+    "loading": "Loading saved cars…",
+    "yearUnknown": "Year not set",
+    "addTitle": "Add a car",
+    "catalogHint": "Choose make, then model, then year. The list is for selection only and does not verify the car.",
+    "freeHint": "Enter the make and model as written on the car. They stay on this device.",
+    "make": "Make",
+    "makeSearch": "Search makes",
+    "model": "Model",
+    "modelSearch": "Search models in Arabic or English",
+    "noResults": "No match. Try the other language or use free text.",
+    "notListed": "My car is not in the list",
+    "backToCatalog": "Back to the list",
+    "freeMake": "Make (free text)",
+    "freeModel": "Model (free text)",
+    "year": "Model year",
+    "yearOptional": "optional",
+    "yearPlaceholder": "e.g. 2018",
+    "save": "Save car",
+    "saving": "Saving…",
+    "storageBadge": "Storage unavailable",
+    "storageTitle": "Cars cannot be saved",
+    "storageUnavailable": "The local database is unavailable, so saved cars cannot be loaded or changed. Scanning still works.",
+    "errors": {
+      "loadFailed": "Could not load the saved cars.",
+      "saveFailed": "Could not save the car.",
+      "selectFailed": "Could not remember the selected car.",
+      "deleteFailed": "Could not remove the car.",
+      "yearRange": "Enter a year between 1900 and 2100."
     }
   },
   "connection": {
@@ -227,6 +271,19 @@
     "clearOutcomeNote": "A clean re-scan right after clearing does not prove the fault is repaired. Many codes return only after driving, so re-check after a few drive cycles.",
     "verificationFailed": "The ECU accepted the clear, but the verification scan failed. Run a new scan when the connection recovers.",
     "returningCodesTitle": "Codes that returned",
+    "dtcCategories": {
+      "powertrain": "Powertrain",
+      "body": "Body",
+      "chassis": "Chassis",
+      "network": "Network"
+    },
+    "dtcUnreviewed": "Unreviewed translation",
+    "dtcNoDescription": "No description yet for this code. Check the vehicle's service manual.",
+    "dtcDetails": "Causes and inspection steps",
+    "dtcCauses": "Possible causes",
+    "dtcSteps": "Inspection steps",
+    "dtcSource": "Source: {{source}} ({{version}})",
+    "storageUnavailable": "The local database is unavailable. You can still scan, but clearing codes, saved vehicles and code explanations are disabled.",
     "errors": {
       "scanFailed": "The scan could not finish.",
       "clearFailed": "The clear flow could not finish. The codes may or may not have been cleared; run a new scan to check.",
@@ -234,7 +291,8 @@
       "refused": "The clear was refused. Nothing was backed up or cleared.",
       "backupFailed": "The backup could not be saved, so nothing was cleared.",
       "rejected": "The ECU rejected the request.",
-      "malformed": "The ECU sent an answer the app could not decode."
+      "malformed": "The ECU sent an answer the app could not decode.",
+      "storageUnavailable": "The local database is unavailable, so the backup could not be saved and nothing was cleared."
     }
   },
   "errors": {

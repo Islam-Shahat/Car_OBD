@@ -28,6 +28,20 @@ class FakeBackupRepository implements ScanBackupRepository {
     this.saved.push(backup);
     return Promise.resolve();
   }
+
+  list(): Promise<ScanBackup[]> {
+    return Promise.resolve([...this.saved]);
+  }
+
+  get(id: string): Promise<ScanBackup | null> {
+    return Promise.resolve(this.saved.find((backup) => backup.id === id) ?? null);
+  }
+
+  delete(id: string): Promise<void> {
+    const index = this.saved.findIndex((backup) => backup.id === id);
+    if (index >= 0) this.saved.splice(index, 1);
+    return Promise.resolve();
+  }
 }
 
 let clock = 1_700_000_000_000;

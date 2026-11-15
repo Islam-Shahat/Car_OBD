@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { IconAlert, IconCheck } from '../../app/icons';
-import type { Dtc } from '../../lib/obd/dtc';
+import { useStorage } from '../../lib/db/StorageProvider';
+import type { DtcLookup } from '../../lib/db/types';
+import { dtcCategory, type Dtc } from '../../lib/obd/dtc';
 import type {
   DriveHistory,
   PidLabelKey,
@@ -151,12 +154,39 @@ function DtcGroup({
   title,
   codes,
   supported,
+  make,
 }: {
   title: string;
   codes: readonly Dtc[];
   supported: boolean;
+  make: string | null;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { repositories } = useStorage();
+  const [lookups, setLookups] = useState<Record<string, DtcLookup>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    const repository = repositories?.dtc;
+    if (!repository || codes.length === 0) return;
+
+    void Promise.all(
+      codes.map(async (dtc) => [dtc.code, await repository.lookup(dtc.code, make)] as const),
+    )
+      .then((entries) => {
+        if (!cancelled) setLookups(Object.fromEntries(entries));
+      })
+      .catch(() => {
+        // A lookup failure must never hide the code itself.
+        if (!cancelled) setLookups({});
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [codes, repositories, make]);
+
+  const arabic = i18n.resolvedLanguage === 'ar';
 
   return (
     <div>
@@ -172,26 +202,105 @@ function DtcGroup({
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{t('scan.noCodes')}</p>
       )}
       {codes.length > 0 && (
-        <ul className="mt-2 flex flex-wrap gap-2">
-          {codes.map((dtc) => (
-            <li
-              key={dtc.code}
-              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900"
-            >
-              <span className="font-mono text-sm font-bold">{dtc.code}</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                {t(SYSTEM_KEYS[dtc.system])}
-              </span>
-              {dtc.ecuId && (
-                <span
-                  dir="ltr"
-                  className="font-mono text-[11px] text-slate-400 dark:text-slate-500"
-                >
-                  {t('scan.ecuId', { id: dtc.ecuId })}
-                </span>
-              )}
-            </li>
-          ))}
+        <ul className="mt-2 grid gap-2">
+          {codes.map((dtc) => {
+            const lookup = lookups[dtc.code];
+            const record = lookup?.record ?? null;
+            const category = lookup?.category ?? dtcCategory(dtc.code);
+            const causes = record
+              ? arabic
+                ? record.possibleCausesAr
+                : record.possibleCausesEn
+              : [];
+            const steps = record
+              ? arabic
+                ? record.inspectionStepsAr
+                : record.inspectionStepsEn
+              : [];
+
+            return (
+              <li
+                key={dtc.code}
+                className="rounded-lg border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-mono text-sm font-bold">{dtc.code}</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {t(`scan.dtcCategories.${category}`)}
+                  </span>
+                  <span className="text-[11px] text-slate-400 dark:text-slate-500">
+                    {t(SYSTEM_KEYS[dtc.system])}
+                  </span>
+                  {dtc.ecuId && (
+                    <span
+                      dir="ltr"
+                      className="font-mono text-[11px] text-slate-400 dark:text-slate-500"
+                    >
+                      {t('scan.ecuId', { id: dtc.ecuId })}
+                    </span>
+                  )}
+                  {record?.needsReview && (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
+                      {t('scan.dtcUnreviewed')}
+                    </span>
+                  )}
+                </div>
+
+                {record ? (
+                  <div className="mt-1 space-y-1">
+                    <p className="text-xs leading-6 text-slate-700 dark:text-slate-200">
+                      {arabic ? record.descriptionAr : record.descriptionEn}
+                    </p>
+                    {arabic && (
+                      <p
+                        dir="ltr"
+                        className="text-[11px] leading-5 text-slate-500 dark:text-slate-400"
+                      >
+                        {record.descriptionEn}
+                      </p>
+                    )}
+                    {(causes.length > 0 || steps.length > 0) && (
+                      <details className="text-xs">
+                        <summary className="cursor-pointer text-slate-500 dark:text-slate-400">
+                          {t('scan.dtcDetails')}
+                        </summary>
+                        {causes.length > 0 && (
+                          <div className="mt-1">
+                            <p className="font-semibold">{t('scan.dtcCauses')}</p>
+                            <ul className="list-inside list-disc text-slate-600 dark:text-slate-300">
+                              {causes.map((cause) => (
+                                <li key={cause}>{cause}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {steps.length > 0 && (
+                          <div className="mt-1">
+                            <p className="font-semibold">{t('scan.dtcSteps')}</p>
+                            <ol className="list-inside list-decimal text-slate-600 dark:text-slate-300">
+                              {steps.map((step) => (
+                                <li key={step}>{step}</li>
+                              ))}
+                            </ol>
+                          </div>
+                        )}
+                      </details>
+                    )}
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500">
+                      {t('scan.dtcSource', {
+                        source: record.source,
+                        version: record.sourceVersion.slice(0, 7),
+                      })}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    {t('scan.dtcNoDescription')}
+                  </p>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
@@ -320,16 +429,19 @@ export function ScanResultView({ result }: { result: ScanResult }) {
           title={t('scan.storedTitle')}
           codes={result.stored}
           supported={result.modeSupport.stored}
+          make={result.vin?.makeSlug ?? null}
         />
         <DtcGroup
           title={t('scan.pendingTitle')}
           codes={result.pending}
           supported={result.modeSupport.pending}
+          make={result.vin?.makeSlug ?? null}
         />
         <DtcGroup
           title={t('scan.permanentTitle')}
           codes={result.permanent}
           supported={result.modeSupport.permanent}
+          make={result.vin?.makeSlug ?? null}
         />
       </div>
 
