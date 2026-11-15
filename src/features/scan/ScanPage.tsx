@@ -5,6 +5,7 @@ import { EmptyState } from '../../app/EmptyState';
 import { PageHeader } from '../../app/PageHeader';
 import { IconAlert, IconCheck, IconScan } from '../../app/icons';
 import { useStorage } from '../../lib/db/StorageProvider';
+import { isTauriEnvironment } from '../../lib/db/runtime';
 import type { LiveDataLogInput, ScanResultInput } from '../../lib/db/types';
 import type { Elm327Driver } from '../../lib/elm327/driver';
 import type { ConnectionInfo } from '../../lib/elm327/connect';
@@ -206,11 +207,13 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
 
   const runClear = async () => {
     if (busy) return;
-    if (!repositories) {
+    if (!repositories || (isTauriEnvironment() && !repositories.scanBackups.isDurable)) {
       setConfirmOpen(false);
       setFailure({
         key: SCAN_ERROR_KEYS.storageUnavailable,
-        detail: storageError ?? 'SQLite storage is not ready',
+        detail:
+          storageError ??
+          'Durable SQLite storage is required before clearing codes in the desktop app',
       });
       return;
     }
@@ -223,6 +226,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
       const cleared = await service.clearStoredCodes({
         backupRepository: repositories.scanBackups,
         confirm: true,
+        requireDurable: isTauriEnvironment(),
         onProgress: setProgress,
       });
       setClearResult(cleared);

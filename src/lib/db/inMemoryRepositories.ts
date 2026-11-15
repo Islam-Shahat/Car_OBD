@@ -449,6 +449,7 @@ export class InMemoryRemoteConfigCacheRepository implements RemoteConfigCacheRep
 }
 
 export class InMemoryScanBackupRepository {
+  readonly isDurable = false;
   private readonly rows = new Map<string, ScanBackup>();
   private readonly clock: Clock;
 

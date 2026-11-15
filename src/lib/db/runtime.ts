@@ -256,14 +256,7 @@ export async function openTauriStorage(options: OpenTauriStorageOptions = {}): P
     );
   }
 
-  try {
-    const { default: Database } = await import('@tauri-apps/plugin-sql');
-    const database = await Database.load(DATABASE_PATH);
-    return await openStorage(new TauriSqlExecutor(database));
-  } catch (error) {
-    if (allowFallback) {
-      return openBrowserStorage();
-    }
-    throw error;
-  }
+  const { default: Database } = await import('@tauri-apps/plugin-sql');
+  const database = await Database.load(DATABASE_PATH);
+  return openStorage(new TauriSqlExecutor(database));
 }

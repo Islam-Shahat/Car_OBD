@@ -30,6 +30,8 @@ export interface ClearOptions {
   backupRepository: ScanBackupRepository;
   /** Must be `true`; the UI only sets it after the explicit confirmation step. */
   confirm: boolean;
+  /** When true, refuses to send Mode 04 unless the backup repository is backed by durable disk storage. */
+  requireDurable?: boolean;
   onProgress?: ScanProgressListener;
 }
 
@@ -115,6 +117,13 @@ export class ScanService {
     return this.exclusive(async () => {
       if (!options.confirm) {
         throw new ObdError('clear-refused', 'Explicit confirmation is required before clearing');
+      }
+
+      if (options.requireDurable && !options.backupRepository.isDurable) {
+        throw new ObdError(
+          'backup-failed',
+          'Durable SQLite backup is required before clearing codes in the desktop app',
+        );
       }
 
       const before = await this.scan(options.onProgress);

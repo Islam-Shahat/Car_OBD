@@ -22,6 +22,8 @@ export interface ScanBackup {
 }
 
 export interface ScanBackupRepository {
+  /** True for SQLite on disk; false for ephemeral in-memory storage. */
+  readonly isDurable?: boolean;
   /** Must resolve only after the backup is durable. */
   save(backup: ScanBackup): Promise<void>;
   list(): Promise<ScanBackup[]>;

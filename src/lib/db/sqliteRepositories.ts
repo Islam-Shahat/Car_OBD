@@ -900,6 +900,7 @@ export class SqliteRemoteConfigCacheRepository implements RemoteConfigCacheRepos
 /* -------------------------------------------------------------------------- */
 
 export class SqliteScanBackupRepository implements ScanBackupRepository {
+  readonly isDurable = true;
   private readonly db: SqlExecutor;
   private readonly clock: RepositoryClock;
 
