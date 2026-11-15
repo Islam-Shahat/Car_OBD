@@ -14,7 +14,7 @@ export const DEFAULT_REMOTE_CONFIG_URL = 'https://islamshahat.github.io/obd-diag
 /**
  * The current application version.
  */
-export const CURRENT_APP_VERSION = '0.1.0';
+export const CURRENT_APP_VERSION = '1.0.0';
 
 /**
  * Fail-open default configuration used when offline on first launch

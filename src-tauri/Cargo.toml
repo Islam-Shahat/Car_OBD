@@ -1,6 +1,6 @@
 [package]
 name = "obd-diagnose"
-version = "0.1.0"
+version = "1.0.0"
 description = "Offline-first OBD-II diagnostic scanner for Windows"
 authors = ["Islam Shahat"]
 edition = "2024"
