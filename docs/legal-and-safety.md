@@ -33,7 +33,8 @@ The OBD Diagnose application is built with an **Offline-First Privacy Architectu
    - The application accesses the internet solely for two automated maintenance functions:
      1. Checking GitHub Releases for application updates.
      2. Fetching the cryptographically signed remote configuration (Ed25519) to verify service availability and security advisories.
-   - These HTTP requests are anonymous `GET` requests containing zero user or vehicle payload.
+   - These HTTP requests are anonymous `GET` requests containing zero user, vehicle, or diagnostic payload.
+   - Because these requests are standard HTTPS requests directed to GitHub infrastructure (GitHub Releases and GitHub Pages), GitHub's servers receive the user's public IP address and standard HTTP request metadata (such as timestamps and User-Agent headers) in accordance with GitHub's standard privacy statement. No identifying application data is attached.
 
 ---
 
