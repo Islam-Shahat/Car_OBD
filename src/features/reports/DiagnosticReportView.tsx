@@ -377,7 +377,7 @@ export function DiagnosticReportView({ data, hideVin = false }: DiagnosticReport
                     )}
                   </div>
                   <div className="mt-2 grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
-                    {frame.readings.flatMap((reading) =>
+                    {(frame.readings ?? []).flatMap((reading) =>
                       reading.measurements.map((measurement, mIndex) => (
                         <div
                           key={`${reading.pid}-${mIndex}`}

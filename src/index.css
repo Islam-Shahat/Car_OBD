@@ -80,13 +80,27 @@
     display: none !important;
   }
 
-  body,
+  /* Remove overflow and height clipping so pagination works cleanly across pages */
   html,
-  #root {
+  body {
     height: auto !important;
     overflow: visible !important;
     background-color: #ffffff !important;
     color: #0f172a !important;
+  }
+
+  /* All containers must allow visible overflow so Chromium can paginate */
+  *,
+  *::before,
+  *::after {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  #root,
+  main,
+  div {
+    height: auto !important;
   }
 
   /* Ensure colors and backgrounds print faithfully */

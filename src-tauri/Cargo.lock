@@ -2272,6 +2272,8 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-sql",
+ "webview2-com",
+ "windows",
 ]
 
 [[package]]
