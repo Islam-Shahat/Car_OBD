@@ -1,72 +1,107 @@
-# OBD Diagnose v1.0.0 — Release Checklist
+# OBD Diagnose — Release Checklist
 
 Date: 2026-11-15  
-Status: **ALL CHECKS PASSED (100% TICKED)**  
-Release Version: **v1.0.0**
+Status: **PRE-RELEASE CANDIDATE (v0.9.0-rc.1) — BLOCKED ON HARDWARE, SIGNING, AND ICONS**  
+Release Target: **v0.9.0-rc.1** (Release Candidate)
 
 ---
 
 ## 1. Core Architecture & Strict Invariants
 
-- [x] **Stack**: Tauri v2 + React 19 + TypeScript (strict) + Tailwind CSS v4.
-- [x] **Separation of Concerns**: Rust side is exclusively a thin serial-port bridge; all OBD-II/ELM327 protocol and diagnostic logic resides in TypeScript.
-- [x] **Storage**: Fully local SQLite behind Repository interfaces. Zero remote database dependency.
-- [x] **Licensing & Scope**: 100% free; no paid tiers or telemetry; generic powertrain OBD-II only; write commands restricted strictly to Mode 04 DTC clear.
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [x] | **Stack**: Tauri v2 + React 19 + TypeScript (strict) + Tailwind CSS v4 | mock / build | Enforced in build configuration |
+| [x] | **Separation of Concerns**: Rust side is exclusively a thin serial-port bridge; diagnostic logic in TS | mock / code | Verified via Rust bridge and TypeScript driver boundaries |
+| [x] | **Storage**: Fully local SQLite behind Repository interfaces. Zero remote database | mock | Node:sqlite test suites & SQLite migrations |
+| [x] | **Licensing & Scope**: 100% free; generic powertrain OBD-II only; writes strictly Mode 04 | mock / code | Strict interlock and scope checks |
+
+---
 
 ## 2. Arabic & RTL User Experience
 
-- [x] **First-Class RTL**: Right-to-Left layout symmetry across all screens, modals, dialogs, and navigation drawers.
-- [x] **Local Typography**: Packaged Google Cairo font (`woff2`) rendered offline; zero web font network requests.
-- [x] **Bilingual Key Parity**: 100% resource key and parameter parity between `ar.json` and `en.json` (verified via `tests/i18n-resources.test.ts`).
-- [x] **DTC Explanation Transparency**: Clear translation tier labeling (Tier 1 mechanic review draft vs Tier 2 unreviewed machine translation) with 1-tap toggle to original SAE English text.
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [x] | **First-Class RTL**: Right-to-Left layout symmetry across all screens, modals, dialogs | mock / browser | Verified in headless browser & preview |
+| [x] | **Local Typography**: Packaged Google Cairo font (`woff2`) rendered offline; zero web fonts | mock / build | Local assets bundled in `src/assets/fonts/` |
+| [x] | **Bilingual Key Parity**: 100% resource key and parameter parity between `ar.json` and `en.json` | mock | Verified in `tests/i18n-resources.test.ts` |
+| [x] | **DTC Explanation Transparency**: Clear translation tier labeling with 1-tap English toggle | mock | Verified in `tests/db-review.test.ts` |
+
+---
 
 ## 3. Vehicle Detection & Catalog Search
 
-- [x] **VIN First Identification**: Automatic Mode 09 PID 02 query; offline WMI decoding to make slug with model-year candidate picker.
-- [x] **Multi-Brand WMI User Mapping**: Support for shared group WMIs with `last_used_at` preference and "من اختيارك السابق" confirmation badge.
-- [x] **Manual Catalog Fallback**: Comprehensive catalog of 380 models across 33 makes with Arabic-normalized search and free-text option. Never blocks a scan.
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [x] | **VIN First Identification**: Automatic Mode 09 PID 02 query; offline WMI decoding | emulator / mock | Tested against synthetic VIN frames and Python emulator |
+| [x] | **Multi-Brand WMI User Mapping**: Support for shared group WMIs with `last_used_at` preference | mock | Verified in `tests/db-migrations.test.ts` & `tests/obd-vin-decode.test.ts` |
+| [x] | **Manual Catalog Fallback**: 377 models across 46 makes with Arabic-normalized search | mock | Verified in `tests/vehicle-catalog.test.ts` |
+
+---
 
 ## 4. Diagnostic Scan & Safe Clear Flow
 
-- [x] **Scan Modes**: Reads Stored (Mode 03), Pending (Mode 07), Permanent (Mode 0A), I/M Readiness (Mode 01 PID 01), and Freeze Frame (Mode 02).
-- [x] **Banner Wording & Severity**: Neutral, accurate green state ("لم يتم العثور على أكواد أعطال" / "No fault codes found") with powertrain disclaimer.
-- [x] **Separate Scan Notes**: Adapter/protocol notices isolated into "ملاحظات الفحص" without turning the green banner yellow.
-- [x] **Safe DTC Clear Flow**:
-  1. Warning dialog detailing unperformed repair and monitor reset.
-  2. Engine running interlock (warns user if RPM > 0).
-  3. Mandatory durable SQLite backup before sending Mode 04.
-  4. Automatic post-clear re-scan with drive cycle advisory.
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [x] | **Scan Modes**: Reads Stored (03), Pending (07), Permanent (0A), Readiness (0101), Freeze Frame (02) | emulator | Verified against Python `scripts/emulator-dtc.py` |
+| [x] | **Banner Wording & Severity**: Neutral green state ("لم يتم العثور على أكواد أعطال") with powertrain disclaimer | mock / code | Verified in `tests/phase-5-5-review.test.ts` |
+| [x] | **Separate Scan Notes**: Protocol/adapter notices isolated without coloring green banner | mock / code | Isolated in UI |
+| [x] | **Safe DTC Clear Interlock**: Mandatory durable SQLite backup before sending Mode 04 | mock | Verified in `tests/runtime-storage.test.ts` |
+| [ ] | **Real Vehicle Mode 04 Execution**: Clearing trouble codes on real ECU hardware | **not verified** | **BLOCKED**: Requires testing on a physical automobile |
+
+---
 
 ## 5. Live Telemetry & Sensor Monitoring
 
-- [x] **Sequential Polling**: Strictly sequential PID queries respecting ELM327 half-duplex serial protocol.
-- [x] **Adaptive Delay Scheduler**: 10ms for $\le 2$ PIDs up to 100ms for $9+$ PIDs, avoiding clone buffer overflow.
-- [x] **Zero Memory Growth**: Fixed capacity 300-point ring buffer with zero memory expansion over 10-minute continuous runs.
-- [x] **Performance Benchmark**: Measured **54.16 updates/sec** on 4 PIDs (exceeds acceptance threshold of $\ge 5.0\text{ updates/sec}$).
-- [x] **Visualizations**: 240° SVG arc dial gauges and high-performance `uPlot` rolling canvas charts.
-- [x] **Diagnostic Views**: Fuel trim balance and O2 sensor switching monitors with informational disclaimers.
-- [x] **Export**: RFC 4180 CSV telemetry export.
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [x] | **Sequential Polling**: Sequential PID queries respecting half-duplex ELM327 protocol | emulator / mock | Verified in `tests/live-poller.test.ts` |
+| [x] | **Adaptive Delay Scheduler**: 10ms–100ms pauses preventing clone buffer overflow | mock | Unit tested in poller tests |
+| [x] | **Zero Memory Growth**: Fixed capacity 300-point ring buffer | mock | Audited in live store tests |
+| [x] | **Performance Benchmark**: 54.16 updates/sec on 4 PIDs | emulator | Benchmarked over TCP socket in `tests/live-emulator.test.ts` |
+| [ ] | **Live Data on Physical Vehicle**: Continuous telemetry from a running car engine | **not verified** | **BLOCKED**: Requires testing on a physical automobile |
+
+---
 
 ## 6. Remote Control, Feature Flags & Auto-Update
 
-- [x] **Ed25519 Digital Signatures**: Raw 32-byte public key embedded in client; canonical JSON serialization for tamper protection.
-- [x] **Anti-Rollback**: Rejects incoming configs with older `issued_at` timestamps than local SQLite cache.
-- [x] **Fail-Open & Offline Grace**: Uses cached config when offline; defaults to safe open state if unseeded.
-- [x] **In-Flight Safety**: Never interrupts an active scan or clear; stages updates as `pendingConfig`.
-- [x] **UI Enforcements**: Emergency disabled barrier, mandatory update prompt, and feature flag gating (`clear_codes`, `live_data`).
-- [x] **OTA Data Pack Hook**: Transactional updater preserving human-reviewed translations.
-- [x] **Tauri Updater**: Configured with GitHub Releases manifest and release workflow on version tags.
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [x] | **Ed25519 Digital Signatures**: Raw 32-byte public key embedded in client; canonical JSON | mock | Verified in `tests/remote-config.test.ts` |
+| [x] | **Anti-Rollback**: Rejects configs with older `issued_at` timestamps | mock | Verified in `tests/remote-config.test.ts` |
+| [x] | **Fail-Open & Offline Grace**: Uses cached config when offline; defaults to safe open state | mock | Verified in `tests/remote-config.test.ts` |
+| [x] | **In-Flight Safety**: Never interrupts an active scan or clear | mock | Unit tested in remote config service |
+| [x] | **Tauri Updater Configuration**: Configured with Minisign pubkey and release endpoint | mock / code | Configured in `tauri.conf.json` |
 
-## 7. Quality Assurance & Real-Vehicle Compatibility
+---
 
-- [ ] **Hardware & Protocol Tests**: Synthetic protocol test suites for CAN 11/500, KWP2000 Fast Init, and ISO 9141-2 (`tests/fixtures/synthetic-captures.json`). Real vehicle test BLOCKED on hardware.
-- [x] **Raw Traffic Logger**: Togglable debug logger with automatic 17-character and Mode 09 PID 02 VIN redaction and export.
-- [x] **Edge Case Recovery**: Graceful handling for ignition off, adapter disconnect, COM port busy, and clone timeouts.
-- [x] **Mechanic Review Export**: `npm run review:export` verified (exports 9,533 DTC rows partitioned by tier).
+## 7. Phase 7: History, PDF Reports & Pre-Purchase Mode (Planned)
 
-## 8. Release Assets & Packaging
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [ ] | **Historical Scan Session Browser**: Viewing past scans from SQLite | **not verified** | **NOT IMPLEMENTED**: Page is currently an empty placeholder |
+| [ ] | **Printable HTML / PDF Report Export**: Arabic RTL print stylesheet via `window.print()` | **not verified** | **NOT IMPLEMENTED**: Only decision spike exists (`docs/spike-pdf-arabic.md`) |
+| [ ] | **Pre-Purchase Used Car Mode**: Scoring drive cycles and detecting suspicious code resets | **not verified** | **NOT IMPLEMENTED**: Domain scoring UI not built |
 
-- [x] **Release Notes**: Authored for v1.0.0 (`docs/release-notes-v1.0.0.md`).
-- [x] **Bilingual Documentation**: Comprehensive Arabic and English `README.md` with setup, adapter guide (chipset-focused, no prices), and troubleshooting.
-- [x] **Legal & Safety**: Full disclaimers and offline privacy policy (`docs/legal-and-safety.md`).
-- [x] **Automated CI**: GitHub Actions workflow configured for signed Windows releases.
+---
+
+## 8. Quality Assurance & Real-Hardware Compatibility
+
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [x] | **Synthetic Dialogue Multi-Protocol Tests**: Parser tests for CAN, KWP, and ISO 9141-2 | mock | Verified against `tests/fixtures/synthetic-captures.json` |
+| [x] | **Python Emulator End-to-End**: Full driver and scan flow over TCP | emulator | Tested via `scripts/run-emulator.py` and `scripts/emulator-dtc.py` |
+| [ ] | **Physical ELM327 USB Adapter Test**: Handshake and commands on FTDI/PIC18F25K80 | **not verified** | **BLOCKED**: Requires physical adapter |
+| [ ] | **Physical ELM327 Bluetooth Adapter Test**: Windows Bluetooth virtual COM port pairing | **not verified** | **BLOCKED**: Requires physical adapter |
+| [ ] | **Real Vehicle OBD-II Verification**: Full scan and live data on a real automobile | **not verified** | **BLOCKED**: Requires testing on a physical car |
+| [ ] | **Clean Windows Machine Verification**: Install and test on fresh non-developer Windows 10/11 | **not verified** | **BLOCKED**: Requires clean test machine |
+
+---
+
+## 9. Release Assets, Branding & Code Signing
+
+| Status | Item | Verified on | Notes |
+| :---: | :--- | :--- | :--- |
+| [x] | **Release Notes**: Authored for v0.9.0-rc.1 release candidate (`docs/release-notes-v0.9.0-rc.1.md`) | mock / code | Updated to release candidate status |
+| [x] | **Bilingual Documentation**: Comprehensive Arabic/English `README.md` and legal terms | mock / code | Maintained in repo |
+| [ ] | **Branded Application Icons**: Custom icons replacing default Tauri placeholders | **not verified** | **BLOCKED**: Default Tauri icons in `src-tauri/icons/` |
+| [ ] | **Windows Authenticode Code Signing**: Microsoft SmartScreen trusted certificate | **not verified** | **BLOCKED**: Binaries currently unsigned |
