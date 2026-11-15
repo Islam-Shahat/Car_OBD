@@ -1,7 +1,7 @@
 Part 0: Permanent project context (CLAUDE.md)
 
 Product
-A lightweight Windows desktop app (laptop) that connects to a passenger car through an ELM327 OBD-II adapter (USB or Bluetooth, both appear as a COM port), lets the user pick the car (make / model / year), runs a scan, reads fault codes (DTCs), shows a clear Arabic/English explanation, can clear codes safely, shows live sensor data, and exports a PDF report. Includes a "Pre-purchase inspection" mode that detects suspicious code clearing on used cars.
+A lightweight Windows desktop app (laptop) that connects to a passenger car through an ELM327 OBD-II adapter (USB or Bluetooth, both appear as a COM port), lets the user pick the car (make / model / year), runs a scan, reads fault codes (DTCs), shows a clear Arabic/English explanation, can clear codes safely, and shows live sensor data. Phase 7 features (scan history browser, printable PDF reports, and pre-purchase used car inspection mode) are PLANNED and not yet implemented.
 
 Hard decisions already made (do not revisit)
 • Stack: Tauri v2 + React + TypeScript (strict). NOT Electron. Goal: small installer (a few MB) and low RAM. OBD logic lives in TypeScript; Rust is only a thin serial-port bridge.
@@ -40,7 +40,7 @@ Car identification
 Repo layout
 /src-tauri Rust: serial bridge, updater/plugin wiring
 /src
-/features/connection, scan, vehicles, dtc, livedata, history, reports, settings
+/features/connection, scan, vehicles, dtc, livedata, settings (history and reports are planned)
 /lib/elm327, obd, db, i18n, remote-config
 /data dtc manifest, vehicle catalog, glossary, wmi (JSON)
 /tests, /docs

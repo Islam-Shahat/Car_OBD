@@ -23,6 +23,12 @@
 - ⚡ **بيانات حية وعدادات سريعة (Live Telemetry)**: استعلام متسلسل ذكي يتجاوز 50 تحديثًا/ثانية، وعدادات دائرية، ورسوم بيانية (`uPlot`) دون أي زيادة في استهلاك الذاكرة، مع تصدير CSV.
 - 🔒 **خصوصية تامة 100%**: لا يتم جمع أو إرسال أي بيانات شخصية أو بيانات تخص السيارة أو نتائج الفحص إلى أي خادم عبر الإنترنت. الاتصال بالإنترنت يُستخدم فقط للتحقق من التحديثات وإشارات التحكم الموقّعة رقمياً (Ed25519).
 
+### ميزات مخططة قيد التطوير (المرحلة 7 — Planned Features)
+
+- 📋 **سجل الفحوصات السابقة (History Browser)**: استعراض ومقارنة الفحوصات السابقة المحفوظة في قاعدة بيانات SQLite المحلية (مخطط).
+- 🖨️ **تصدير تقارير فحص PDF**: توليد تقارير تشخيصية قابلة للطباعة والحفظ بصيغة PDF مع دعم كامل للغة العربية (مخطط).
+- 🔍 **فحص ما قبل الشراء للسيارات المستعملة (Pre-purchase Mode)**: تحليل دورات القيادة واكتشاف المسح المشبوه للأعطال (مخطط).
+
 ### توصيات محولات الفحص (Hardware Recommendations)
 
 > ملاحظة: نوصي باختيار المحول بناءً على **شريحة التحكم الداخلية (Chipset)** لضمان استقرار الاتصال. لا نوفر أسعاراً لكونها تختلف حسب الدولة والمورد.
@@ -66,6 +72,12 @@
 - **High-Rate Live Telemetry**: Sequential scheduler exceeding 50 updates/sec on quality hardware, responsive dials, uPlot charts, and CSV export.
 - **Decentralized Remote Control**: Asymmetric Ed25519-signed feature flags and emergency kill-switch with anti-rollback and fail-open resilience.
 - **100% Privacy Guarantee**: Zero telemetry, zero analytics. Vehicle and diagnostic records stay strictly on your local disk.
+
+### Planned Features (Phase 7 — Under Development)
+
+- 📋 **Historical Scan Session Browser**: Review and compare previous diagnostic sessions saved in local SQLite (planned).
+- 🖨️ **Printable PDF Reports**: Export formatted diagnostic reports using native print CSS with full Arabic RTL support (planned).
+- 🔍 **Pre-Purchase Used Car Inspection Mode**: Detect suspicious code resets and correlate drive cycles with monitor readiness (planned).
 
 ### Hardware Adapter Guidelines
 

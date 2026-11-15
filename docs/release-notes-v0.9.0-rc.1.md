@@ -42,6 +42,12 @@ This is the **v0.9.0-rc.1** release candidate of **OBD Diagnose**, an offline-fi
 7. **Privacy & Transparency**: Zero telemetry, zero analytics. Vehicle data never leaves your device.
 8. **Diagnostic Traffic Logging**: Support debug logger with automatic 17-character VIN redaction.
 
+### Planned Features (Phase 7 — Under Active Development):
+
+- **Historical Scan Session Browser**: View and compare historical diagnostic sessions from local SQLite (`HistoryPage.tsx` placeholder).
+- **Printable HTML / PDF Diagnostic Reports**: Export printable diagnostic reports via native print CSS with full Arabic RTL rendering.
+- **Pre-Purchase Used Car Inspection Mode**: Analyze monitor completion against distance/time since codes cleared to detect suspicious code resets.
+
 ---
 
 ## Verification & Status
