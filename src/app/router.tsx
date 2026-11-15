@@ -2,6 +2,7 @@ import { createHashRouter, Navigate } from 'react-router-dom';
 
 import { ConnectionPage } from '../features/connection/ConnectionPage';
 import { HistoryPage } from '../features/history/HistoryPage';
+import { LivePage } from '../features/live/LivePage';
 import { ScanPage } from '../features/scan/ScanPage';
 import { SettingsPage } from '../features/settings/SettingsPage';
 import { VehiclesPage } from '../features/vehicles/VehiclesPage';
@@ -15,6 +16,7 @@ export const router = createHashRouter([
     children: [
       { index: true, element: <ConnectionPage /> },
       { path: 'scan', element: <ScanPage /> },
+      { path: 'live', element: <LivePage /> },
       { path: 'vehicles', element: <VehiclesPage /> },
       { path: 'history', element: <HistoryPage /> },
       { path: 'settings', element: <SettingsPage /> },

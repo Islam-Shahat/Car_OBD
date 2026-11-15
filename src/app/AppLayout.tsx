@@ -5,6 +5,7 @@ import { useTheme } from '../lib/theme/useTheme';
 import { isDevPreview } from '../lib/db/runtime';
 import { useConnectionStore } from '../features/connection/connectionStore';
 import {
+  IconActivity,
   IconCar,
   IconGauge,
   IconGlobe,
@@ -18,6 +19,7 @@ import {
 const NAV_ITEMS = [
   { to: '/', labelKey: 'nav.connect', Icon: IconGauge, end: true },
   { to: '/scan', labelKey: 'nav.scan', Icon: IconScan, end: false },
+  { to: '/live', labelKey: 'nav.live', Icon: IconActivity, end: false },
   { to: '/vehicles', labelKey: 'nav.vehicles', Icon: IconCar, end: false },
   { to: '/history', labelKey: 'nav.history', Icon: IconHistory, end: false },
   { to: '/settings', labelKey: 'nav.settings', Icon: IconSliders, end: false },

@@ -19,6 +19,7 @@ import { isObdError } from '../../lib/obd/errors';
 import { ScanService } from '../../lib/obd/scanService';
 import type { ClearResult, ScanProgress, ScanResult, ScanStep } from '../../lib/obd/scanTypes';
 import { useConnectionStore } from '../connection/connectionStore';
+import { useLiveStore } from '../live/liveStore';
 import { useSelectedVehicleStore } from '../vehicles/vehicleStore';
 import { ScanResultView } from './ScanResultView';
 
@@ -127,6 +128,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
 
   const runScan = async () => {
     if (busy) return;
+    useLiveStore.getState().setStatus('stopped');
     setScanning(true);
     setFailure(null);
     setClearResult(null);
@@ -209,6 +211,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
       return;
     }
     setConfirmOpen(false);
+    useLiveStore.getState().setStatus('stopped');
     setClearing(true);
     setFailure(null);
     setProgress(null);
