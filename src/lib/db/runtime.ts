@@ -36,16 +36,18 @@ export interface OpenTauriStorageOptions {
 }
 
 /**
- * Returns true if running within Tauri (has Tauri IPC bridge).
+ * Returns true if running within Tauri (has a functional Tauri IPC bridge).
  */
 export function isTauriEnvironment(): boolean {
   if (typeof window === 'undefined') return false;
   const win = window as unknown as {
-    __TAURI_INTERNALS__?: unknown;
+    __TAURI_INTERNALS__?: {
+      invoke?: (cmd: string, args?: unknown, options?: unknown) => Promise<unknown>;
+    };
     isTauri?: boolean;
     __TAURI__?: unknown;
   };
-  return Boolean(win.__TAURI_INTERNALS__ || win.isTauri || win.__TAURI__);
+  return typeof win.__TAURI_INTERNALS__?.invoke === 'function';
 }
 
 /**
@@ -254,7 +256,14 @@ export async function openTauriStorage(options: OpenTauriStorageOptions = {}): P
     );
   }
 
-  const { default: Database } = await import('@tauri-apps/plugin-sql');
-  const database = await Database.load(DATABASE_PATH);
-  return openStorage(new TauriSqlExecutor(database));
+  try {
+    const { default: Database } = await import('@tauri-apps/plugin-sql');
+    const database = await Database.load(DATABASE_PATH);
+    return await openStorage(new TauriSqlExecutor(database));
+  } catch (error) {
+    if (allowFallback) {
+      return openBrowserStorage();
+    }
+    throw error;
+  }
 }
