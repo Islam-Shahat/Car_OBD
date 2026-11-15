@@ -46,7 +46,6 @@ export function StorageProvider({ children }: { children: ReactNode }) {
   const [bypassedError, setBypassedError] = useState(false);
 
   const initStorage = useCallback(() => {
-    setState((curr) => ({ ...curr, status: 'loading', error: null }));
     let cancelled = false;
 
     openTauriStorage()
@@ -124,7 +123,10 @@ export function StorageProvider({ children }: { children: ReactNode }) {
         <div className="mt-6 flex flex-wrap gap-3">
           <button
             type="button"
-            onClick={() => void initStorage()}
+            onClick={() => {
+              setState((curr) => ({ ...curr, status: 'loading', error: null }));
+              void initStorage();
+            }}
             className="inline-flex h-9 items-center gap-2 rounded-lg bg-blue-600 px-4 text-xs font-semibold text-white transition-colors hover:bg-blue-700"
           >
             <IconRefresh className="size-3.5" />

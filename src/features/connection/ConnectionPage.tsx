@@ -6,6 +6,7 @@ import { PageHeader } from '../../app/PageHeader';
 import { IconAlert, IconCar, IconCheck, IconPlug, IconRefresh, IconScan } from '../../app/icons';
 import { ERROR_MESSAGE_KEYS } from '../../lib/i18n/errorKeys';
 import type { SerialPortInfo } from '../../lib/elm327/serialTransport';
+import { isDevPreview } from '../../lib/db/runtime';
 import { useConnectionStore } from './connectionStore';
 import { ConnectionStatusPanel } from './ConnectionStatusPanel';
 
@@ -25,15 +26,21 @@ export function ConnectionPage() {
     selectedPort,
     info,
     failure,
+    isDemo,
     refreshPorts,
     selectPort,
     connect,
+    startDemo,
     disconnect,
   } = useConnectionStore();
 
+  const preview = isDevPreview();
+
   useEffect(() => {
-    void refreshPorts();
-  }, [refreshPorts]);
+    if (!preview) {
+      void refreshPorts();
+    }
+  }, [preview, refreshPorts]);
 
   const busy = phase === 'connecting';
   const connected = phase === 'connected';
@@ -45,6 +52,36 @@ export function ConnectionPage() {
       <div className="grid gap-4 lg:grid-cols-2">
         <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <h2 className="text-sm font-semibold">{t('connection.title')}</h2>
+
+          {preview && (
+            <div className="mt-4 rounded-xl border border-purple-200 bg-purple-50/70 p-4 dark:border-purple-500/30 dark:bg-purple-500/10">
+              <div className="flex items-center gap-2 text-sm font-semibold text-purple-900 dark:text-purple-200">
+                <span className="rounded bg-purple-600 px-2 py-0.5 text-xs font-bold text-white uppercase">
+                  {t('connection.demoBadge')}
+                </span>
+                <span>{t('connection.demoTitle')}</span>
+              </div>
+              <p className="mt-1 text-xs leading-5 text-purple-800/80 dark:text-purple-300">
+                {t('connection.demoDescription')}
+              </p>
+              {!connected ? (
+                <button
+                  type="button"
+                  onClick={() => void startDemo()}
+                  disabled={busy}
+                  className="mt-3 inline-flex h-9 items-center gap-2 rounded-lg bg-purple-600 px-3.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-purple-700 disabled:opacity-50"
+                >
+                  <IconPlug className="size-3.5" />
+                  {busy ? t('connection.connecting') : t('connection.startDemoAction')}
+                </button>
+              ) : isDemo ? (
+                <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-purple-700 dark:text-purple-300">
+                  <IconCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
+                  <span>{t('connection.demoConnectedNotice')}</span>
+                </div>
+              ) : null}
+            </div>
+          )}
 
           <label
             htmlFor="port-select"
@@ -58,11 +95,11 @@ export function ConnectionPage() {
               id="port-select"
               value={selectedPort ?? ''}
               onChange={(event) => selectPort(event.target.value)}
-              disabled={busy || connected}
+              disabled={busy || connected || preview}
               className="h-10 min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 text-sm disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950"
             >
               <option value="" disabled>
-                {t('connection.selectPort')}
+                {preview ? t('connection.portsUnavailableInPreview') : t('connection.selectPort')}
               </option>
               {ports.map((port) => (
                 <option key={port.name} value={port.name}>
@@ -75,7 +112,7 @@ export function ConnectionPage() {
             <button
               type="button"
               onClick={() => void refreshPorts()}
-              disabled={busy || connected || portsLoading}
+              disabled={busy || connected || portsLoading || preview}
               aria-label={t('connection.refresh')}
               title={t('connection.refresh')}
               className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-slate-300 text-slate-600 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
@@ -84,10 +121,16 @@ export function ConnectionPage() {
             </button>
           </div>
 
-          {ports.length === 0 && !portsLoading && (
-            <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-              {t('connection.noPorts')}
+          {preview ? (
+            <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">
+              {t('connection.realPortsDisabledNotice')}
             </p>
+          ) : (
+            ports.length === 0 && !portsLoading && (
+              <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
+                {t('connection.noPorts')}
+              </p>
+            )
           )}
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -95,7 +138,8 @@ export function ConnectionPage() {
               <button
                 type="button"
                 onClick={() => void connect()}
-                disabled={!selectedPort || busy}
+                disabled={!selectedPort || busy || preview}
+                title={preview ? t('connection.realPortsDisabledNotice') : undefined}
                 className="inline-flex h-10 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <IconPlug className="size-4" />
@@ -140,6 +184,11 @@ export function ConnectionPage() {
               <div className="flex items-center gap-2 text-sm font-semibold text-blue-900 dark:text-blue-200">
                 <IconCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
                 <span>{t('connection.connectedTitle')}</span>
+                {isDemo && (
+                  <span className="rounded bg-purple-600 px-2 py-0.5 text-xs font-bold text-white">
+                    {t('app.demoActiveBadge')}
+                  </span>
+                )}
               </div>
               <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
                 {info?.protocol ?? t('connection.protocolUnknown')}

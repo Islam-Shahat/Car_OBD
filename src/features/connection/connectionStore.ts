@@ -26,11 +26,13 @@ export interface ConnectionState {
   info: ConnectionInfo | null;
   failure: ConnectionFailure | null;
   driver: Elm327Driver | null;
+  isDemo: boolean;
   /** One VIN identity per connection, warmed right after a successful init. */
   identityCache: VehicleIdentityCache | null;
   refreshPorts: () => Promise<void>;
   selectPort: (portName: string) => void;
   connect: () => Promise<void>;
+  startDemo: () => Promise<void>;
   disconnect: () => Promise<void>;
 }
 
@@ -44,6 +46,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
   info: null,
   failure: null,
   driver: null,
+  isDemo: false,
   identityCache: null,
 
   refreshPorts: async () => {
@@ -121,13 +124,68 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
     void identityCache.load();
   },
 
+  startDemo: async () => {
+    const { phase } = get();
+    if (phase !== 'idle') return;
+
+    set({ phase: 'connecting', failure: null });
+
+    try {
+      const { createDemoConnection } = await import('../../lib/elm327/demoSession');
+      const connection = createDemoConnection();
+      const connectedDriver = connection.driver;
+
+      detachClosed = connection.transport.onClosed((reason) => {
+        detachClosed?.();
+        detachClosed = null;
+        void connectedDriver.close().catch(() => undefined);
+        set({
+          phase: 'idle',
+          isDemo: false,
+          info: null,
+          driver: null,
+          identityCache: null,
+          failure: { code: 'disconnected', detail: reason ?? undefined },
+        });
+      });
+
+      const identityCache = new VehicleIdentityCache(connectedDriver);
+      set({
+        phase: 'connected',
+        isDemo: true,
+        info: connection.info,
+        driver: connectedDriver,
+        identityCache,
+        failure: null,
+      });
+
+      void identityCache.load();
+    } catch (error) {
+      set({
+        phase: 'idle',
+        isDemo: false,
+        failure: {
+          code: 'unknown',
+          detail: errorMessage(error),
+        },
+      });
+    }
+  },
+
   disconnect: async () => {
     const { driver, phase } = get();
     if (phase !== 'connected') return;
 
     detachClosed?.();
     detachClosed = null;
-    set({ phase: 'idle', info: null, driver: null, identityCache: null, failure: null });
+    set({
+      phase: 'idle',
+      isDemo: false,
+      info: null,
+      driver: null,
+      identityCache: null,
+      failure: null,
+    });
     await driver?.close().catch(() => undefined);
   },
 }));

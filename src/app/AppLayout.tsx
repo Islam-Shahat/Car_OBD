@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import { useTheme } from '../lib/theme/useTheme';
+import { isDevPreview } from '../lib/db/runtime';
+import { useConnectionStore } from '../features/connection/connectionStore';
 import {
   IconCar,
   IconGauge,
@@ -24,6 +26,7 @@ const NAV_ITEMS = [
 export function AppLayout() {
   const { t, i18n } = useTranslation();
   const { resolved, setPreference } = useTheme();
+  const isDemo = useConnectionStore((state) => state.isDemo);
 
   const nextLanguage = i18n.resolvedLanguage === 'ar' ? 'en' : 'ar';
   const languageBadge = nextLanguage === 'en' ? 'EN' : 'ع';
@@ -73,6 +76,28 @@ export function AppLayout() {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
+        {isDevPreview() && (
+          <div
+            role="region"
+            aria-label="Browser preview notice"
+            className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-300 bg-amber-500/15 px-6 py-2 text-xs font-medium text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"
+          >
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded bg-amber-500 px-1.5 py-0.5 text-[10px] font-bold text-slate-900 uppercase">
+                {t('app.previewBadge')}
+              </span>
+              <span>{t('app.previewBannerAr')}</span>
+              <span className="opacity-40">|</span>
+              <span dir="ltr">{t('app.previewBannerEn')}</span>
+            </div>
+            {isDemo && (
+              <span className="rounded-full bg-purple-600 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-xs">
+                {t('app.demoActiveBadge')}
+              </span>
+            )}
+          </div>
+        )}
+
         <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-slate-200 bg-white/80 px-6 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
           <p className="truncate text-xs text-slate-500 dark:text-slate-400">
             {t('app.disclaimerShort')}
