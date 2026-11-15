@@ -63,5 +63,11 @@ Safety and wording rules (non-negotiable)
 • Never start a clear while a scan is in progress. Never interrupt an in-flight clear because of remote config.
 • Show a clear disclaimer: the app is for diagnosis; clearing a code does not fix the fault; readiness monitors and freeze frame are reset by clearing.
 
+Honesty and verification rules (strict and absolute)
+• Never claim something was verified on real hardware or a real car unless the owner supplied the log.
+• Never tick a checklist item that needs hardware, code signing, or the owner. Leave them unticked and marked BLOCKED.
+• Synthetic data must say synthetic everywhere: in filenames, variable names, test descriptions, fixtures, and documentation.
+• Reports, release notes, and docs must strictly match the actual code and git history. Never declare a feature complete or an item verified based on an unmerged plan or decision spike.
+
 Definition of done (per phase)
 Builds with no TS/Rust warnings, unit tests pass, acceptance criteria met and demonstrated (emulator or real car), docs updated.
