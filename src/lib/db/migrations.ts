@@ -4,6 +4,19 @@ export interface Migration {
   version: number;
   description: string;
   statements: readonly string[];
+  /**
+   * Columns added to tables created by an earlier migration. SQLite has no
+   * `ADD COLUMN IF NOT EXISTS`, so the runner checks `PRAGMA table_info` first
+   * and the statement stays safe to retry after an interrupted migration.
+   */
+  addColumns?: readonly ColumnAddition[];
+}
+
+export interface ColumnAddition {
+  table: string;
+  column: string;
+  /** Everything after the column name, e.g. `TEXT NOT NULL DEFAULT ''`. */
+  definition: string;
 }
 
 /**
@@ -179,6 +192,31 @@ export const MIGRATIONS: readonly Migration[] = [
         ON vehicle_catalog(make_slug, model)`,
     ],
   },
+  {
+    version: 4,
+    description: 'Arabic-normalized catalog search and make aliases',
+    statements: [],
+    addColumns: [
+      {
+        table: 'vehicle_catalog',
+        column: 'make_aliases_ar',
+        definition: `TEXT NOT NULL DEFAULT '[]'`,
+      },
+      { table: 'vehicle_catalog', column: 'search_text', definition: `TEXT NOT NULL DEFAULT ''` },
+    ],
+  },
+  {
+    version: 5,
+    description: 'record where the DTC severity estimate came from',
+    statements: [],
+    addColumns: [
+      {
+        table: 'dtc_codes',
+        column: 'severity_source',
+        definition: `TEXT NOT NULL DEFAULT 'heuristic'`,
+      },
+    ],
+  },
 ];
 
 /** Creates the migration ledger and applies every migration not yet recorded. */
@@ -201,6 +239,19 @@ export async function migrate(
 
   for (const migration of MIGRATIONS) {
     if (applied.has(migration.version)) continue;
+
+    for (const addition of migration.addColumns ?? []) {
+      if (!/^[a-z_]+$/.test(addition.table) || !/^[a-z_]+$/.test(addition.column)) {
+        throw new Error(`Unsafe column addition: ${addition.table}.${addition.column}`);
+      }
+      // A table from an older schema must exist before a column can be added.
+      const columns = await db.select<{ name: string }>(`PRAGMA table_info(${addition.table})`);
+      if (!columns.some((column) => column.name === addition.column)) {
+        await db.execute(
+          `ALTER TABLE ${addition.table} ADD COLUMN ${addition.column} ${addition.definition}`,
+        );
+      }
+    }
 
     for (const statement of migration.statements) {
       await db.execute(statement);

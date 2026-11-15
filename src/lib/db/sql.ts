@@ -9,6 +9,12 @@ export type SqlValue = string | number | null;
 export interface SqlExecutor {
   execute(sql: string, params?: readonly SqlValue[]): Promise<{ rowsAffected: number }>;
   select<T>(sql: string, params?: readonly SqlValue[]): Promise<T[]>;
+  /**
+   * Runs `work` as one atomic unit: commit on success, roll back on any throw.
+   * The port owns the transaction so a caller never concatenates BEGIN/COMMIT
+   * into SQL that could run on a different connection.
+   */
+  transaction<T>(work: () => Promise<T>): Promise<T>;
 }
 
 export function nowIso(): string {

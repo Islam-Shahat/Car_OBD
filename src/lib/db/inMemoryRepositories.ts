@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/require-await */
 import type { ScanBackup } from '../obd/backup';
 import { dtcCategory, normalizeDtcCode } from '../obd/dtc';
+import { searchKey } from '../i18n/arabic';
 import type {
   DtcRepository,
   DtcReviewInput,
@@ -140,21 +141,31 @@ export class InMemoryVehicleCatalogRepository implements VehicleCatalogRepositor
     for (const row of this.rows) {
       const current = grouped.get(row.makeSlug);
       if (current) current.count += 1;
-      else grouped.set(row.makeSlug, { make: row.make, makeSlug: row.makeSlug, count: 1 });
+      else
+        grouped.set(row.makeSlug, {
+          make: row.make,
+          makeSlug: row.makeSlug,
+          count: 1,
+          aliasesAr: [...row.makeAliasesAr],
+        });
     }
     return [...grouped.values()].sort((left, right) => left.make.localeCompare(right.make));
   }
 
   async search(query: string, makeSlug?: string | null): Promise<CatalogEntry[]> {
-    const needle = query.trim().toLowerCase();
+    const needle = searchKey(query);
     const slug = normalizeMake(makeSlug);
     return this.rows
       .filter((row) => !slug || row.makeSlug === slug)
       .filter((row) => {
         if (!needle) return true;
-        return [row.make, row.model, ...row.aliasesAr, ...row.aliasesEn].some((value) =>
-          value.toLowerCase().includes(needle),
-        );
+        return searchKey(
+          row.make,
+          row.model,
+          ...row.makeAliasesAr,
+          ...row.aliasesAr,
+          ...row.aliasesEn,
+        ).includes(needle);
       })
       .sort(
         (left, right) =>

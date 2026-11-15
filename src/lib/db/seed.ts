@@ -1,30 +1,10 @@
 import catalogData from '../../data/vehicle-catalog.json';
-import dtcData from '../../data/dtc-codes.json';
+import { searchKey } from '../i18n/arabic';
+import packManifest from '../../data/dtc-pack.manifest.json';
+import { loadDtcPack, type DtcPackLoader, type DtcSeedFile } from './dtcPack';
 import { nowIso, stringifyJsonArray, type SqlExecutor, type SqlValue } from './sql';
 
-export interface DtcSeedCode {
-  code: string;
-  category: string;
-  descriptionEn: string;
-  descriptionAr: string;
-  severity: string | null;
-  causesEn: string[];
-  causesAr: string[];
-  stepsEn: string[];
-  stepsAr: string[];
-  tier: 1 | 2 | 3;
-  needsReview: boolean;
-  reviewedBy?: string | null;
-  reviewedAt?: string | null;
-}
-
-export interface DtcSeedFile {
-  source: string;
-  sourceVersion: string;
-  generatedAt: string;
-  license?: string;
-  codes: DtcSeedCode[];
-}
+export type { DtcPackLoader, DtcSeedCode, DtcSeedFile } from './dtcPack';
 
 export interface CatalogSeedEntry {
   /** Stable id from the catalog build; keeps vehicles.catalog_id valid. */
@@ -32,6 +12,7 @@ export interface CatalogSeedEntry {
   make: string;
   makeSlug: string;
   model: string;
+  makeAliasesAr: string[];
   aliasesAr: string[];
   aliasesEn: string[];
   yearFrom: number | null;
@@ -47,14 +28,14 @@ export interface CatalogSeedFile {
   entries: CatalogSeedEntry[];
 }
 
-export const DTC_SEED_KEY = 'seed.dtc.version';
+/** Written only after the pack landed in full; it is the idempotency marker. */
+export const DTC_PACK_VERSION_KEY = 'dtc_pack_version';
 export const CATALOG_SEED_KEY = 'seed.vehicle_catalog.version';
 
-const DEFAULT_DTC_SEED = dtcData as unknown as DtcSeedFile;
 const DEFAULT_CATALOG_SEED = catalogData as unknown as CatalogSeedFile;
 
-const DTC_COLUMNS = 19;
-const CATALOG_COLUMNS = 14;
+const DTC_COLUMNS = 20;
+const CATALOG_COLUMNS = 16;
 const ROWS_PER_INSERT = 40;
 
 function placeholders(rows: number, columns: number, offset = 0): string {
@@ -108,14 +89,26 @@ async function catalogCount(db: SqlExecutor): Promise<number> {
   return Number(row?.count ?? 0);
 }
 
-async function insertDtcSeed(
+/** A migrated catalog without a search key would be invisible to search. */
+async function catalogMissingSearchKey(db: SqlExecutor): Promise<boolean> {
+  const [row] = await db.select<{ count: number }>(
+    "SELECT COUNT(*) AS count FROM vehicle_catalog WHERE deleted_at IS NULL AND search_text = ''",
+  );
+  return Number(row?.count ?? 0) > 0;
+}
+
+/**
+ * One statement per chunk, inside the caller's transaction. Keeping 40 rows per
+ * statement keeps the bind count under SQLite's legacy 999-variable limit.
+ */
+async function insertDtcPack(
   db: SqlExecutor,
-  seed: DtcSeedFile,
+  pack: DtcSeedFile,
   at: string,
   idFactory: () => string,
 ): Promise<void> {
-  for (let start = 0; start < seed.codes.length; start += ROWS_PER_INSERT) {
-    const chunk = seed.codes.slice(start, start + ROWS_PER_INSERT);
+  for (let start = 0; start < pack.codes.length; start += ROWS_PER_INSERT) {
+    const chunk = pack.codes.slice(start, start + ROWS_PER_INSERT);
     const params: SqlValue[] = [];
     for (const code of chunk) {
       params.push(
@@ -125,12 +118,13 @@ async function insertDtcSeed(
         code.descriptionAr,
         code.descriptionEn,
         code.severity,
+        code.severitySource,
         stringifyJsonArray(code.causesAr),
         stringifyJsonArray(code.causesEn),
         stringifyJsonArray(code.stepsAr),
         stringifyJsonArray(code.stepsEn),
-        seed.source,
-        seed.sourceVersion,
+        pack.source,
+        pack.sourceVersion,
         code.tier,
         code.needsReview ? 1 : 0,
         code.reviewedBy ?? null,
@@ -143,7 +137,7 @@ async function insertDtcSeed(
 
     await db.execute(
       `INSERT INTO dtc_codes (
-        id, code, make, description_ar, description_en, severity,
+        id, code, make, description_ar, description_en, severity, severity_source,
         possible_causes_ar, possible_causes_en, inspection_steps_ar, inspection_steps_en,
         source, source_version, translation_tier, needs_review, reviewed_by, reviewed_at,
         created_at, updated_at, deleted_at
@@ -152,6 +146,7 @@ async function insertDtcSeed(
         description_ar = excluded.description_ar,
         description_en = excluded.description_en,
         severity = excluded.severity,
+        severity_source = excluded.severity_source,
         possible_causes_ar = excluded.possible_causes_ar,
         possible_causes_en = excluded.possible_causes_en,
         inspection_steps_ar = excluded.inspection_steps_ar,
@@ -169,9 +164,9 @@ async function insertDtcSeed(
   }
 
   const actual = await genericCodeCount(db);
-  if (actual < seed.codes.length) {
+  if (actual < pack.codes.length) {
     throw new Error(
-      `DTC seed incomplete: expected at least ${seed.codes.length} generic rows, found ${actual}`,
+      `DTC seed incomplete: expected at least ${pack.codes.length} generic rows, found ${actual}`,
     );
   }
 }
@@ -191,6 +186,7 @@ async function insertCatalogSeed(
         entry.make,
         entry.makeSlug,
         entry.model,
+        stringifyJsonArray(entry.makeAliasesAr),
         stringifyJsonArray(entry.aliasesAr),
         stringifyJsonArray(entry.aliasesEn),
         entry.yearFrom,
@@ -198,6 +194,13 @@ async function insertCatalogSeed(
         entry.bodyType,
         entry.sourceTier,
         entry.verified ? 1 : 0,
+        searchKey(
+          entry.make,
+          entry.model,
+          ...entry.makeAliasesAr,
+          ...entry.aliasesAr,
+          ...entry.aliasesEn,
+        ),
         at,
         at,
         null,
@@ -206,13 +209,15 @@ async function insertCatalogSeed(
 
     await db.execute(
       `INSERT INTO vehicle_catalog (
-        id, make, make_slug, model, aliases_ar, aliases_en, year_from, year_to,
-        body_type, source_tier, verified, created_at, updated_at, deleted_at
+        id, make, make_slug, model, make_aliases_ar, aliases_ar, aliases_en, year_from,
+        year_to, body_type, source_tier, verified, search_text, created_at, updated_at,
+        deleted_at
       ) VALUES ${placeholders(chunk.length, CATALOG_COLUMNS)}
       ON CONFLICT DO UPDATE SET
         make = excluded.make,
         make_slug = excluded.make_slug,
         model = excluded.model,
+        make_aliases_ar = excluded.make_aliases_ar,
         aliases_ar = excluded.aliases_ar,
         aliases_en = excluded.aliases_en,
         year_from = excluded.year_from,
@@ -220,6 +225,7 @@ async function insertCatalogSeed(
         body_type = excluded.body_type,
         source_tier = excluded.source_tier,
         verified = excluded.verified,
+        search_text = excluded.search_text,
         updated_at = excluded.updated_at,
         deleted_at = NULL`,
       params,
@@ -235,7 +241,10 @@ async function insertCatalogSeed(
 }
 
 export interface SeedOptions {
-  dtc?: DtcSeedFile;
+  /** In-memory pack, used by tests and the import tooling. */
+  dtcPack?: DtcSeedFile;
+  /** Lazy loader; defaults to fetching the shipped static asset. */
+  loadDtcPack?: DtcPackLoader;
   catalog?: CatalogSeedFile;
   now?: () => string;
   idFactory?: () => string;
@@ -249,32 +258,51 @@ export interface SeedResult {
 }
 
 /**
- * Seeds the reference tables. When the seed version changes, reference rows are
- * upserted by their stable uniqueness key so corrected or reviewed text reaches
- * existing databases; user-owned `vehicles` rows are never touched. The seed
- * version is recorded only after the row count proves the insert landed.
+ * Seeds the reference tables. The DTC pack is fetched only when its content
+ * version is missing or the row count is short, and it is inserted in one
+ * transaction. The version marker is written after the commit, so an
+ * interrupted or failed seed is retried on the next start instead of leaving a
+ * half-seeded database marked as done. The catalog upsert never touches
+ * user-owned `vehicles` rows.
  */
 export async function seedDatabase(
   db: SqlExecutor,
   options: SeedOptions = {},
 ): Promise<SeedResult> {
-  const dtc = options.dtc ?? DEFAULT_DTC_SEED;
   const catalog = options.catalog ?? DEFAULT_CATALOG_SEED;
   const at = (options.now ?? nowIso)();
   const idFactory = options.idFactory ?? (() => crypto.randomUUID());
 
   let dtcInserted = false;
-  const dtcVersion = await settingValue(db, DTC_SEED_KEY);
-  if (dtcVersion !== dtc.sourceVersion || (await genericCodeCount(db)) < dtc.codes.length) {
-    await insertDtcSeed(db, dtc, at, idFactory);
-    await writeSetting(db, DTC_SEED_KEY, dtc.sourceVersion, at);
+  const packVersion = options.dtcPack?.version ?? packManifest.version;
+  // The manifest count is a hint for the shipped pack only. A caller that
+  // supplies its own loader or pack owns that check after the insert.
+  const expectedCodes =
+    options.dtcPack?.codes.length ?? (options.loadDtcPack ? null : packManifest.codeCount);
+  const recordedVersion = await settingValue(db, DTC_PACK_VERSION_KEY);
+  const short = expectedCodes !== null && (await genericCodeCount(db)) < expectedCodes;
+  if (recordedVersion !== packVersion || short) {
+    const pack = options.dtcPack ?? (await (options.loadDtcPack ?? loadDtcPack)());
+    if (pack.version !== packVersion) {
+      throw new Error(`The DTC pack changed while starting (${pack.version} != ${packVersion})`);
+    }
+    await db.transaction(async () => {
+      await insertDtcPack(db, pack, at, idFactory);
+    });
+    await writeSetting(db, DTC_PACK_VERSION_KEY, pack.version, at);
     dtcInserted = true;
   }
 
   let catalogInserted = false;
   const catalogVersion = await settingValue(db, CATALOG_SEED_KEY);
-  if (catalogVersion !== catalog.version || (await catalogCount(db)) < catalog.entries.length) {
-    await insertCatalogSeed(db, catalog, at, idFactory);
+  if (
+    catalogVersion !== catalog.version ||
+    (await catalogCount(db)) < catalog.entries.length ||
+    (await catalogMissingSearchKey(db))
+  ) {
+    await db.transaction(async () => {
+      await insertCatalogSeed(db, catalog, at, idFactory);
+    });
     await writeSetting(db, CATALOG_SEED_KEY, catalog.version, at);
     catalogInserted = true;
   }

@@ -47,6 +47,8 @@ export interface CatalogEntry extends Entity {
   make: string;
   makeSlug: string;
   model: string;
+  /** Common Arabic spellings of the make, shared by its models. */
+  makeAliasesAr: string[];
   aliasesAr: string[];
   aliasesEn: string[];
   yearFrom: number | null;
@@ -60,10 +62,17 @@ export interface CatalogMake {
   make: string;
   makeSlug: string;
   count: number;
+  aliasesAr: string[];
 }
 
 export type { DtcCategory };
 export type TranslationTier = 1 | 2 | 3;
+
+/**
+ * Severity is an estimate derived from the upstream record flags (limp mode,
+ * MIL), not a safety rating and not a manufacturer statement.
+ */
+export type SeveritySource = 'heuristic';
 
 export interface DtcCode extends Entity {
   code: string;
@@ -72,6 +81,7 @@ export interface DtcCode extends Entity {
   descriptionAr: string;
   descriptionEn: string;
   severity: string | null;
+  severitySource: SeveritySource;
   possibleCausesAr: string[];
   possibleCausesEn: string[];
   inspectionStepsAr: string[];

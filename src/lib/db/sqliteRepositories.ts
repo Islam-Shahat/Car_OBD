@@ -1,5 +1,6 @@
 import type { ScanBackup, ScanBackupRepository } from '../obd/backup';
 import { dtcCategory, normalizeDtcCode } from '../obd/dtc';
+import { searchKey } from '../i18n/arabic';
 import type {
   DtcRepository,
   DtcReviewInput,
@@ -238,6 +239,7 @@ interface CatalogRow {
   make: string;
   make_slug: string;
   model: string;
+  make_aliases_ar: string;
   aliases_ar: string;
   aliases_en: string;
   year_from: number | null;
@@ -256,6 +258,7 @@ function mapCatalog(row: CatalogRow): CatalogEntry {
     make: row.make,
     makeSlug: row.make_slug,
     model: row.model,
+    makeAliasesAr: parseJsonArray(row.make_aliases_ar),
     aliasesAr: parseJsonArray(row.aliases_ar),
     aliasesEn: parseJsonArray(row.aliases_en),
     yearFrom: row.year_from === null ? null : Number(row.year_from),
@@ -277,8 +280,13 @@ export class SqliteVehicleCatalogRepository implements VehicleCatalogRepository 
   }
 
   async makes(): Promise<CatalogMake[]> {
-    const rows = await this.db.select<{ make: string; make_slug: string; count: number }>(
-      `SELECT make, make_slug, COUNT(*) AS count
+    const rows = await this.db.select<{
+      make: string;
+      make_slug: string;
+      count: number;
+      make_aliases_ar: string;
+    }>(
+      `SELECT make, make_slug, COUNT(*) AS count, MAX(make_aliases_ar) AS make_aliases_ar
        FROM vehicle_catalog
        WHERE deleted_at IS NULL
        GROUP BY make, make_slug
@@ -288,22 +296,18 @@ export class SqliteVehicleCatalogRepository implements VehicleCatalogRepository 
       make: row.make,
       makeSlug: row.make_slug,
       count: Number(row.count),
+      aliasesAr: parseJsonArray(row.make_aliases_ar),
     }));
   }
 
   async search(query: string, makeSlug?: string | null): Promise<CatalogEntry[]> {
-    const needle = likeContains(query.trim().toLowerCase());
+    const needle = likeContains(searchKey(query));
     const slug = makeSlug?.trim().toLowerCase() || null;
     const rows = await this.db.select<CatalogRow>(
       `SELECT * FROM vehicle_catalog
        WHERE deleted_at IS NULL
          AND ($1 IS NULL OR make_slug = $1)
-         AND (
-           lower(make) LIKE $2 ESCAPE '\\' OR
-           lower(model) LIKE $2 ESCAPE '\\' OR
-           lower(aliases_ar) LIKE $2 ESCAPE '\\' OR
-           lower(aliases_en) LIKE $2 ESCAPE '\\'
-         )
+         AND search_text LIKE $2 ESCAPE '\\'
        ORDER BY make COLLATE NOCASE, model COLLATE NOCASE
        LIMIT 200`,
       [slug, needle],
@@ -338,6 +342,7 @@ interface DtcRow {
   description_ar: string;
   description_en: string;
   severity: string | null;
+  severity_source: string;
   possible_causes_ar: string;
   possible_causes_en: string;
   inspection_steps_ar: string;
@@ -361,6 +366,7 @@ function mapDtc(row: DtcRow): DtcCode {
     descriptionAr: row.description_ar,
     descriptionEn: row.description_en,
     severity: row.severity,
+    severitySource: 'heuristic',
     possibleCausesAr: parseJsonArray(row.possible_causes_ar),
     possibleCausesEn: parseJsonArray(row.possible_causes_en),
     inspectionStepsAr: parseJsonArray(row.inspection_steps_ar),
