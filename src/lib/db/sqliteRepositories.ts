@@ -967,18 +967,26 @@ export class SqliteWmiUserMapRepository implements WmiUserMapRepository {
 
   async get(wmi: string): Promise<string | null> {
     const [row] = await this.db.select<{ make_slug: string }>(
-      'SELECT make_slug FROM wmi_user_map WHERE wmi = $1',
+      'SELECT make_slug FROM wmi_user_map WHERE wmi = $1 ORDER BY last_used_at DESC, rowid DESC LIMIT 1',
       [wmi.toUpperCase()],
     );
     return row?.make_slug ?? null;
   }
 
+  async getAll(wmi: string): Promise<string[]> {
+    const rows = await this.db.select<{ make_slug: string }>(
+      'SELECT make_slug FROM wmi_user_map WHERE wmi = $1 ORDER BY last_used_at DESC, rowid DESC',
+      [wmi.toUpperCase()],
+    );
+    return rows.map((r) => r.make_slug);
+  }
+
   async set(wmi: string, makeSlug: string): Promise<void> {
     const at = this.clock.now();
     await this.db.execute(
-      `INSERT INTO wmi_user_map (wmi, make_slug, source, created_at)
-       VALUES ($1, $2, 'user', $3)
-       ON CONFLICT(wmi) DO UPDATE SET make_slug = excluded.make_slug`,
+      `INSERT INTO wmi_user_map (wmi, make_slug, source, created_at, last_used_at)
+       VALUES ($1, $2, 'user', $3, $3)
+       ON CONFLICT(wmi, make_slug) DO UPDATE SET last_used_at = excluded.last_used_at`,
       [wmi.toUpperCase(), makeSlug, at],
     );
   }
@@ -989,12 +997,14 @@ export class SqliteWmiUserMapRepository implements WmiUserMapRepository {
       make_slug: string;
       source: string;
       created_at: string;
-    }>('SELECT wmi, make_slug, source, created_at FROM wmi_user_map ORDER BY created_at DESC');
+      last_used_at: string;
+    }>('SELECT wmi, make_slug, source, created_at, last_used_at FROM wmi_user_map ORDER BY last_used_at DESC, rowid DESC');
     return rows.map((row) => ({
       wmi: row.wmi,
       makeSlug: row.make_slug,
       source: 'user',
       createdAt: row.created_at,
+      lastUsedAt: row.last_used_at,
     }));
   }
 }

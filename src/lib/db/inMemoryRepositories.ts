@@ -478,30 +478,75 @@ export class InMemoryScanBackupRepository {
 }
 
 export class InMemoryWmiUserMapRepository implements WmiUserMapRepository {
-  private readonly map = new Map<string, { makeSlug: string; createdAt: string }>();
+  private readonly map = new Map<string, Map<string, { createdAt: string; lastUsedAt: string; seq: number }>>();
   private readonly clock: Clock;
+  private seq = 0;
 
   constructor(options: InMemoryOptions = {}) {
     this.clock = clock(options);
   }
 
   async get(wmi: string): Promise<string | null> {
-    return this.map.get(wmi.toUpperCase())?.makeSlug ?? null;
+    const makes = this.map.get(wmi.toUpperCase());
+    if (!makes || makes.size === 0) return null;
+    const sorted = [...makes.entries()].sort(([, a], [, b]) => {
+      const cmp = b.lastUsedAt.localeCompare(a.lastUsedAt);
+      return cmp !== 0 ? cmp : b.seq - a.seq;
+    });
+    return sorted[0]?.[0] ?? null;
+  }
+
+  async getAll(wmi: string): Promise<string[]> {
+    const makes = this.map.get(wmi.toUpperCase());
+    if (!makes || makes.size === 0) return [];
+    const sorted = [...makes.entries()].sort(([, a], [, b]) => {
+      const cmp = b.lastUsedAt.localeCompare(a.lastUsedAt);
+      return cmp !== 0 ? cmp : b.seq - a.seq;
+    });
+    return sorted.map(([makeSlug]) => makeSlug);
   }
 
   async set(wmi: string, makeSlug: string): Promise<void> {
     const at = this.clock.now();
-    this.map.set(wmi.toUpperCase(), { makeSlug, createdAt: at });
+    const key = wmi.toUpperCase();
+    let makes = this.map.get(key);
+    if (!makes) {
+      makes = new Map();
+      this.map.set(key, makes);
+    }
+    const existing = makes.get(makeSlug);
+    makes.set(makeSlug, {
+      createdAt: existing?.createdAt ?? at,
+      lastUsedAt: at,
+      seq: ++this.seq,
+    });
   }
 
   async list(): Promise<WmiUserMapEntry[]> {
-    return [...this.map.entries()]
-      .sort(([, a], [, b]) => b.createdAt.localeCompare(a.createdAt))
-      .map(([wmi, entry]) => ({
-        wmi,
+    const results: Array<WmiUserMapEntry & { seq: number }> = [];
+    for (const [wmi, makes] of this.map.entries()) {
+      for (const [makeSlug, entry] of makes.entries()) {
+        results.push({
+          wmi,
+          makeSlug,
+          source: 'user',
+          createdAt: entry.createdAt,
+          lastUsedAt: entry.lastUsedAt,
+          seq: entry.seq,
+        });
+      }
+    }
+    return results
+      .sort((a, b) => {
+        const cmp = (b.lastUsedAt ?? b.createdAt).localeCompare(a.lastUsedAt ?? a.createdAt);
+        return cmp !== 0 ? cmp : b.seq - a.seq;
+      })
+      .map((entry) => ({
+        wmi: entry.wmi,
         makeSlug: entry.makeSlug,
-        source: 'user',
+        source: entry.source,
         createdAt: entry.createdAt,
+        lastUsedAt: entry.lastUsedAt,
       }));
   }
 }

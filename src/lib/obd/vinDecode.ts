@@ -19,6 +19,8 @@ export interface VehicleIdentity extends VinResult {
    * is a list, never a single guess (T can mean 1996 or 2026).
    */
   yearCandidates: number[];
+  /** Set when the make was populated from user's previous selection rather than wmi.json. */
+  fromUserMap?: boolean;
 }
 
 const YEAR_LETTERS = 'ABCDEFGHJKLMNPRSTVWXY';

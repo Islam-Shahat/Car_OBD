@@ -113,6 +113,7 @@ export interface WmiUserMapEntry {
   makeSlug: string;
   source: 'user';
   createdAt: string;
+  lastUsedAt?: string;
 }
 
 export type ScanMode = 'normal' | 'pre_purchase';

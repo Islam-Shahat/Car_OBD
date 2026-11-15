@@ -230,6 +230,26 @@ export const MIGRATIONS: readonly Migration[] = [
       `CREATE INDEX IF NOT EXISTS wmi_user_map_make_idx ON wmi_user_map(make_slug)`,
     ],
   },
+  {
+    version: 7,
+    description: 'allow multiple makes per WMI with last_used_at',
+    statements: [
+      `CREATE TABLE IF NOT EXISTS wmi_user_map_v2 (
+        wmi TEXT NOT NULL,
+        make_slug TEXT NOT NULL,
+        source TEXT NOT NULL DEFAULT 'user',
+        created_at TEXT NOT NULL,
+        last_used_at TEXT NOT NULL,
+        PRIMARY KEY (wmi, make_slug)
+      )`,
+      `INSERT OR REPLACE INTO wmi_user_map_v2 (wmi, make_slug, source, created_at, last_used_at)
+       SELECT wmi, make_slug, source, created_at, created_at FROM wmi_user_map`,
+      `DROP TABLE wmi_user_map`,
+      `ALTER TABLE wmi_user_map_v2 RENAME TO wmi_user_map`,
+      `CREATE INDEX IF NOT EXISTS wmi_user_map_lookup_idx ON wmi_user_map(wmi, last_used_at DESC)`,
+      `CREATE INDEX IF NOT EXISTS wmi_user_map_make_idx ON wmi_user_map(make_slug)`,
+    ],
+  },
 ];
 
 /** Creates the migration ledger and applies every migration not yet recorded. */

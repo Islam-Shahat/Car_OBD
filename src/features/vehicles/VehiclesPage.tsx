@@ -86,7 +86,7 @@ type FormMode = 'catalog' | 'free';
 export function VehiclesPage() {
   const { t } = useTranslation();
   const { repositories, status: storageStatus, error: storageError } = useStorage();
-  const { phase, identityCache } = useConnectionStore();
+  const { phase, identityCache, isDemo } = useConnectionStore();
   const selected = useSelectedVehicleStore((state) => state.selected);
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -111,7 +111,9 @@ export function VehiclesPage() {
   useEffect(() => {
     let cancelled = false;
     if (!identityCache || phase !== 'connected') {
-      setDetectedIdentity(null);
+      queueMicrotask(() => {
+        if (!cancelled) setDetectedIdentity(null);
+      });
       return undefined;
     }
 
@@ -127,6 +129,7 @@ export function VehiclesPage() {
               ...resolved,
               makeSlug: userMake,
               manufacturerName: userMake.toUpperCase(),
+              fromUserMap: true,
             };
           }
         }
@@ -338,6 +341,15 @@ export function VehiclesPage() {
     <>
       <PageHeader title={t('pages.vehicles.title')} subtitle={t('pages.vehicles.subtitle')} />
 
+      {isDemo && (
+        <div className="mb-4 rounded-xl border border-purple-300 bg-purple-50/80 p-3 text-xs font-semibold text-purple-900 dark:border-purple-500/30 dark:bg-purple-500/10 dark:text-purple-200">
+          <span className="me-2 rounded bg-purple-600 px-1.5 py-0.5 text-[10px] font-bold text-white uppercase">
+            {t('connection.demoBadge')}
+          </span>
+          {t('vehicles.demoNotice')}
+        </div>
+      )}
+
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <h2 className="text-sm font-semibold">{t('vehicles.selectedTitle')}</h2>
         {selected ? (
@@ -397,13 +409,25 @@ export function VehiclesPage() {
                 >
                   {detectedIdentity.vin}
                 </p>
-                <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
-                  {detectedIdentity.makeSlug
-                    ? makeNameKey(detectedIdentity.makeSlug)
-                      ? t(makeNameKey(detectedIdentity.makeSlug)!)
-                      : detectedIdentity.makeSlug
-                    : t('vehicles.makeUnknown')}
+                <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+                  <span>
+                    {detectedIdentity.makeSlug
+                      ? makeNameKey(detectedIdentity.makeSlug)
+                        ? t(makeNameKey(detectedIdentity.makeSlug)!)
+                        : detectedIdentity.makeSlug
+                      : t('vehicles.makeUnknown')}
+                  </span>
+                  {detectedIdentity.fromUserMap && (
+                    <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800 dark:bg-amber-500/20 dark:text-amber-300">
+                      {t('vehicles.fromPreviousChoice')}
+                    </span>
+                  )}
                 </p>
+                {detectedIdentity.fromUserMap && (
+                  <p className="mt-1 text-xs text-amber-700 dark:text-amber-300">
+                    {t('vehicles.confirmUserChoiceNotice')}
+                  </p>
+                )}
               </div>
               <button
                 type="button"
@@ -425,7 +449,9 @@ export function VehiclesPage() {
                 className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-blue-600 px-3 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
               >
                 <IconCheck className="size-3.5" />
-                {t('vehicles.detectedApply')}
+                {detectedIdentity.fromUserMap
+                  ? t('vehicles.confirmAndApply')
+                  : t('vehicles.detectedApply')}
               </button>
             </div>
 

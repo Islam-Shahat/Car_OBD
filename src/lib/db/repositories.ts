@@ -86,6 +86,7 @@ export interface RemoteConfigCacheRepository {
 
 export interface WmiUserMapRepository {
   get(wmi: string): Promise<string | null>;
+  getAll(wmi: string): Promise<string[]>;
   set(wmi: string, makeSlug: string): Promise<void>;
   list(): Promise<WmiUserMapEntry[]>;
 }
