@@ -53,21 +53,26 @@ mismatch only when position 9 is a digit or `X`; an alphabetic position 9 is rep
 "not applicable", because the check digit is not mandatory in every market. This rule is explained
 in the UI beside the VIN status.
 
-## DTC knowledge base (`src/data/dtc-codes.json`)
+## DTC knowledge base (`public/dtc-pack.json`)
 
-| Field          | Value                                                   |
-| -------------- | ------------------------------------------------------- |
-| Source         | OBDex — `foerbsnavi/OBDex`                              |
-| Pinned commit  | `9ba1ffa095f3140d9e21b985b322ddea3134bb60`              |
-| Retrieved      | 2026-11-14                                              |
-| Data licence   | CC0 1.0 Universal (public domain dedication)            |
-| Code licence   | MIT (tooling only; no upstream code is shipped)         |
-| Upstream files | Seven `*_enriched.yaml` files under `data/generic/`     |
-| Imported rows  | 9,533 generic codes                                     |
-| Tier 1         | 402 codes with description, causes and inspection steps |
-| Tier 2         | 9,131 codes with description only                       |
-| Needs review   | 9,533 rows (`needs_review = 1`)                         |
-| Build command  | `npm run import:dtc` (`fetch.mjs` then `build.mjs`)     |
+The 4.5 MB pack is a static asset loaded on first run, not a module in the JavaScript bundle.
+`src/data/dtc-pack.manifest.json` carries only the version and row count so a normal start can
+decide whether to fetch the pack. Any change to the rows changes the pack version.
+
+| Field          | Value                                                                 |
+| -------------- | --------------------------------------------------------------------- |
+| Source         | OBDex — `foerbsnavi/OBDex`                                            |
+| Pinned commit  | `9ba1ffa095f3140d9e21b985b322ddea3134bb60`                            |
+| Retrieved      | 2026-11-14                                                            |
+| Data licence   | CC0 1.0 Universal (public domain dedication)                          |
+| Code licence   | MIT (tooling only; no upstream code is shipped)                       |
+| Upstream files | Seven `*_enriched.yaml` files under `data/generic/`                   |
+| Imported rows  | 9,533 generic codes                                                   |
+| Tier 1         | 402 codes with description, causes and inspection steps               |
+| Tier 2         | 9,131 codes with description only                                     |
+| Severity       | heuristic estimate from OBDex flags (`severity_source` = `heuristic`) |
+| Needs review   | 9,533 rows (`needs_review = 1`)                                       |
+| Build command  | `npm run import:dtc` (`fetch.mjs` then `build.mjs`)                   |
 
 ### Licence terms
 
@@ -135,8 +140,9 @@ upstream YAML file:
 `fetch.mjs` refuses any file whose bytes do not match its pinned checksum, so a moved or rewritten
 upstream commit fails the import instead of silently changing shipped data. The cache in
 `tools/import-dtc/.cache/` is gitignored; `build.mjs` reads only that verified cache and writes
-`src/data/dtc-codes.json` offline. Rebuilding from a clean checkout therefore needs one network run
-of `npm run import:dtc`, after which the JSON is committed and the app ships fully offline.
+`public/dtc-pack.json` plus `src/data/dtc-pack.manifest.json` offline. Rebuilding from a clean
+checkout therefore needs one network run of `npm run import:dtc`, after which both generated files
+are committed and the app ships fully offline.
 
 Import rules:
 

@@ -210,10 +210,12 @@ StorageProvider (React)
   interfaces. `sqliteRepositories.ts` owns all SQL; `inMemoryRepositories.ts` is the parity
   implementation used by tests and non-Tauri runs. Features never issue SQL. Backups extend the
   Phase 3 `ScanBackupRepository` with `list`, `get` and soft `delete`.
-- **Seeding.** `seed.ts` imports `src/data/dtc-codes.json` and `src/data/vehicle-catalog.json` in
-  batches, verifies the resulting counts, and records the seed versions in `settings`. Re-running
-  with an unchanged version is a no-op. A changed version upserts reference rows so reviewed DTC
-  text and corrected catalog data reach existing installations; user rows are never touched.
+- **Seeding.** `seed.ts` reads `src/data/vehicle-catalog.json` in batches and fetches
+  `public/dtc-pack.json` only when its version is missing or the row count is short. The pack is
+  inserted in one transaction; the version marker (`dtc_pack_version`) is written after the commit,
+  so an interrupted seed retries instead of counting as done. The catalog seed is also batched and
+  transactional. A changed version upserts reference rows so reviewed DTC text and corrected catalog
+  data reach existing installations; user rows are never touched.
 - **DTC knowledge base.** 9,533 generic OBDex codes with English text, deterministic glossary-based
   Arabic, Tier 1 causes/steps (402 rows) and Tier 2 descriptions (9,131 rows). All imported Arabic
   starts `needs_review = 1`. Provenance, exact licences, checksums and the review workflow are in

@@ -63,7 +63,8 @@ table ready for the later signed-config phase, but no fetch path is implemented.
 
 ### Shipped DTC knowledge base
 
-`src/data/dtc-codes.json` contains **9,533 generic OBDex codes**:
+`public/dtc-pack.json` contains **9,533 generic OBDex codes** (moved out of the JavaScript bundle in
+Phase 4.5; `src/data/dtc-pack.manifest.json` carries the version and row count):
 
 | Tier | Rows  | Content                                             | Review state |
 | ---- | ----- | --------------------------------------------------- | ------------ |
@@ -88,7 +89,7 @@ Exact licence terms, the seven upstream file checksums, import rules and provena
    cache, and refuses any SHA-256 mismatch.
 2. `tools/import-dtc/build.mjs` — parses the verified YAML, assigns tiers, translates with the
    glossary, merges `src/data/dtc-reviews.json`, checks uniqueness and non-empty text, and writes
-   `src/data/dtc-codes.json`.
+   `public/dtc-pack.json` plus the manifest.
 
 The cache (`tools/import-dtc/.cache/`) is gitignored. The generated JSON is committed, so the app
 ships offline; rebuilding from a clean checkout needs one network run of the import command.
