@@ -34,6 +34,17 @@ export function createTestDatabase(path = ':memory:'): TestDatabase {
       const statement = raw.prepare(positional(sql));
       return Promise.resolve(statement.all(...params) as T[]);
     },
+    async transaction<T>(work: () => Promise<T>): Promise<T> {
+      raw.exec('BEGIN IMMEDIATE');
+      try {
+        const result = await work();
+        raw.exec('COMMIT');
+        return result;
+      } catch (error) {
+        raw.exec('ROLLBACK');
+        throw error;
+      }
+    },
     close() {
       raw.close();
     },

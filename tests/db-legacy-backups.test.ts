@@ -128,6 +128,7 @@ describe('legacy localStorage backup migration', () => {
       {
         execute: () => Promise.resolve({ rowsAffected: 1 }),
         select: <T>() => Promise.resolve([] as T[]),
+        transaction: <T>(work: () => Promise<T>): Promise<T> => work(),
       },
       { now: () => NOW },
     );

@@ -1,12 +1,17 @@
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { afterEach, describe, expect, it } from 'vitest';
 
 import catalogData from '../src/data/vehicle-catalog.json';
-import dtcData from '../src/data/dtc-codes.json';
+import manifest from '../src/data/dtc-pack.manifest.json';
 import { migrate } from '../src/lib/db/migrations';
 import { seedDatabase, type DtcSeedFile } from '../src/lib/db/seed';
 import { createSqliteRepositories } from '../src/lib/db/sqliteRepositories';
 import { createTestDatabase, type TestDatabase } from './helpers/sqlite';
 
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const NOW = '2026-11-14T10:00:00.000Z';
 
 interface ShippedDtc {
@@ -15,6 +20,7 @@ interface ShippedDtc {
   descriptionEn: string;
   descriptionAr: string;
   severity: string | null;
+  severitySource: string;
   causesEn: string[];
   causesAr: string[];
   stepsEn: string[];
@@ -26,6 +32,7 @@ interface ShippedDtc {
 }
 
 interface ShippedDtcFile {
+  version: string;
   source: string;
   sourceVersion: string;
   license?: string;
@@ -33,13 +40,18 @@ interface ShippedDtcFile {
   codes: ShippedDtc[];
 }
 
-const SHIPPED = dtcData as unknown as ShippedDtcFile;
+// Read instead of importing: the 4.5 MB pack is not part of the app bundle and
+// must not be type-checked as a literal.
+const SHIPPED = JSON.parse(
+  readFileSync(join(ROOT, 'public', 'dtc-pack.json'), 'utf8'),
+) as ShippedDtcFile;
 const ARABIC = /[\u0600-\u06FF]/;
 
 function seedFile(version: string, descriptionAr: string): DtcSeedFile {
   return {
+    version,
     source: 'OBDex',
-    sourceVersion: version,
+    sourceVersion: 'test-source',
     generatedAt: NOW,
     license: 'CC0-1.0',
     codes: [
@@ -49,6 +61,7 @@ function seedFile(version: string, descriptionAr: string): DtcSeedFile {
         descriptionEn: 'Mass or Volume Air Flow Sensor A Circuit',
         descriptionAr,
         severity: 'warning',
+        severitySource: 'heuristic',
         causesEn: ['Sensor faulty'],
         causesAr: ['الحساس تالف'],
         stepsEn: ['Check the wiring'],
@@ -70,6 +83,7 @@ const CATALOG = {
       make: 'Toyota',
       makeSlug: 'toyota',
       model: 'Corolla',
+      makeAliasesAr: ['تويوتا', 'تيوتا'],
       aliasesAr: ['كورولا'],
       aliasesEn: [],
       yearFrom: null,
@@ -88,7 +102,7 @@ afterEach(() => {
   db = null;
 });
 
-describe('shipped DTC seed', () => {
+describe('shipped DTC pack', () => {
   it('contains every generic row with English and Arabic text', () => {
     expect(SHIPPED.source).toBe('OBDex');
     expect(SHIPPED.sourceVersion).toMatch(/^[0-9a-f]{40}$/);
@@ -110,6 +124,14 @@ describe('shipped DTC seed', () => {
     }
   });
 
+  it('matches the manifest so the app knows when to re-seed', () => {
+    expect(manifest.version).toBe(SHIPPED.version);
+    expect(manifest.version).toMatch(/^[0-9a-f]{16}$/);
+    expect(manifest.codeCount).toBe(SHIPPED.codes.length);
+    expect(manifest.sourceVersion).toBe(SHIPPED.sourceVersion);
+    expect(manifest.license).toBe(SHIPPED.license);
+  });
+
   it('gives Tier 1 causes and steps, keeps Tier 2 description-only, and leaves all unreviewed', () => {
     for (const row of SHIPPED.codes) {
       if (row.tier === 1) {
@@ -128,15 +150,46 @@ describe('shipped DTC seed', () => {
       expect(row.reviewedAt).toBeNull();
     }
   });
+
+  it('stores the severity estimate with its provenance', () => {
+    expect(SHIPPED.codes.every((row) => row.severitySource === 'heuristic')).toBe(true);
+    expect(new Set(SHIPPED.codes.map((row) => row.severity))).toEqual(
+      new Set(['info', 'warning', 'high']),
+    );
+  });
+
+  it('never states a verdict about safety or a definite repair in Tier 1 text', () => {
+    const bannedAr = [
+      'آمن للقيادة',
+      'غير آمن',
+      'لا تقود',
+      'توقف عن القيادة',
+      'يجب استبدال',
+      'يجب إصلاح',
+      'يعني أن',
+      'السيارة سليمة',
+    ];
+    const bannedEn = [/^replace\b/i, /must be replaced/i, /safe to drive/i, /do not drive/i];
+    for (const row of SHIPPED.codes.filter((entry) => entry.tier === 1)) {
+      const arabic = [...row.causesAr, ...row.stepsAr];
+      for (const text of arabic) {
+        for (const banned of bannedAr) expect(text).not.toContain(banned);
+      }
+      const english = [...row.causesEn, ...row.stepsEn];
+      for (const text of english) {
+        for (const banned of bannedEn) expect(text).not.toMatch(banned);
+      }
+    }
+  });
 });
 
 describe('shipped vehicle catalog', () => {
-  it('is a unique, unverified 33-make knowledge list with Arabic aliases', () => {
-    expect(catalogData.version).toBe('2026-11-14.1');
-    expect(catalogData.downloadedAt).toBe('2026-11-14');
-    expect(catalogData.entries).toHaveLength(259);
-    expect(new Set(catalogData.entries.map((entry) => entry.makeSlug)).size).toBe(33);
-    expect(new Set(catalogData.entries.map((entry) => entry.id)).size).toBe(259);
+  it('is a unique, unverified knowledge list with aliases for every row', () => {
+    expect(catalogData.version).toBe('2026-11-15.1');
+    expect(catalogData.downloadedAt).toBe('2026-11-15');
+    expect(catalogData.entries).toHaveLength(284);
+    expect(new Set(catalogData.entries.map((entry) => entry.makeSlug)).size).toBe(40);
+    expect(new Set(catalogData.entries.map((entry) => entry.id)).size).toBe(284);
 
     for (const entry of catalogData.entries) {
       expect(entry.id).toMatch(
@@ -144,6 +197,7 @@ describe('shipped vehicle catalog', () => {
       );
       expect(entry.model.trim().length).toBeGreaterThan(0);
       expect(entry.aliasesAr.length).toBeGreaterThan(0);
+      expect(Array.isArray(entry.makeAliasesAr)).toBe(true);
       expect(entry.sourceTier).toBe('knowledge');
       expect(entry.verified).toBe(false);
       expect(entry.yearFrom).toBeNull();
@@ -159,7 +213,7 @@ describe('seed runner', () => {
 
     const first = await seedDatabase(db, {
       now: () => NOW,
-      dtc: seedFile('v1', 'وصف أول.'),
+      dtcPack: seedFile('v1', 'وصف أول.'),
       catalog: CATALOG,
     });
     expect(first).toMatchObject({
@@ -169,19 +223,97 @@ describe('seed runner', () => {
       catalogCount: 1,
     });
 
+    let loads = 0;
     const second = await seedDatabase(db, {
       now: () => NOW,
-      dtc: seedFile('v1', 'وصف أول.'),
+      dtcPack: seedFile('v1', 'وصف أول.'),
+      loadDtcPack: () => {
+        loads += 1;
+        return Promise.resolve(seedFile('v1', 'وصف أول.'));
+      },
       catalog: CATALOG,
     });
     expect(second).toMatchObject({ dtcInserted: false, catalogInserted: false });
+    expect(loads).toBe(0);
+  });
+
+  it('loads the pack lazily only when the version is new', async () => {
+    db = createTestDatabase();
+    await migrate(db);
+
+    let loads = 0;
+    const load = (): Promise<DtcSeedFile> => {
+      loads += 1;
+      // A custom loader must answer the version the bundled manifest promises;
+      // the shipped loader validates that and so does the seed runner.
+      return Promise.resolve(seedFile(manifest.version, 'وصف أول.'));
+    };
+
+    await seedDatabase(db, { now: () => NOW, loadDtcPack: load, catalog: CATALOG });
+    expect(loads).toBe(1);
+
+    await seedDatabase(db, { now: () => NOW, loadDtcPack: load, catalog: CATALOG });
+    expect(loads).toBe(1);
+
+    const changed = (): Promise<DtcSeedFile> => {
+      loads += 1;
+      return Promise.resolve(seedFile('v2', 'وصف ثانٍ.'));
+    };
+    await seedDatabase(db, {
+      now: () => NOW,
+      dtcPack: seedFile('v2', 'وصف ثانٍ.'),
+      loadDtcPack: changed,
+      catalog: CATALOG,
+    });
+    expect(loads).toBe(1);
+  });
+
+  it('rolls the pack back and keeps the old marker when inserting fails', async () => {
+    db = createTestDatabase();
+    await migrate(db);
+    await seedDatabase(db, {
+      now: () => NOW,
+      dtcPack: seedFile('v1', 'وصف أول.'),
+      catalog: CATALOG,
+    });
+
+    const broken: DtcSeedFile = {
+      ...seedFile('v2', 'وصف ثانٍ.'),
+      codes: [
+        {
+          ...seedFile('v2', 'وصف ثانٍ.').codes[0]!,
+          // A NOT NULL violation inside the chunk: the transaction must undo
+          // the whole chunk, not leave half of it behind.
+          code: null as unknown as string,
+          descriptionAr: 'نص ثانٍ.',
+        },
+      ],
+    };
+    await expect(
+      seedDatabase(db, {
+        now: () => NOW,
+        dtcPack: broken,
+        catalog: CATALOG,
+      }),
+    ).rejects.toThrow();
+
+    const rows = await db.select<{ count: number }>('SELECT COUNT(*) AS count FROM dtc_codes');
+    expect(Number(rows[0]?.count)).toBe(1);
+    const marker = await db.select<{ value: string }>(
+      "SELECT value FROM settings WHERE key = 'dtc_pack_version'",
+    );
+    expect(marker[0]?.value).toBe('v1');
   });
 
   it('upserts seed-owned rows on a version change but leaves vehicles alone', async () => {
     db = createTestDatabase();
     await migrate(db);
 
-    await seedDatabase(db, { now: () => NOW, dtc: seedFile('v1', 'وصف أول.'), catalog: CATALOG });
+    await seedDatabase(db, {
+      now: () => NOW,
+      dtcPack: seedFile('v1', 'وصف أول.'),
+      catalog: CATALOG,
+    });
 
     const repositories = createSqliteRepositories(db, { now: () => NOW });
     const vehicle = await repositories.vehicles.create({
@@ -204,7 +336,7 @@ describe('seed runner', () => {
     };
     const result = await seedDatabase(db, {
       now: () => NOW,
-      dtc: seedFile('v2', 'وصف محدّث.'),
+      dtcPack: seedFile('v2', 'وصف محدّث.'),
       catalog: changedCatalog,
     });
     expect(result.dtcInserted).toBe(true);

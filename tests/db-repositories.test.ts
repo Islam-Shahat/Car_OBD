@@ -22,6 +22,7 @@ function genericSeeds(): DtcSeedCode[] {
       descriptionEn: 'Mass or Volume Air Flow Sensor A Circuit',
       descriptionAr: 'دائرة حساس تدفق الهواء A.',
       severity: 'warning',
+      severitySource: 'heuristic',
       causesEn: ['Sensor faulty'],
       causesAr: ['الحساس تالف'],
       stepsEn: ['Check the wiring'],
@@ -35,6 +36,7 @@ function genericSeeds(): DtcSeedCode[] {
       descriptionEn: 'Mass Air Flow Sensor Range/Performance',
       descriptionAr: 'نطاق/أداء حساس تدفق الهواء.',
       severity: null,
+      severitySource: 'heuristic',
       causesEn: [],
       causesAr: [],
       stepsEn: [],
@@ -51,6 +53,7 @@ const CATALOG_SEED: CatalogEntry[] = [
     make: 'Toyota',
     makeSlug: 'toyota',
     model: 'Corolla',
+    makeAliasesAr: ['تويوتا', 'تيوتا'],
     aliasesAr: ['كورولا'],
     aliasesEn: [],
     yearFrom: null,
@@ -67,7 +70,8 @@ const CATALOG_SEED: CatalogEntry[] = [
     make: 'Hyundai',
     makeSlug: 'hyundai',
     model: 'Elantra',
-    aliasesAr: ['إلنترا', 'النترا'],
+    makeAliasesAr: ['هيونداي', 'هونداي', 'هيوندي'],
+    aliasesAr: ['إلنترا', 'النترا', 'لنترا'],
     aliasesEn: [],
     yearFrom: null,
     yearTo: null,
@@ -88,6 +92,7 @@ function genericRows(): DtcCode[] {
     descriptionAr: row.descriptionAr,
     descriptionEn: row.descriptionEn,
     severity: row.severity,
+    severitySource: 'heuristic',
     possibleCausesAr: row.causesAr,
     possibleCausesEn: row.causesEn,
     inspectionStepsAr: row.stepsAr,
@@ -111,6 +116,7 @@ const SPECIFIC_DTC: DtcCode = {
   descriptionAr: 'وصف خاص بتويوتا للكود P0100.',
   descriptionEn: 'Toyota-specific P0100 description.',
   severity: 'high',
+  severitySource: 'heuristic',
   possibleCausesAr: ['سبب خاص'],
   possibleCausesEn: ['Maker-specific cause'],
   inspectionStepsAr: ['خطوة خاصة'],
@@ -141,7 +147,8 @@ async function sqliteHarness(): Promise<{ repos: Repositories; close: () => void
   await seedDatabase(db, {
     now: () => NOW,
     idFactory: sequentialIds('dtc'),
-    dtc: {
+    dtcPack: {
+      version: 'test-pack-1',
       source: SOURCE,
       sourceVersion: VERSION,
       generatedAt: NOW,
@@ -154,6 +161,7 @@ async function sqliteHarness(): Promise<{ repos: Repositories; close: () => void
         make: entry.make,
         makeSlug: entry.makeSlug,
         model: entry.model,
+        makeAliasesAr: entry.makeAliasesAr,
         aliasesAr: entry.aliasesAr,
         aliasesEn: entry.aliasesEn,
         yearFrom: entry.yearFrom,
@@ -294,18 +302,44 @@ for (const harness of HARNESSES) {
     it('searches the catalog in Arabic and English and exposes makes', async () => {
       const makes = await repos.catalog.makes();
       expect(makes).toEqual([
-        { make: 'Hyundai', makeSlug: 'hyundai', count: 1 },
-        { make: 'Toyota', makeSlug: 'toyota', count: 1 },
+        {
+          make: 'Hyundai',
+          makeSlug: 'hyundai',
+          count: 1,
+          aliasesAr: ['هيونداي', 'هونداي', 'هيوندي'],
+        },
+        { make: 'Toyota', makeSlug: 'toyota', count: 1, aliasesAr: ['تويوتا', 'تيوتا'] },
       ]);
 
       expect((await repos.catalog.search('كورولا')).map((row) => row.model)).toEqual(['Corolla']);
       expect((await repos.catalog.search('النترا')).map((row) => row.model)).toEqual(['Elantra']);
       expect((await repos.catalog.search('corolla')).map((row) => row.model)).toEqual(['Corolla']);
+      expect((await repos.catalog.search('COROLLA')).map((row) => row.model)).toEqual(['Corolla']);
       expect((await repos.catalog.search('', 'hyundai')).map((row) => row.model)).toEqual([
         'Elantra',
       ]);
       expect((await repos.catalog.get('catalog-corolla'))?.make).toBe('Toyota');
       expect(await repos.catalog.count()).toBe(2);
+    });
+
+    it('matches Arabic spellings after unifying alef, ya and ta marbuta', async () => {
+      // Diacritics and stray spaces are decorative for matching.
+      for (const spelling of ['كورولا', 'كُورُولَّا', '  كورولا  ']) {
+        expect((await repos.catalog.search(spelling)).map((row) => row.model)).toEqual(['Corolla']);
+      }
+      // The same word with hamza forms and diacritics must behave identically.
+      const variants = ['إلنترا', 'النترا', 'إِلِنْتِرَا', 'ألنترا'];
+      for (const spelling of variants) {
+        expect((await repos.catalog.search(spelling)).map((row) => row.model)).toEqual(['Elantra']);
+      }
+      // Make aliases are searchable without picking a make first.
+      expect((await repos.catalog.search('هونداي')).map((row) => row.model)).toEqual(['Elantra']);
+      expect((await repos.catalog.search('هيوندي')).map((row) => row.model)).toEqual(['Elantra']);
+      expect((await repos.catalog.search('تيوتا')).map((row) => row.model)).toEqual(['Corolla']);
+      // Whitespace inside an Arabic name is optional.
+      expect((await repos.catalog.search(' elantra ')).map((row) => row.model)).toEqual([
+        'Elantra',
+      ]);
     });
 
     it('prefers a make-specific DTC, then the generic row, then the unknown fallback', async () => {

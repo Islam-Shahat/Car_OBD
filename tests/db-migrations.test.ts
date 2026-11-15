@@ -29,6 +29,29 @@ async function indexNames(database: TestDatabase): Promise<string[]> {
   return rows.map((row) => row.name);
 }
 
+async function columnNames(database: TestDatabase, table: string): Promise<string[]> {
+  const rows = await database.select<{ name: string }>(`PRAGMA table_info(${table})`);
+  return rows.map((row) => row.name);
+}
+
+/** Applies migrations 1..version the way an older release left the file. */
+async function applyThrough(database: TestDatabase, version: number): Promise<void> {
+  await database.execute(
+    `CREATE TABLE IF NOT EXISTS schema_migrations (
+      version INTEGER PRIMARY KEY,
+      description TEXT NOT NULL,
+      applied_at TEXT NOT NULL
+    )`,
+  );
+  for (const migration of MIGRATIONS.filter((entry) => entry.version <= version)) {
+    for (const statement of migration.statements) await database.execute(statement);
+    await database.execute(
+      'INSERT INTO schema_migrations (version, description, applied_at) VALUES ($1, $2, $3)',
+      [migration.version, migration.description, '2026-01-01T00:00:00.000Z'],
+    );
+  }
+}
+
 const CORE_TABLES = [
   'dtc_codes',
   'live_data_logs',
@@ -68,6 +91,10 @@ describe('database migrations', () => {
     expect(ledger.map((row) => Number(row.version))).toEqual(
       MIGRATIONS.map((migration) => migration.version),
     );
+    expect(await columnNames(database, 'vehicle_catalog')).toEqual(
+      expect.arrayContaining(['make_aliases_ar', 'search_text']),
+    );
+    expect(await columnNames(database, 'dtc_codes')).toContain('severity_source');
   });
 
   it('is idempotent: a second start changes nothing', async () => {
@@ -120,6 +147,87 @@ describe('database migrations', () => {
     );
     expect(ledger.map((row) => Number(row.version))).toEqual(
       MIGRATIONS.map((migration) => migration.version),
+    );
+  });
+
+  it('upgrades a version-3 database with user data to the current schema', async () => {
+    const database = newDatabase();
+    await applyThrough(database, 3);
+
+    // Rows a real install would already hold: one vehicle, one catalog row,
+    // one generic DTC and one setting.
+    await database.execute(
+      `INSERT INTO vehicles (id, catalog_id, make, model, year, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $6)`,
+      ['vehicle-1', 'catalog-1', 'Toyota', 'Corolla', 2019, '2026-01-01T00:00:00.000Z'],
+    );
+    await database.execute(
+      `INSERT INTO vehicle_catalog
+        (id, make, make_slug, model, aliases_ar, aliases_en, source_tier, verified, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $9)`,
+      [
+        'catalog-1',
+        'Toyota',
+        'toyota',
+        'Corolla',
+        '["كورولا"]',
+        '[]',
+        'knowledge',
+        0,
+        '2026-01-01T00:00:00.000Z',
+      ],
+    );
+    await database.execute(
+      `INSERT INTO dtc_codes
+        (id, code, make, description_ar, description_en, source, source_version,
+         translation_tier, created_at, updated_at)
+       VALUES ($1, $2, NULL, $3, $4, $5, $6, $7, $8, $8)`,
+      ['dtc-1', 'P0100', 'وصف', 'Description', 'OBDex', 'test', 1, '2026-01-01T00:00:00.000Z'],
+    );
+    await database.execute(
+      `INSERT INTO settings (id, key, value, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $4)`,
+      ['setting-1', 'seed.vehicle_catalog.version', 'old', '2026-01-01T00:00:00.000Z'],
+    );
+
+    await migrate(database);
+
+    expect(await columnNames(database, 'vehicle_catalog')).toEqual(
+      expect.arrayContaining(['make_aliases_ar', 'search_text']),
+    );
+    expect(await columnNames(database, 'dtc_codes')).toContain('severity_source');
+
+    const [catalog] = await database.select<{
+      make_aliases_ar: string;
+      search_text: string;
+      model: string;
+    }>('SELECT make_aliases_ar, search_text, model FROM vehicle_catalog WHERE id = $1', [
+      'catalog-1',
+    ]);
+    expect(catalog).toEqual({ make_aliases_ar: '[]', search_text: '', model: 'Corolla' });
+
+    const [dtc] = await database.select<{ severity_source: string; code: string }>(
+      'SELECT severity_source, code FROM dtc_codes WHERE id = $1',
+      ['dtc-1'],
+    );
+    expect(dtc).toEqual({ severity_source: 'heuristic', code: 'P0100' });
+
+    const [vehicle] = await database.select<{ make: string; year: number }>(
+      'SELECT make, year FROM vehicles WHERE id = $1',
+      ['vehicle-1'],
+    );
+    expect(vehicle).toEqual({ make: 'Toyota', year: 2019 });
+
+    const [setting] = await database.select<{ value: string }>(
+      'SELECT value FROM settings WHERE key = $1',
+      ['seed.vehicle_catalog.version'],
+    );
+    expect(setting?.value).toBe('old');
+
+    // Re-running after the upgrade must not try to add the columns twice.
+    await migrate(database);
+    expect(await columnNames(database, 'vehicle_catalog')).toEqual(
+      expect.arrayContaining(['make_aliases_ar', 'search_text']),
     );
   });
 });

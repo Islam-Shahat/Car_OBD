@@ -6,9 +6,11 @@ import { fileURLToPath } from 'node:url';
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import dtcData from '../src/data/dtc-codes.json';
-
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+// The pack is a static asset, not a bundled module; read it like the app does.
+const dtcData = JSON.parse(readFileSync(join(ROOT, 'public', 'dtc-pack.json'), 'utf8')) as {
+  codes: SeedRow[];
+};
 const EXPORT_SCRIPT = join(ROOT, 'tools', 'review-dtc-export.mjs');
 const IMPORT_SCRIPT = join(ROOT, 'tools', 'review-dtc-import.mjs');
 const AT = '2026-11-14T12:00:00.000Z';
@@ -22,7 +24,7 @@ interface SeedRow {
   descriptionAr: string;
 }
 
-const seedRows = (dtcData as unknown as { codes: SeedRow[] }).codes;
+const seedRows = dtcData.codes;
 const tier1 = seedRows.find((row) => row.tier === 1);
 const tier2 = seedRows.find((row) => row.tier === 2);
 if (!tier1 || !tier2) throw new Error('The shipped seed needs one Tier 1 and one Tier 2 row');
