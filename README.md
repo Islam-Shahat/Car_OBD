@@ -1,4 +1,4 @@
-# OBD Diagnose (برنامج تشخيص وفحص أعطال السيارات)
+# OBD Diagnose (برنامج تشخيص وفحص أعطال السيارات) — v0.9.0-rc.1
 
 [![Build & Release](https://github.com/islamshahat/obd-diagnose/actions/workflows/build.yml/badge.svg)](https://github.com/islamshahat/obd-diagnose/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -9,6 +9,9 @@
 ## اللغة العربية (Arabic)
 
 **OBD Diagnose** هو برنامج مجاني مفتوح المصدر لنظام التشغيل Windows، مصمم ليعمل **دون اتصال بالإنترنت بالكامل (Offline-first)** لتشخيص وفحص أعطال سيارات الركاب عبر محولات **ELM327** القياسية (سواء عبر كابل USB أو البلوتوث عبر منافذ COM التسلسلية).
+
+> [!NOTE]
+> **حالة الإصدار**: الإصدار الحالي **v0.9.0-rc.1** هو **مرشح إصدار (Release Candidate)** مخصص للمراجعة والتقييم، وليس إصداراً نهائياً عاماً. الفحص والتحقق على محولات وسيارات حقيقية قيد الإجراء قبل الإطلاق النهائي v1.0.
 
 ### المميزات الرئيسية
 
@@ -50,6 +53,9 @@
 ## English Overview
 
 **OBD Diagnose** is a free, open-source, **offline-first** Windows desktop application engineered for passenger car diagnostics using standard **ELM327** adapters over USB or Bluetooth virtual COM ports.
+
+> [!NOTE]
+> **Release Status**: Version **v0.9.0-rc.1** is a **Release Candidate (RC)** for evaluation and testing, not a final release. Physical hardware and real-vehicle validations are pending prior to v1.0 GA.
 
 ### Key Highlights
 

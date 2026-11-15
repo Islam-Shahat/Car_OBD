@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "OBD Diagnose",
-  "version": "1.0.0",
+  "version": "0.9.0-rc.1",
   "identifier": "com.obdscan.diagnose",
   "build": {
     "frontendDist": "../dist",
