@@ -152,7 +152,9 @@ async function run() {
   await page.capture('02-connect-demo-ar.png');
 
   // 3. Vehicles Detected
-  await page.eval(`window.location.hash = ''; window.history.pushState({}, '', '/vehicles'); window.dispatchEvent(new PopStateEvent('popstate'));`);
+  await page.eval(
+    `window.location.hash = ''; window.history.pushState({}, '', '/vehicles'); window.dispatchEvent(new PopStateEvent('popstate'));`,
+  );
   // Or navigate via link
   await page.eval(`
     const link = document.querySelector('a[href="/vehicles"]');

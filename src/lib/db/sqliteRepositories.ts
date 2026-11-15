@@ -998,7 +998,9 @@ export class SqliteWmiUserMapRepository implements WmiUserMapRepository {
       source: string;
       created_at: string;
       last_used_at: string;
-    }>('SELECT wmi, make_slug, source, created_at, last_used_at FROM wmi_user_map ORDER BY last_used_at DESC, rowid DESC');
+    }>(
+      'SELECT wmi, make_slug, source, created_at, last_used_at FROM wmi_user_map ORDER BY last_used_at DESC, rowid DESC',
+    );
     return rows.map((row) => ({
       wmi: row.wmi,
       makeSlug: row.make_slug,

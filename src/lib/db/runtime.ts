@@ -242,9 +242,7 @@ export async function openStorage(
  * In development preview (outside Tauri), falls back to in-memory browser storage.
  * In a production build outside Tauri, throws an error so the real error screen is displayed.
  */
-export async function openTauriStorage(
-  options: OpenTauriStorageOptions = {},
-): Promise<Storage> {
+export async function openTauriStorage(options: OpenTauriStorageOptions = {}): Promise<Storage> {
   const allowFallback = options.allowDevFallback ?? isDevPreview();
 
   if (!isTauriEnvironment()) {

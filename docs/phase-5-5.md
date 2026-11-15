@@ -78,14 +78,14 @@ Phase 5.5 addresses all items identified during the Phase 5 review and resolves 
 
 Measured on release build (`src-tauri/target/release/obd-diagnose.exe`) using Windows Process Management APIs (`Win32_Process` / `Get-Process`):
 
-| Component | Process | Private Bytes (MB) | Working Set (MB) |
-|---|---|---|---|
-| **Host Application** | `obd-diagnose.exe` | **10.33 MB** | **42.36 MB** |
-| **WebView2 Browser** | `msedgewebview2.exe` (Main) | 40.86 MB | 132.31 MB |
-| **WebView2 Renderer** | `msedgewebview2.exe` (Tab) | 98.73 MB | 113.97 MB |
-| **WebView2 GPU** | `msedgewebview2.exe` (GPU) | 32.43 MB | 71.06 MB |
-| **WebView2 Utilities** | `msedgewebview2.exe` (3 procs) | 22.30 MB | 68.35 MB |
-| **Total Process Tree** | **Host + 6 Children** | **204.65 MB** | **428.05 MB** |
+| Component              | Process                        | Private Bytes (MB) | Working Set (MB) |
+| ---------------------- | ------------------------------ | ------------------ | ---------------- |
+| **Host Application**   | `obd-diagnose.exe`             | **10.33 MB**       | **42.36 MB**     |
+| **WebView2 Browser**   | `msedgewebview2.exe` (Main)    | 40.86 MB           | 132.31 MB        |
+| **WebView2 Renderer**  | `msedgewebview2.exe` (Tab)     | 98.73 MB           | 113.97 MB        |
+| **WebView2 GPU**       | `msedgewebview2.exe` (GPU)     | 32.43 MB           | 71.06 MB         |
+| **WebView2 Utilities** | `msedgewebview2.exe` (3 procs) | 22.30 MB           | 68.35 MB         |
+| **Total Process Tree** | **Host + 6 Children**          | **204.65 MB**      | **428.05 MB**    |
 
 - Host private memory remains exceptionally low (~10.3 MB), and working set is stable (~42.3 MB vs 42.2 MB in Phase 4.6 baseline).
 
@@ -99,28 +99,28 @@ Measured on release build (`src-tauri/target/release/obd-diagnose.exe`) using Wi
 
 All 20 screenshots captured at 1280x850 in Arabic RTL and English LTR:
 
-| File | Language | View Description |
-|---|---|---|
-| `docs/screens/01-connect-idle-ar.png` | Arabic RTL | Connect screen (idle, preview banner, demo card available, real serial disabled) |
-| `docs/screens/01-connect-idle-en.png` | English LTR | Connect screen (idle) |
-| `docs/screens/02-connect-demo-ar.png` | Arabic RTL | Connect screen (connected to virtual demo adapter) |
-| `docs/screens/02-connect-demo-en.png` | English LTR | Connect screen (connected to virtual demo adapter) |
-| `docs/screens/03-vehicles-detected-ar.png` | Arabic RTL | Vehicles page (detected VIN with model-year candidates & user choice confirmation) |
-| `docs/screens/03-vehicles-detected-en.png` | English LTR | Vehicles page (detected VIN) |
-| `docs/screens/04-vehicles-manual-catalog-ar.png` | Arabic RTL | Vehicles page (manual catalog search with Arabic normalization) |
-| `docs/screens/04-vehicles-manual-catalog-en.png` | English LTR | Vehicles page (manual catalog search) |
-| `docs/screens/05-scan-progress-ar.png` | Arabic RTL | Scan progress bar and active diagnostic steps |
-| `docs/screens/05-scan-progress-en.png` | English LTR | Scan progress bar |
-| `docs/screens/06-scan-result-healthy-ar.png` | Arabic RTL | Green banner ("لم يتم العثور على أكواد أعطال") with engine/emissions disclaimer |
-| `docs/screens/06-scan-result-healthy-en.png` | English LTR | Green banner ("No fault codes found") |
-| `docs/screens/07-scan-result-warning-ar.png` | Arabic RTL | Yellow banner ("أكواد معلقة") |
-| `docs/screens/07-scan-result-warning-en.png` | English LTR | Yellow banner ("Pending codes") |
-| `docs/screens/08-scan-result-fault-ar.png` | Arabic RTL | Red banner ("تم اكتشاف أعطال"), stored P0133, pending P0300, permanent P0420 |
-| `docs/screens/08-scan-result-fault-en.png` | English LTR | Red banner ("Faults detected") |
-| `docs/screens/09-clear-confirm-dialog-ar.png` | Arabic RTL | Clear dialog with engine-running warning (RPM > 0) |
-| `docs/screens/09-clear-confirm-dialog-en.png` | English LTR | Clear dialog with engine-running warning |
-| `docs/screens/10-clear-result-ar.png` | Arabic RTL | Clear result view (`no_codes_returned` with drive cycle advisory) |
-| `docs/screens/10-clear-result-en.png` | English LTR | Clear result view |
+| File                                             | Language    | View Description                                                                   |
+| ------------------------------------------------ | ----------- | ---------------------------------------------------------------------------------- |
+| `docs/screens/01-connect-idle-ar.png`            | Arabic RTL  | Connect screen (idle, preview banner, demo card available, real serial disabled)   |
+| `docs/screens/01-connect-idle-en.png`            | English LTR | Connect screen (idle)                                                              |
+| `docs/screens/02-connect-demo-ar.png`            | Arabic RTL  | Connect screen (connected to virtual demo adapter)                                 |
+| `docs/screens/02-connect-demo-en.png`            | English LTR | Connect screen (connected to virtual demo adapter)                                 |
+| `docs/screens/03-vehicles-detected-ar.png`       | Arabic RTL  | Vehicles page (detected VIN with model-year candidates & user choice confirmation) |
+| `docs/screens/03-vehicles-detected-en.png`       | English LTR | Vehicles page (detected VIN)                                                       |
+| `docs/screens/04-vehicles-manual-catalog-ar.png` | Arabic RTL  | Vehicles page (manual catalog search with Arabic normalization)                    |
+| `docs/screens/04-vehicles-manual-catalog-en.png` | English LTR | Vehicles page (manual catalog search)                                              |
+| `docs/screens/05-scan-progress-ar.png`           | Arabic RTL  | Scan progress bar and active diagnostic steps                                      |
+| `docs/screens/05-scan-progress-en.png`           | English LTR | Scan progress bar                                                                  |
+| `docs/screens/06-scan-result-healthy-ar.png`     | Arabic RTL  | Green banner ("لم يتم العثور على أكواد أعطال") with engine/emissions disclaimer    |
+| `docs/screens/06-scan-result-healthy-en.png`     | English LTR | Green banner ("No fault codes found")                                              |
+| `docs/screens/07-scan-result-warning-ar.png`     | Arabic RTL  | Yellow banner ("أكواد معلقة")                                                      |
+| `docs/screens/07-scan-result-warning-en.png`     | English LTR | Yellow banner ("Pending codes")                                                    |
+| `docs/screens/08-scan-result-fault-ar.png`       | Arabic RTL  | Red banner ("تم اكتشاف أعطال"), stored P0133, pending P0300, permanent P0420       |
+| `docs/screens/08-scan-result-fault-en.png`       | English LTR | Red banner ("Faults detected")                                                     |
+| `docs/screens/09-clear-confirm-dialog-ar.png`    | Arabic RTL  | Clear dialog with engine-running warning (RPM > 0)                                 |
+| `docs/screens/09-clear-confirm-dialog-en.png`    | English LTR | Clear dialog with engine-running warning                                           |
+| `docs/screens/10-clear-result-ar.png`            | Arabic RTL  | Clear result view (`no_codes_returned` with drive cycle advisory)                  |
+| `docs/screens/10-clear-result-en.png`            | English LTR | Clear result view                                                                  |
 
 ---
 

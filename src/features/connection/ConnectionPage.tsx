@@ -126,7 +126,8 @@ export function ConnectionPage() {
               {t('connection.realPortsDisabledNotice')}
             </p>
           ) : (
-            ports.length === 0 && !portsLoading && (
+            ports.length === 0 &&
+            !portsLoading && (
               <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
                 {t('connection.noPorts')}
               </p>

@@ -37,7 +37,13 @@ export function createDemoConnection(): SerialConnection {
   const transport = new MockTransport((command) => {
     // AT commands
     if (command === 'ATZ') return reply('ELM327 v1.5');
-    if (command === 'ATE0' || command === 'ATL0' || command === 'ATS0' || command === 'ATH0' || command === 'ATH1') {
+    if (
+      command === 'ATE0' ||
+      command === 'ATL0' ||
+      command === 'ATS0' ||
+      command === 'ATH0' ||
+      command === 'ATH1'
+    ) {
       return reply('OK');
     }
     if (command === 'ATSP0') return reply('OK');

@@ -9,6 +9,7 @@ Verified: 200 unit & integration tests passing (`npm test`, including live ELM32
 ## 1. Summary of Deliverables
 
 Phase 5 builds the complete end-to-end diagnostic user journey for Windows:
+
 1. **Connect Screen**:
    - Clear 3-step physical connection guidance ("وصّل المحول بمنفذ OBD-II", "أدر المفتاح لوضع ON", "اختر المنفذ واضغط اتصال").
    - Real-time connection status display with adapter hardware inspection.
@@ -59,10 +60,12 @@ Phase 5 builds the complete end-to-end diagnostic user journey for Windows:
 ## 2. Test Verification
 
 Running `npm test` with `$env:ELM_EMULATOR = '1'`:
+
 ```
 Test Files  25 passed (25)
      Tests  200 passed (200)
 ```
+
 - `tests/phase-5-core-flow.test.ts`: 5 new integration tests verifying vehicle identification, unmapped WMI mapping, DTC 3-stage lookup, scan auto-persistence, catalog de-duplication, and clear-backup durability.
 - `tests/vehicle-catalog.test.ts`: Verified Daewoo vs Chevrolet de-duplication (Lanos, Nubira, Matiz, Cielo appear once under Chevrolet; Daewoo keeps Leganza and Espero).
 - `tests/obd-vin-decode.test.ts`: Verified `decodeVehicleIdentity` with `userMakeSlug` override for unmapped WMIs.

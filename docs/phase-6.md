@@ -2,7 +2,7 @@
 
 Date: 2026-11-15  
 Status: Complete  
-Verified: 212 unit & integration tests passing (`npm test`, including live ELM327 emulator benchmarks)
+Verified: 222 unit & integration tests across 31 test files passing (including live ELM327 emulator benchmarks)
 
 ---
 
@@ -63,13 +63,15 @@ Phase 6 implements non-blocking real-time sensor monitoring, high-performance ro
 
 ## 2. Test Verification & Benchmarks
 
-All 29 test suites and 212 tests pass with 100% success rate:
+All 31 test suites and 222 tests pass with 100% success rate:
+
 ```
-Test Files  29 passed (29)
-     Tests  212 passed (212)
+Test Files  31 passed (31)
+     Tests  222 passed (222)
 ```
 
 Key verification highlights:
+
 - `tests/live-poller.test.ts`: Verifies adaptive delay thresholds and sequential query queuing.
 - `tests/live-data-flow.test.ts`: Verifies strictly sequential driver invocation (`maxConcurrent = 1`), 300-point history capping, RFC 4180 CSV export, SQLite `live_data_logs` persistence, and metric/imperial unit conversions.
 - `tests/live-emulator.test.ts`: Live TCP benchmark against the Python ELM327 emulator (`python -m elm -s car`) with 4 concurrent PIDs (RPM, Speed, Coolant Temp, Engine Load):

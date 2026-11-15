@@ -478,7 +478,10 @@ export class InMemoryScanBackupRepository {
 }
 
 export class InMemoryWmiUserMapRepository implements WmiUserMapRepository {
-  private readonly map = new Map<string, Map<string, { createdAt: string; lastUsedAt: string; seq: number }>>();
+  private readonly map = new Map<
+    string,
+    Map<string, { createdAt: string; lastUsedAt: string; seq: number }>
+  >();
   private readonly clock: Clock;
   private seq = 0;
 
