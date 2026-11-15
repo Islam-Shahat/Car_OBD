@@ -15,6 +15,49 @@ import {
 const MIN_YEAR = 1900;
 const MAX_YEAR = 2100;
 
+/** Localized make keys are static so the typed i18n catalog accepts them. */
+const MAKE_NAME_KEYS = {
+  toyota: 'vehicles.makeNames.toyota',
+  nissan: 'vehicles.makeNames.nissan',
+  hyundai: 'vehicles.makeNames.hyundai',
+  kia: 'vehicles.makeNames.kia',
+  chevrolet: 'vehicles.makeNames.chevrolet',
+  ford: 'vehicles.makeNames.ford',
+  honda: 'vehicles.makeNames.honda',
+  mitsubishi: 'vehicles.makeNames.mitsubishi',
+  mazda: 'vehicles.makeNames.mazda',
+  suzuki: 'vehicles.makeNames.suzuki',
+  renault: 'vehicles.makeNames.renault',
+  peugeot: 'vehicles.makeNames.peugeot',
+  fiat: 'vehicles.makeNames.fiat',
+  opel: 'vehicles.makeNames.opel',
+  volkswagen: 'vehicles.makeNames.volkswagen',
+  skoda: 'vehicles.makeNames.skoda',
+  bmw: 'vehicles.makeNames.bmw',
+  'mercedes-benz': 'vehicles.makeNames.mercedes-benz',
+  audi: 'vehicles.makeNames.audi',
+  chery: 'vehicles.makeNames.chery',
+  geely: 'vehicles.makeNames.geely',
+  mg: 'vehicles.makeNames.mg',
+  byd: 'vehicles.makeNames.byd',
+  changan: 'vehicles.makeNames.changan',
+  'great-wall': 'vehicles.makeNames.great-wall',
+  haval: 'vehicles.makeNames.haval',
+  daewoo: 'vehicles.makeNames.daewoo',
+  lada: 'vehicles.makeNames.lada',
+  dacia: 'vehicles.makeNames.dacia',
+  citroen: 'vehicles.makeNames.citroen',
+  jeep: 'vehicles.makeNames.jeep',
+  dodge: 'vehicles.makeNames.dodge',
+  chrysler: 'vehicles.makeNames.chrysler',
+} as const;
+
+type MakeNameKey = (typeof MAKE_NAME_KEYS)[keyof typeof MAKE_NAME_KEYS];
+
+function makeNameKey(slug: string): MakeNameKey | null {
+  return (MAKE_NAME_KEYS as Record<string, MakeNameKey>)[slug] ?? null;
+}
+
 /** Latin make/model names and their Arabic catalog aliases both work. */
 function vehicleLabel(vehicle: Vehicle): string {
   const make = vehicle.make ?? vehicle.makeText ?? '';
@@ -96,12 +139,22 @@ export function VehiclesPage() {
   const visibleMakes = useMemo(() => {
     const needle = makeQuery.trim().toLowerCase();
     if (!needle) return makes;
-    return makes.filter(
-      (make) => make.make.toLowerCase().includes(needle) || make.makeSlug.includes(needle),
-    );
-  }, [makes, makeQuery]);
+    return makes.filter((make) => {
+      const key = makeNameKey(make.makeSlug);
+      const localName = key ? t(key).toLowerCase() : '';
+      return (
+        make.make.toLowerCase().includes(needle) ||
+        make.makeSlug.includes(needle) ||
+        localName.includes(needle)
+      );
+    });
+  }, [makes, makeQuery, t]);
 
   const selectedMake = makes.find((make) => make.makeSlug === makeSlug) ?? null;
+  const makeLabel = (make: CatalogMake) => {
+    const key = makeNameKey(make.makeSlug);
+    return key ? t(key) : make.make;
+  };
   const yearNumber = year.trim() === '' ? null : Number(year);
   const yearValid =
     yearNumber === null ||
@@ -290,7 +343,7 @@ export function VehiclesPage() {
                 {selectedMake && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
                     <IconCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
-                    {selectedMake.make}
+                    {makeLabel(selectedMake)}
                   </span>
                 )}
               </div>
@@ -312,7 +365,7 @@ export function VehiclesPage() {
                         : 'border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800'
                     }`}
                   >
-                    {make.make}
+                    {makeLabel(make)}
                     <span className="ms-1 text-[10px] opacity-60">{make.count}</span>
                   </button>
                 ))}

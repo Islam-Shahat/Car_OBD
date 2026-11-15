@@ -249,9 +249,10 @@ export interface SeedResult {
 }
 
 /**
- * Seeds the reference tables. Existing rows are never overwritten: a reviewed
- * DTC or a verified catalog row survives every reseed. The seed version is
- * recorded only after the row count proves the insert landed.
+ * Seeds the reference tables. When the seed version changes, reference rows are
+ * upserted by their stable uniqueness key so corrected or reviewed text reaches
+ * existing databases; user-owned `vehicles` rows are never touched. The seed
+ * version is recorded only after the row count proves the insert landed.
  */
 export async function seedDatabase(
   db: SqlExecutor,
