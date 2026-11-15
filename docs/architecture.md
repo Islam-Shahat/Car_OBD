@@ -168,15 +168,65 @@ ScanPage → ScanSession → ScanService ── operation lock, progress, backup
   `no_codes_returned` or `verification_failed`. Readiness is snapshotted before and after, and RPM
   above zero adds an engine-running warning without blocking. A failed verification scan is reported
   separately from a failed clear. Clear never runs during a scan.
-- **Backup repository seam.** `ScanBackupRepository` is the storage boundary. Until the SQLite phase
-  it is implemented by `LocalStorageScanBackupRepository`, which reads back and verifies its write
-  before `save()` resolves; Mode 04 is never sent after a silently failed backup. `ScanBackup` stores
-  explicit DTC groups, freeze frames and readiness for the Phase 4 tables.
+- **Backup repository seam.** `ScanBackupRepository` is the storage boundary. The app uses the
+  SQLite implementation, which reads the row back before `save()` resolves; Mode 04 is never sent
+  after a silently failed backup. `ScanBackup` stores explicit DTC groups, freeze frames and
+  readiness, and backups are only ever soft-deleted, never pruned.
 - **Scan UI.** `ScanPage` shows the not-connected state, runs the scan with step progress, renders
   VIN/WMI/year/check-digit status, MIL and readiness, all three DTC groups with ECU identifiers,
   freeze frames, live readings, drive history, warnings and timing, and gates Service 04 behind an
   explicit confirmation dialog. All labels, units, monitors, warnings and NRC messages are
-  translated in Arabic and English.
+  translated in Arabic and English. DTC cards look up the shipped knowledge base by code and make,
+  show category, source and an unreviewed badge, and fall back to “no description yet” for unknown
+  codes instead of guessing.
+
+## Local data (phase 4)
+
+```
+StorageProvider (React)
+  └─ openTauriStorage → migrate → seed → legacy import
+        └─ SqlExecutor ── TauriSqlExecutor (@tauri-apps/plugin-sql)
+                       └─ node:sqlite test adapter
+              └─ repositories: SQLite + in-memory behind the same interfaces
+```
+
+- **Database.** `sqlite:obd-diagnose.db` under Tauri's app-data directory. The SQL plugin is the only
+  Rust addition (`sql:default`, `sql:allow-execute`); there is still no OBD logic in Rust.
+- **Ports and adapters.** `SqlExecutor` exposes `execute`/`select` only. Production uses
+  `@tauri-apps/plugin-sql`; tests use Node 24 `node:sqlite` through `tests/helpers/sqlite.ts`, so
+  both run the same SQL and mapping code. A single `$1`-style placeholder convention is translated
+  for the test adapter.
+- **Schema.** Versioned migrations in `src/lib/db/migrations.ts`, recorded in `schema_migrations`.
+  Tables: `vehicles`, `vehicle_catalog`, `dtc_codes`, `scan_sessions`, `scan_results`,
+  `readiness_snapshots`, `live_data_logs`, `settings`, `remote_config_cache` and `scan_backups`.
+  Every table has a UUID `id` plus `created_at`, `updated_at` and `deleted_at` (soft delete).
+  Required indexes cover `dtc_codes.code`, `scan_sessions.vehicle_id` and
+  `live_data_logs(session_id, ts)`. DTC uniqueness is an expression index on
+  `(code, COALESCE(make, ''))`: `make IS NULL` means a generic code, so one generic row per code is
+  enforced even though `UNIQUE(code, make)` would allow unlimited NULL makes. Every statement is
+  `IF NOT EXISTS`/idempotent, so an interrupted migration is retried on the next start instead of
+  leaving a half-created schema.
+- **Repositories.** `repositories.ts` defines vehicle, catalog, DTC, scan, settings and remote-config
+  interfaces. `sqliteRepositories.ts` owns all SQL; `inMemoryRepositories.ts` is the parity
+  implementation used by tests and non-Tauri runs. Features never issue SQL. Backups extend the
+  Phase 3 `ScanBackupRepository` with `list`, `get` and soft `delete`.
+- **Seeding.** `seed.ts` imports `src/data/dtc-codes.json` and `src/data/vehicle-catalog.json` in
+  batches, verifies the resulting counts, and records the seed versions in `settings`. Re-running
+  with an unchanged version is a no-op. A changed version upserts reference rows so reviewed DTC
+  text and corrected catalog data reach existing installations; user rows are never touched.
+- **DTC knowledge base.** 9,533 generic OBDex codes with English text, deterministic glossary-based
+  Arabic, Tier 1 causes/steps (402 rows) and Tier 2 descriptions (9,131 rows). All imported Arabic
+  starts `needs_review = 1`. Provenance, exact licences, checksums and the review workflow are in
+  `docs/data-sources.md`; reviews are kept in `src/data/dtc-reviews.json` and survive re-imports.
+- **Vehicle selection.** `VehiclesPage` drives make → model → optional year from `vehicle_catalog`,
+  with Arabic/English search and a free-text “not in the list” path. The choice is stored as
+  `vehicle.selected.id` in `settings`; only the id is persisted here. The catalog is a selection aid
+  with `verified = 0` everywhere, and catalog updates never modify `vehicles`.
+- **Legacy backups.** `legacyBackups.ts` imports the interim localStorage key exactly once. Saves are
+  keyed by backup id, so a retry after a partial failure cannot duplicate rows; unreadable entries
+  are preserved under a separate key; the old key is removed only after every readable entry is
+  durable. The migration marker lives in `settings`. Failed saves leave the legacy data in place and
+  are retried on the next start.
 
 ## Safety invariants (DTC clear)
 
@@ -185,8 +235,8 @@ Clearing codes is the only write operation and must always follow this order:
 1. Show the warning and disclaimer (diagnosis only; clearing does not fix the fault; readiness
    monitors and freeze frame are reset).
 2. Persist a local snapshot of stored codes, pending codes and the freeze frame before anything is
-   sent. Today this is the verified localStorage repository; the SQLite repository replaces it in
-   the data phase.
+   sent. This is the SQLite `ScanBackupRepository`; its `save()` resolves only after the row is read
+   back. If storage fails, the clear is aborted and Service 04 is never sent.
 3. Require explicit confirmation (dialog in the UI, `confirm: true` in `ScanService`).
 4. Send Service 04, then re-scan and report whether codes returned (verification re-scan).
 
@@ -216,7 +266,7 @@ No paywalls, no licensing: the app is free and fully client-side.
 | 2     | Serial bridge + Transport abstraction + ELM327 emulator + connection UI            | done   |
 | 3     | OBD services: PIDs, DTCs, readiness, VIN, freeze frames, scan UI, safe clear       | done   |
 | 3.5   | Review fixes: VIN/WMI identity, PID audit, multi-ECU headers, NRC, clear reporting | done   |
-| 4     | SQLite schema, repositories, scan history                                          |        |
+| 4     | SQLite schema, repositories, DTC/catalog seeds, vehicle selection                  | done   |
 | 5     | Safe clear persistence in SQLite + history reporting                               |        |
 | 6     | Live data (uPlot)                                                                  |        |
 | 7     | PDF reports                                                                        |        |
