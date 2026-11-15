@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  isTauriEnvironment,
-  openBrowserStorage,
-  openTauriStorage,
-} from '../src/lib/db/runtime';
+import { isTauriEnvironment, openBrowserStorage, openTauriStorage } from '../src/lib/db/runtime';
 
 describe('runtime storage environment and browser preview', () => {
   it('detects non-Tauri environment in Node / test runner', () => {

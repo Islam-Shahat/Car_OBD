@@ -144,7 +144,9 @@ describe('Phase 5.5 Review Fixes & Browser Preview Safety', () => {
 
   describe('D. Clear Dialog Engine-Running Warning', () => {
     it('detects engine running condition when RPM > 0', () => {
-      const engineRunning = (readings: Array<{ pid: number; measurements: Array<{ value: number }> }>) => {
+      const engineRunning = (
+        readings: Array<{ pid: number; measurements: Array<{ value: number }> }>,
+      ) => {
         const rpm = readings.find((r) => r.pid === 0x0c)?.measurements[0]?.value;
         return rpm !== undefined && rpm > 0;
       };
