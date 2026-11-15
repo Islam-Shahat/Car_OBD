@@ -106,7 +106,14 @@
       "citroen": "Citroen",
       "jeep": "Jeep",
       "dodge": "Dodge",
-      "chrysler": "Chrysler"
+      "chrysler": "Chrysler",
+      "daihatsu": "Daihatsu",
+      "isuzu": "Isuzu",
+      "porsche": "Porsche",
+      "ssangyong": "SsangYong",
+      "subaru": "Subaru",
+      "tesla": "Tesla",
+      "volvo": "Volvo"
     },
     "model": "Model",
     "modelSearch": "Search models in Arabic or English",

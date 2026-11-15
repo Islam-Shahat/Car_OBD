@@ -6,6 +6,7 @@ import { PageHeader } from '../../app/PageHeader';
 import { IconAlert, IconCar, IconCheck } from '../../app/icons';
 import { useStorage } from '../../lib/db/StorageProvider';
 import type { CatalogEntry, CatalogMake, Vehicle } from '../../lib/db/types';
+import { searchKey } from '../../lib/i18n/arabic';
 import {
   persistSelectedVehicle,
   restoreSelectedVehicle,
@@ -50,6 +51,13 @@ const MAKE_NAME_KEYS = {
   jeep: 'vehicles.makeNames.jeep',
   dodge: 'vehicles.makeNames.dodge',
   chrysler: 'vehicles.makeNames.chrysler',
+  daihatsu: 'vehicles.makeNames.daihatsu',
+  isuzu: 'vehicles.makeNames.isuzu',
+  porsche: 'vehicles.makeNames.porsche',
+  ssangyong: 'vehicles.makeNames.ssangyong',
+  subaru: 'vehicles.makeNames.subaru',
+  tesla: 'vehicles.makeNames.tesla',
+  volvo: 'vehicles.makeNames.volvo',
 } as const;
 
 type MakeNameKey = (typeof MAKE_NAME_KEYS)[keyof typeof MAKE_NAME_KEYS];
@@ -137,16 +145,12 @@ export function VehiclesPage() {
   }, [repositories, makeSlug, modelQuery]);
 
   const visibleMakes = useMemo(() => {
-    const needle = makeQuery.trim().toLowerCase();
+    const needle = searchKey(makeQuery);
     if (!needle) return makes;
     return makes.filter((make) => {
       const key = makeNameKey(make.makeSlug);
-      const localName = key ? t(key).toLowerCase() : '';
-      return (
-        make.make.toLowerCase().includes(needle) ||
-        make.makeSlug.includes(needle) ||
-        localName.includes(needle)
-      );
+      const localName = key ? t(key) : '';
+      return searchKey(make.make, make.makeSlug, localName, ...make.aliasesAr).includes(needle);
     });
   }, [makes, makeQuery, t]);
 
