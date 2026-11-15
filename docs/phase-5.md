@@ -76,6 +76,11 @@ Test Files  25 passed (25)
 - **DTC Loading**: Only active DTCs present in the scan are queried from SQLite via `DtcRepository.lookup(code, make)`. The 9,533 DTC pack is never loaded into React state.
 - **DTC Pack Size**: `public/dtc-pack.json` is 4.5 MB, loaded asynchronously by `seedDatabase()` during first-run initialization only.
 - **Web Bundle Size**: 639.22 kB (180.26 kB gzip), well within desktop performance budgets.
+- **Release Executable & Installers**:
+  - Binary: `target/release/obd-diagnose.exe` (built in 1m 21s)
+  - NSIS Installer: `OBD Diagnose_0.1.0_x64-setup.exe` (2.09 MiB)
+  - MSI Installer: `OBD Diagnose_0.1.0_x64_en-US.msi` (2.71 MiB)
+- **Idle RAM**: **42.2 MB** working set measured on running release `.exe`.
 - **First-run Seeding Time**: ~860 ms (shown with branded splash screen, avoiding blank UI).
 
 ---
