@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 import { useTheme } from '../lib/theme/useTheme';
 import {
+  IconCar,
   IconGauge,
   IconGlobe,
   IconHistory,
@@ -15,6 +16,7 @@ import {
 const NAV_ITEMS = [
   { to: '/', labelKey: 'nav.connect', Icon: IconGauge, end: true },
   { to: '/scan', labelKey: 'nav.scan', Icon: IconScan, end: false },
+  { to: '/vehicles', labelKey: 'nav.vehicles', Icon: IconCar, end: false },
   { to: '/history', labelKey: 'nav.history', Icon: IconHistory, end: false },
   { to: '/settings', labelKey: 'nav.settings', Icon: IconSliders, end: false },
 ] as const;

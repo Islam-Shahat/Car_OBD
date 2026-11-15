@@ -22,6 +22,19 @@ export function IconGauge(props: IconProps) {
   );
 }
 
+export function IconCar(props: IconProps) {
+  return (
+    <svg {...baseProps} {...props}>
+      <path d="M5 17h14" />
+      <path d="M4 17v-3.2a2 2 0 0 1 .3-1l2-4A2 2 0 0 1 8.1 8h7.8a2 2 0 0 1 1.8 1.1l2 3.9a2 2 0 0 1 .3 1V17" />
+      <path d="M4 17v2M20 17v2" />
+      <path d="M6.5 13h11" />
+      <circle cx="7.5" cy="17" r="1.5" />
+      <circle cx="16.5" cy="17" r="1.5" />
+    </svg>
+  );
+}
+
 export function IconScan(props: IconProps) {
   return (
     <svg {...baseProps} {...props}>
