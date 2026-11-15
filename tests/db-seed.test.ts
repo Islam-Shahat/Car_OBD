@@ -184,12 +184,16 @@ describe('shipped DTC pack', () => {
 });
 
 describe('shipped vehicle catalog', () => {
-  it('is a unique, unverified knowledge list with aliases for every row', () => {
-    expect(catalogData.version).toBe('2026-11-15.1');
+  it('is a unique, unverified list reconciled with Appendix C', () => {
+    expect(catalogData.version).toBe('2026-11-15.appendix-c');
     expect(catalogData.downloadedAt).toBe('2026-11-15');
-    expect(catalogData.entries).toHaveLength(284);
-    expect(new Set(catalogData.entries.map((entry) => entry.makeSlug)).size).toBe(40);
-    expect(new Set(catalogData.entries.map((entry) => entry.id)).size).toBe(284);
+    expect(catalogData.entries).toHaveLength(380);
+    expect(new Set(catalogData.entries.map((entry) => entry.makeSlug)).size).toBe(46);
+    expect(new Set(catalogData.entries.map((entry) => entry.id)).size).toBe(380);
+    const cited = catalogData.entries.filter((entry) => entry.sourceTier === 'cited');
+    const knowledge = catalogData.entries.filter((entry) => entry.sourceTier === 'knowledge');
+    expect(cited).toHaveLength(51);
+    expect(knowledge).toHaveLength(329);
 
     for (const entry of catalogData.entries) {
       expect(entry.id).toMatch(
@@ -198,7 +202,7 @@ describe('shipped vehicle catalog', () => {
       expect(entry.model.trim().length).toBeGreaterThan(0);
       expect(entry.aliasesAr.length).toBeGreaterThan(0);
       expect(Array.isArray(entry.makeAliasesAr)).toBe(true);
-      expect(entry.sourceTier).toBe('knowledge');
+      expect(['cited', 'knowledge']).toContain(entry.sourceTier);
       expect(entry.verified).toBe(false);
       expect(entry.yearFrom).toBeNull();
       expect(entry.yearTo).toBeNull();

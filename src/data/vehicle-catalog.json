@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-15.1",
+  "version": "2026-11-15.appendix-c",
   "downloadedAt": "2026-11-15",
   "entries": [
     {
@@ -18,7 +18,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -56,7 +56,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "hatchback",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -219,7 +219,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -238,7 +238,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -317,7 +317,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -415,7 +415,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -436,7 +436,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -456,7 +456,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -496,7 +496,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -562,7 +562,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "hatchback",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -624,7 +624,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -642,7 +642,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "hatchback",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -660,7 +660,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -696,7 +696,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "hatchback",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -808,7 +808,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -829,7 +829,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -1007,7 +1007,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -1344,7 +1344,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -1827,7 +1827,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -1843,7 +1843,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -1923,7 +1923,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "hatchback",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -2116,7 +2116,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -2261,7 +2261,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "hatchback",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -2554,7 +2554,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -2586,7 +2586,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -2684,7 +2684,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -3133,7 +3133,9 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 2",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شيري"
+      ],
       "aliasesAr": [
         "تيجو 2"
       ],
@@ -3151,7 +3153,9 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 3",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شيري"
+      ],
       "aliasesAr": [
         "تيجو 3"
       ],
@@ -3161,7 +3165,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -3169,7 +3173,9 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 4",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شيري"
+      ],
       "aliasesAr": [
         "تيجو 4"
       ],
@@ -3187,7 +3193,9 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 7",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شيري"
+      ],
       "aliasesAr": [
         "تيجو 7"
       ],
@@ -3197,7 +3205,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -3205,7 +3213,9 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 8",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شيري"
+      ],
       "aliasesAr": [
         "تيجو 8"
       ],
@@ -3223,7 +3233,9 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Arrizo 5",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شيري"
+      ],
       "aliasesAr": [
         "أريزو 5",
         "اريزو 5"
@@ -3234,7 +3246,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -3242,7 +3254,9 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Arrizo 6",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شيري"
+      ],
       "aliasesAr": [
         "أريزو 6",
         "اريزو 6"
@@ -3253,7 +3267,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -3261,7 +3275,9 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "QQ",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شيري"
+      ],
       "aliasesAr": [
         "كيو كيو"
       ],
@@ -3277,7 +3293,9 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Emgrand 7",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "جيلي"
+      ],
       "aliasesAr": [
         "إمجراند 7",
         "امجراند 7"
@@ -3296,7 +3314,9 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Emgrand 8",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "جيلي"
+      ],
       "aliasesAr": [
         "إمجراند 8",
         "امجراند 8"
@@ -3315,7 +3335,9 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Emgrand X7",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "جيلي"
+      ],
       "aliasesAr": [
         "إمجراند إكس 7",
         "امجراند اكس 7"
@@ -3334,7 +3356,9 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Coolray",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "جيلي"
+      ],
       "aliasesAr": [
         "كولراي"
       ],
@@ -3350,7 +3374,9 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Tugella",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "جيلي"
+      ],
       "aliasesAr": [
         "توجيلا"
       ],
@@ -3366,7 +3392,9 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Atlas",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "جيلي"
+      ],
       "aliasesAr": [
         "أطلس",
         "اطلس"
@@ -3383,7 +3411,9 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "GS",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "جيلي"
+      ],
       "aliasesAr": [
         "جي إس",
         "جي اس"
@@ -3400,7 +3430,10 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "MG3",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
       "aliasesAr": [
         "إم جي 3",
         "ام جي 3"
@@ -3419,7 +3452,10 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "MG5",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
       "aliasesAr": [
         "إم جي 5",
         "ام جي 5"
@@ -3438,7 +3474,10 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "MG6",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
       "aliasesAr": [
         "إم جي 6",
         "ام جي 6"
@@ -3457,7 +3496,10 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "ZS",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
       "aliasesAr": [
         "زد إس",
         "زد اس"
@@ -3466,7 +3508,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -3474,7 +3516,10 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "HS",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
       "aliasesAr": [
         "إتش إس",
         "اتش اس"
@@ -3491,7 +3536,10 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "RX5",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
       "aliasesAr": [
         "آر إكس 5",
         "ار اكس 5"
@@ -3510,7 +3558,10 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "GT",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
       "aliasesAr": [
         "جي تي"
       ],
@@ -3518,7 +3569,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -3526,7 +3577,9 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "F3",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
       "aliasesAr": [
         "إف 3",
         "اف 3"
@@ -3537,7 +3590,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "sedan",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -3545,7 +3598,9 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "S6",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
       "aliasesAr": [
         "إس 6",
         "اس 6"
@@ -3564,7 +3619,9 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Song Plus",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
       "aliasesAr": [
         "سونج بلس"
       ],
@@ -3582,7 +3639,9 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Qin Plus",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
       "aliasesAr": [
         "تشين بلس"
       ],
@@ -3600,7 +3659,9 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Tang",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
       "aliasesAr": [
         "تانج"
       ],
@@ -3616,7 +3677,9 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Dolphin",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
       "aliasesAr": [
         "دولفين"
       ],
@@ -3632,7 +3695,9 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Atto 3",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
       "aliasesAr": [
         "أتو 3",
         "اتو 3"
@@ -3651,7 +3716,9 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "Eado",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شانجان"
+      ],
       "aliasesAr": [
         "إيدو",
         "ايدو"
@@ -3668,7 +3735,9 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "Alsvin",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شانجان"
+      ],
       "aliasesAr": [
         "ألسفين",
         "السفين"
@@ -3685,7 +3754,9 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "CS15",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شانجان"
+      ],
       "aliasesAr": [
         "سي إس 15"
       ],
@@ -3703,7 +3774,9 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "CS35",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شانجان"
+      ],
       "aliasesAr": [
         "سي إس 35"
       ],
@@ -3721,7 +3794,9 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "CS75",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شانجان"
+      ],
       "aliasesAr": [
         "سي إس 75"
       ],
@@ -3739,7 +3814,9 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "CS95",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شانجان"
+      ],
       "aliasesAr": [
         "سي إس 95"
       ],
@@ -3757,7 +3834,9 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "Hunter",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "شانجان"
+      ],
       "aliasesAr": [
         "هانتر"
       ],
@@ -3877,7 +3956,9 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "H2",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "هافال"
+      ],
       "aliasesAr": [
         "إتش 2",
         "اتش 2"
@@ -3896,7 +3977,9 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "H5",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "هافال"
+      ],
       "aliasesAr": [
         "إتش 5",
         "اتش 5"
@@ -3915,7 +3998,9 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "H6",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "هافال"
+      ],
       "aliasesAr": [
         "إتش 6",
         "اتش 6"
@@ -3934,7 +4019,9 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "H9",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "هافال"
+      ],
       "aliasesAr": [
         "إتش 9",
         "اتش 9"
@@ -3953,7 +4040,9 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "Jolion",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "هافال"
+      ],
       "aliasesAr": [
         "جوليان"
       ],
@@ -3969,7 +4058,9 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "Dargo",
-      "makeAliasesAr": [],
+      "makeAliasesAr": [
+        "هافال"
+      ],
       "aliasesAr": [
         "دارجو"
       ],
@@ -4340,7 +4431,7 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "suv",
-      "sourceTier": "knowledge",
+      "sourceTier": "cited",
       "verified": false
     },
     {
@@ -5040,6 +5131,1825 @@
       "yearTo": null,
       "bodyType": "sedan",
       "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "e6da64b8-30b0-540b-9aef-eb30c42d472d",
+      "make": "Nissan",
+      "makeSlug": "nissan",
+      "model": "Qashqai",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
+      "aliasesAr": [
+        "قشقاي"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "b7c85bfb-f8de-5e13-baab-51783d66e24a",
+      "make": "Nissan",
+      "makeSlug": "nissan",
+      "model": "Juke",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
+      "aliasesAr": [
+        "جوك"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "48da5b51-4f27-5c15-b5dc-0de41524ac9a",
+      "make": "Nissan",
+      "makeSlug": "nissan",
+      "model": "Micra",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
+      "aliasesAr": [
+        "ميكرا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "728ad189-a928-5445-968d-6037579f99d8",
+      "make": "Nissan",
+      "makeSlug": "nissan",
+      "model": "Maxima",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
+      "aliasesAr": [
+        "مكسيما",
+        "ماكسيما"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "2346c78d-24ce-553e-8a3c-10c7f20e3f64",
+      "make": "Hyundai",
+      "makeSlug": "hyundai",
+      "model": "Matrix",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
+      "aliasesAr": [
+        "ماتريكس"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "05391538-2457-5e31-9921-daca2f981ad4",
+      "make": "Hyundai",
+      "makeSlug": "hyundai",
+      "model": "ix35",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
+      "aliasesAr": [
+        "آي إكس 35",
+        "اي اكس 35"
+      ],
+      "aliasesEn": [
+        "ix-35"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "c19d362e-1177-565e-9011-9a2cfb11bf94",
+      "make": "Hyundai",
+      "makeSlug": "hyundai",
+      "model": "Grand i10",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
+      "aliasesAr": [
+        "جراند آي 10",
+        "جراند اي 10"
+      ],
+      "aliasesEn": [
+        "Grandi10"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "ef226d85-e4c7-5e46-a198-9264740fde10",
+      "make": "Hyundai",
+      "makeSlug": "hyundai",
+      "model": "i20",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
+      "aliasesAr": [
+        "آي 20",
+        "اي 20"
+      ],
+      "aliasesEn": [
+        "i-20"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "bd662425-f7f2-5889-a238-c403fb421321",
+      "make": "Hyundai",
+      "makeSlug": "hyundai",
+      "model": "i30",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
+      "aliasesAr": [
+        "آي 30",
+        "اي 30"
+      ],
+      "aliasesEn": [
+        "i-30"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "f718e980-d34f-5b49-9e12-0a07cfe8581f",
+      "make": "Hyundai",
+      "makeSlug": "hyundai",
+      "model": "Kona",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
+      "aliasesAr": [
+        "كونا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "344c01b3-8b4a-5c5e-b2e5-33143a39d724",
+      "make": "Hyundai",
+      "makeSlug": "hyundai",
+      "model": "Excel",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
+      "aliasesAr": [
+        "إكسيل",
+        "اكسيل"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "1036b7fa-3d11-5a81-9674-959dfdd991c8",
+      "make": "Kia",
+      "makeSlug": "kia",
+      "model": "Shuma",
+      "makeAliasesAr": [
+        "كيا"
+      ],
+      "aliasesAr": [
+        "شوما"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "a9b13e36-d59d-5a93-b832-1049dc6c1f60",
+      "make": "Kia",
+      "makeSlug": "kia",
+      "model": "Soul",
+      "makeAliasesAr": [
+        "كيا"
+      ],
+      "aliasesAr": [
+        "سول"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "5b985795-cf4d-50d1-84d5-a09291e2c35e",
+      "make": "Kia",
+      "makeSlug": "kia",
+      "model": "Sonet",
+      "makeAliasesAr": [
+        "كيا"
+      ],
+      "aliasesAr": [
+        "سونيت"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "864ef9c4-8895-5d11-92b9-51e170f7bbdd",
+      "make": "Chevrolet",
+      "makeSlug": "chevrolet",
+      "model": "Lanos",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
+      "aliasesAr": [
+        "لانوس"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "b68f8a76-2134-5241-b5ea-e72704c4c308",
+      "make": "Chevrolet",
+      "makeSlug": "chevrolet",
+      "model": "T-Series pickup",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
+      "aliasesAr": [
+        "دبابة",
+        "تي سيريز"
+      ],
+      "aliasesEn": [
+        "TSeries",
+        "DMAX"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "pickup",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "14fee7f3-297d-5600-8013-dd3f39673a04",
+      "make": "Chevrolet",
+      "makeSlug": "chevrolet",
+      "model": "Cobalt",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
+      "aliasesAr": [
+        "كوبالت"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "7661e5a8-ddaa-59c0-8522-5088561d9ef0",
+      "make": "Chevrolet",
+      "makeSlug": "chevrolet",
+      "model": "Tracker",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
+      "aliasesAr": [
+        "تراكر"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "4eadce65-f837-541e-86f2-8f2ec4dfa3c8",
+      "make": "Chevrolet",
+      "makeSlug": "chevrolet",
+      "model": "Epica",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
+      "aliasesAr": [
+        "إبيكا",
+        "ابيكا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "b053d948-d3df-51d8-9d42-62b1f606f701",
+      "make": "Chevrolet",
+      "makeSlug": "chevrolet",
+      "model": "Matiz",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
+      "aliasesAr": [
+        "ماتيز"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "2a7adf92-8f66-54bd-9246-88e509a9be19",
+      "make": "Chevrolet",
+      "makeSlug": "chevrolet",
+      "model": "Nubira",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
+      "aliasesAr": [
+        "نوبيرا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "a145f779-e0e6-5b1e-a29e-223a77d92268",
+      "make": "Chevrolet",
+      "makeSlug": "chevrolet",
+      "model": "Cielo",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
+      "aliasesAr": [
+        "سيلو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "73022439-a914-58b9-a338-c8a505e337b0",
+      "make": "Toyota",
+      "makeSlug": "toyota",
+      "model": "Rush",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
+      "aliasesAr": [
+        "راش"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "4566b396-8bd2-5f49-b9de-6456afb97d28",
+      "make": "Toyota",
+      "makeSlug": "toyota",
+      "model": "Avensis",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
+      "aliasesAr": [
+        "أفينسيس",
+        "افينسيس"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "6d24678d-e2b5-5a44-9966-9a0aa96f5181",
+      "make": "Fiat",
+      "makeSlug": "fiat",
+      "model": "Uno",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "أونو",
+        "اونو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "6638857c-18f4-59bd-b18b-3228325ca950",
+      "make": "Fiat",
+      "makeSlug": "fiat",
+      "model": "128",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "128"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "85d59c61-3811-5b06-b4a7-44ad5b502776",
+      "make": "Fiat",
+      "makeSlug": "fiat",
+      "model": "131",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "131",
+        "شاهين"
+      ],
+      "aliasesEn": [
+        "Shahin"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "b8e094b3-957f-5bd6-b219-97cc64937fe3",
+      "make": "Fiat",
+      "makeSlug": "fiat",
+      "model": "Albea",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "ألبيا",
+        "البيا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "94a78e70-6755-5a75-9a62-dc23e369a8a0",
+      "make": "Renault",
+      "makeSlug": "renault",
+      "model": "Fluence",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "فلوانس"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "321c3da0-3c5f-5ef6-943c-d29b068704da",
+      "make": "Renault",
+      "makeSlug": "renault",
+      "model": "Clio",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "كليو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "9f9bd772-9fdd-5d6c-9d6a-64ed7ebc63f8",
+      "make": "Renault",
+      "makeSlug": "renault",
+      "model": "Kadjar",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "قادجار",
+        "كادجار"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "1c22ee48-99ac-55b1-80aa-e2b733e4db7d",
+      "make": "Renault",
+      "makeSlug": "renault",
+      "model": "19",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "19"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "3beca63f-4246-592e-8011-e47b3766ceda",
+      "make": "Renault",
+      "makeSlug": "renault",
+      "model": "Kwid",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "كويد"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "d7ac9bea-849b-5ec3-887b-739429ee17f5",
+      "make": "Skoda",
+      "makeSlug": "skoda",
+      "model": "Yeti",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "يتي"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "6be7c163-83da-557c-9df4-904d27304601",
+      "make": "Volkswagen",
+      "makeSlug": "volkswagen",
+      "model": "Bora",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "بورا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "af1b5466-2203-5219-bddf-97103c051d9f",
+      "make": "Volkswagen",
+      "makeSlug": "volkswagen",
+      "model": "Beetle",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "بيتل",
+        "خنفساء"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "191575cd-a1ab-5576-a5ee-ca7de91cee20",
+      "make": "Volkswagen",
+      "makeSlug": "volkswagen",
+      "model": "T-Roc",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "تي روك"
+      ],
+      "aliasesEn": [
+        "TRoc"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "e9c21c40-76b4-52ff-a808-ac6fa0368362",
+      "make": "Volkswagen",
+      "makeSlug": "volkswagen",
+      "model": "Touran",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "توران"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "van",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "a704f2a3-ea60-59c1-b762-b6a75ca3ef29",
+      "make": "Peugeot",
+      "makeSlug": "peugeot",
+      "model": "206",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "206"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "4b2883aa-2912-5f6a-b26b-e37d75194436",
+      "make": "Peugeot",
+      "makeSlug": "peugeot",
+      "model": "207",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "207"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "d3bf7a2b-ea57-5dbe-82c5-a0a167f19408",
+      "make": "Peugeot",
+      "makeSlug": "peugeot",
+      "model": "307",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "307"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "6afbd16a-43df-5ac3-8e79-fea70cd67561",
+      "make": "Peugeot",
+      "makeSlug": "peugeot",
+      "model": "405",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "405"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "4db3aff0-ea9d-5514-9b9c-631dc1bc4b2e",
+      "make": "Peugeot",
+      "makeSlug": "peugeot",
+      "model": "504",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "504"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "0fe9372f-55ca-552c-8925-d7f5fd31ecb9",
+      "make": "Mitsubishi",
+      "makeSlug": "mitsubishi",
+      "model": "Mirage",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "ميراج"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "d60efa30-ae03-55b0-8257-dfe13ac5d939",
+      "make": "Suzuki",
+      "makeSlug": "suzuki",
+      "model": "Alto",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "ألتو",
+        "التو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "ae7f4b9a-1fe8-56bc-9121-29e1993d3b2d",
+      "make": "Suzuki",
+      "makeSlug": "suzuki",
+      "model": "S-Presso",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "إس بريسو",
+        "اس بريسو"
+      ],
+      "aliasesEn": [
+        "SPresso"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "4ed70bce-6356-5aa9-8026-9c1fe184f371",
+      "make": "Suzuki",
+      "makeSlug": "suzuki",
+      "model": "Grand Vitara",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "جراند فيتارا"
+      ],
+      "aliasesEn": [
+        "GrandVitara"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "8627afa6-a610-53aa-98e1-c838e0431938",
+      "make": "Suzuki",
+      "makeSlug": "suzuki",
+      "model": "Fronx",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "فرونكس"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "d2afa3ff-b760-5661-9a79-5a4740922139",
+      "make": "Ford",
+      "makeSlug": "ford",
+      "model": "Fusion",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "فيوجن"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "1f6e9cea-c754-5d81-a9df-9f40be70a202",
+      "make": "Ford",
+      "makeSlug": "ford",
+      "model": "EcoSport",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "إيكوسبورت",
+        "ايكوسبورت"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "d764dd32-3980-5114-834d-cdd949500940",
+      "make": "Ford",
+      "makeSlug": "ford",
+      "model": "Kuga",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "كوجا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "b03f332a-c92b-520b-9a45-413cef4d4190",
+      "make": "Ford",
+      "makeSlug": "ford",
+      "model": "Mondeo",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "مونديو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "fdd13360-ad6e-5c08-83b2-d42d443af5bc",
+      "make": "Opel",
+      "makeSlug": "opel",
+      "model": "Omega",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "أوميجا",
+        "اوميجا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "d3ef0524-988a-5d8b-a5bc-6dc02dc7586b",
+      "make": "Citroen",
+      "makeSlug": "citroen",
+      "model": "C4 Picasso",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "سي 4 بيكاسو"
+      ],
+      "aliasesEn": [
+        "C4Picasso"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "van",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "48e38f95-a6dd-59d5-917e-10bcd5dc9353",
+      "make": "Seat",
+      "makeSlug": "seat",
+      "model": "Leon",
+      "makeAliasesAr": [
+        "سيات"
+      ],
+      "aliasesAr": [
+        "ليون"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "b3f9b31d-759c-5972-9198-b12a5389919c",
+      "make": "Seat",
+      "makeSlug": "seat",
+      "model": "Ibiza",
+      "makeAliasesAr": [
+        "سيات"
+      ],
+      "aliasesAr": [
+        "إبيزا",
+        "ابيزا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "bcf66e74-fb0d-5172-a637-e1a61507dcef",
+      "make": "Seat",
+      "makeSlug": "seat",
+      "model": "Toledo",
+      "makeAliasesAr": [
+        "سيات"
+      ],
+      "aliasesAr": [
+        "توليدو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "1de1683e-0d50-5b52-9134-dae6a828b57c",
+      "make": "Seat",
+      "makeSlug": "seat",
+      "model": "Ateca",
+      "makeAliasesAr": [
+        "سيات"
+      ],
+      "aliasesAr": [
+        "أتيكا",
+        "اتيكا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "0060ff85-d4fa-54e9-9c95-d99ce4ad98d2",
+      "make": "Mercedes-Benz",
+      "makeSlug": "mercedes-benz",
+      "model": "A-Class",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "الفئة A",
+        "إيه كلاس"
+      ],
+      "aliasesEn": [
+        "AClass"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "7689c9dd-5222-59df-8e5f-0e660b1e03f8",
+      "make": "Mercedes-Benz",
+      "makeSlug": "mercedes-benz",
+      "model": "CLA",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "سي إل إيه",
+        "سي ال ايه"
+      ],
+      "aliasesEn": [
+        "CLA-Class"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "95329b2a-fb86-59d7-a7e0-662fc5037d58",
+      "make": "BMW",
+      "makeSlug": "bmw",
+      "model": "1 Series",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "الفئة الأولى",
+        "الفئة الاولى"
+      ],
+      "aliasesEn": [
+        "1Series"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "400425f7-744f-5529-b567-b17ba948994a",
+      "make": "Lada",
+      "makeSlug": "lada",
+      "model": "2107",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "2107",
+        "1500"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "ca81caf2-e934-5c07-b02b-93104fa79ef1",
+      "make": "Lada",
+      "makeSlug": "lada",
+      "model": "Samara",
+      "makeAliasesAr": [],
+      "aliasesAr": [
+        "سمارة",
+        "سماره"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "dfdf316a-a843-5240-b1c8-85846fb57896",
+      "make": "Proton",
+      "makeSlug": "proton",
+      "model": "Saga",
+      "makeAliasesAr": [
+        "بروتون"
+      ],
+      "aliasesAr": [
+        "ساجا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "1fda78eb-8a38-5e4d-98f2-335f2b739bbd",
+      "make": "Proton",
+      "makeSlug": "proton",
+      "model": "Persona",
+      "makeAliasesAr": [
+        "بروتون"
+      ],
+      "aliasesAr": [
+        "بيرسونا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "98fc1e83-e31b-5cde-83ec-565b61615011",
+      "make": "Chery",
+      "makeSlug": "chery",
+      "model": "Tiggo 4 Pro",
+      "makeAliasesAr": [
+        "شيري"
+      ],
+      "aliasesAr": [
+        "تيجو 4 برو"
+      ],
+      "aliasesEn": [
+        "Tiggo4Pro"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "1dbf2530-cd7b-56a4-bf02-74665992d64f",
+      "make": "Chery",
+      "makeSlug": "chery",
+      "model": "Tiggo 8 Pro",
+      "makeAliasesAr": [
+        "شيري"
+      ],
+      "aliasesAr": [
+        "تيجو 8 برو"
+      ],
+      "aliasesEn": [
+        "Tiggo8Pro"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "6da0dff0-c583-59e9-811e-b192fcb8ae46",
+      "make": "Chery",
+      "makeSlug": "chery",
+      "model": "Arrizo 8",
+      "makeAliasesAr": [
+        "شيري"
+      ],
+      "aliasesAr": [
+        "أريزو 8",
+        "اريزو 8"
+      ],
+      "aliasesEn": [
+        "Arrizo8"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "34cabdfd-0547-5526-8757-30701ab4f5a2",
+      "make": "Chery",
+      "makeSlug": "chery",
+      "model": "Tiggo 2 Pro",
+      "makeAliasesAr": [
+        "شيري"
+      ],
+      "aliasesAr": [
+        "تيجو 2 برو"
+      ],
+      "aliasesEn": [
+        "Tiggo2Pro"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "df297c0c-78ec-58a0-b8f3-60d1f4d7a864",
+      "make": "MG",
+      "makeSlug": "mg",
+      "model": "3",
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
+      "aliasesAr": [
+        "إم جي 3",
+        "ام جي 3"
+      ],
+      "aliasesEn": [
+        "MG3"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "7d1e22ae-6eea-5d44-a739-755a8cd4182d",
+      "make": "MG",
+      "makeSlug": "mg",
+      "model": "5",
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
+      "aliasesAr": [
+        "إم جي 5",
+        "ام جي 5"
+      ],
+      "aliasesEn": [
+        "MG5"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "e137dc6c-6211-57b8-9347-1ebdce2c5786",
+      "make": "MG",
+      "makeSlug": "mg",
+      "model": "6",
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
+      "aliasesAr": [
+        "إم جي 6",
+        "ام جي 6"
+      ],
+      "aliasesEn": [
+        "MG6"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "bc1440fd-3831-5672-962f-f80933531a90",
+      "make": "MG",
+      "makeSlug": "mg",
+      "model": "4 EV",
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
+      "aliasesAr": [
+        "إم جي 4",
+        "ام جي 4"
+      ],
+      "aliasesEn": [
+        "MG4",
+        "4EV"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "57fe4098-0752-5b55-b9fa-0429c4421cc1",
+      "make": "MG",
+      "makeSlug": "mg",
+      "model": "7",
+      "makeAliasesAr": [
+        "إم جي",
+        "ام جي"
+      ],
+      "aliasesAr": [
+        "إم جي 7",
+        "ام جي 7"
+      ],
+      "aliasesEn": [
+        "MG7"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "bc72165f-a437-533c-ba8e-15452d82b001",
+      "make": "Jetour",
+      "makeSlug": "jetour",
+      "model": "T2",
+      "makeAliasesAr": [
+        "جيتور"
+      ],
+      "aliasesAr": [
+        "تي 2"
+      ],
+      "aliasesEn": [
+        "T-2"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "936ccc10-714a-5baf-aa61-61e664773cb9",
+      "make": "Jetour",
+      "makeSlug": "jetour",
+      "model": "X70 Plus",
+      "makeAliasesAr": [
+        "جيتور"
+      ],
+      "aliasesAr": [
+        "إكس 70 بلس",
+        "اكس 70 بلس"
+      ],
+      "aliasesEn": [
+        "X70Plus"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "c28104ab-48f3-5993-a2d7-b2a8f7aa2717",
+      "make": "Jetour",
+      "makeSlug": "jetour",
+      "model": "X70",
+      "makeAliasesAr": [
+        "جيتور"
+      ],
+      "aliasesAr": [
+        "إكس 70",
+        "اكس 70"
+      ],
+      "aliasesEn": [
+        "X-70"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "a6cd6845-1366-58de-90ad-246abdecab0c",
+      "make": "Jetour",
+      "makeSlug": "jetour",
+      "model": "X90 Plus",
+      "makeAliasesAr": [
+        "جيتور"
+      ],
+      "aliasesAr": [
+        "إكس 90 بلس",
+        "اكس 90 بلس"
+      ],
+      "aliasesEn": [
+        "X90Plus"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "ae192a08-8df7-5a0e-b7fa-1fee9b1c799d",
+      "make": "Jetour",
+      "makeSlug": "jetour",
+      "model": "Dashing",
+      "makeAliasesAr": [
+        "جيتور"
+      ],
+      "aliasesAr": [
+        "داشينج"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "bb29865c-b3c7-5f31-948b-0ef92ec9c180",
+      "make": "BAIC",
+      "makeSlug": "baic",
+      "model": "U5 Plus",
+      "makeAliasesAr": [
+        "بايك"
+      ],
+      "aliasesAr": [
+        "يو 5 بلس"
+      ],
+      "aliasesEn": [
+        "U5Plus"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "4c974cc2-c70c-5bda-9889-b62b7b90f18d",
+      "make": "BAIC",
+      "makeSlug": "baic",
+      "model": "X35",
+      "makeAliasesAr": [
+        "بايك"
+      ],
+      "aliasesAr": [
+        "إكس 35",
+        "اكس 35"
+      ],
+      "aliasesEn": [
+        "X-35"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "0d57393f-c97d-545f-957f-0a2650b867c8",
+      "make": "BAIC",
+      "makeSlug": "baic",
+      "model": "X55",
+      "makeAliasesAr": [
+        "بايك"
+      ],
+      "aliasesAr": [
+        "إكس 55",
+        "اكس 55"
+      ],
+      "aliasesEn": [
+        "X-55"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "3bc49200-e832-5b0e-b1ff-c4d13f5ea18a",
+      "make": "BAIC",
+      "makeSlug": "baic",
+      "model": "BJ40 Plus",
+      "makeAliasesAr": [
+        "بايك"
+      ],
+      "aliasesAr": [
+        "بي جي 40 بلس"
+      ],
+      "aliasesEn": [
+        "BJ40Plus"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "8c4559c3-3d1e-5d07-8577-4f5c877c17e8",
+      "make": "Changan",
+      "makeSlug": "changan",
+      "model": "CS55 Plus",
+      "makeAliasesAr": [
+        "شانجان"
+      ],
+      "aliasesAr": [
+        "سي إس 55 بلس",
+        "سي اس 55 بلس"
+      ],
+      "aliasesEn": [
+        "CS55Plus"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "e8332d48-b9d0-54b8-b839-a0ed9ad2cbb3",
+      "make": "Changan",
+      "makeSlug": "changan",
+      "model": "CS35 Plus",
+      "makeAliasesAr": [
+        "شانجان"
+      ],
+      "aliasesAr": [
+        "سي إس 35 بلس",
+        "سي اس 35 بلس"
+      ],
+      "aliasesEn": [
+        "CS35Plus"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "787b139e-baa2-5929-9514-0b3bbbe73a44",
+      "make": "Changan",
+      "makeSlug": "changan",
+      "model": "CS75 Plus",
+      "makeAliasesAr": [
+        "شانجان"
+      ],
+      "aliasesAr": [
+        "سي إس 75 بلس",
+        "سي اس 75 بلس"
+      ],
+      "aliasesEn": [
+        "CS75Plus"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "a9002217-af5a-5b94-bb28-86b81afcf00a",
+      "make": "Changan",
+      "makeSlug": "changan",
+      "model": "UNI-T",
+      "makeAliasesAr": [
+        "شانجان"
+      ],
+      "aliasesAr": [
+        "يوني تي"
+      ],
+      "aliasesEn": [
+        "UNIT"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "99d19934-d68b-595f-baa9-be61abf6b615",
+      "make": "BYD",
+      "makeSlug": "byd",
+      "model": "Seal",
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
+      "aliasesAr": [
+        "سيل"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "19bc95a6-9132-531e-bb3f-85e4652d952b",
+      "make": "BYD",
+      "makeSlug": "byd",
+      "model": "Han",
+      "makeAliasesAr": [
+        "بي واي دي"
+      ],
+      "aliasesAr": [
+        "هان"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "49d23590-7420-5639-839b-a07a1e51ea22",
+      "make": "Geely",
+      "makeSlug": "geely",
+      "model": "Emgrand",
+      "makeAliasesAr": [
+        "جيلي"
+      ],
+      "aliasesAr": [
+        "إمجراند",
+        "امجراند"
+      ],
+      "aliasesEn": [
+        "EC7",
+        "Emgrand 7"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "867568fc-74a4-561a-94fb-d49b7bccdd5e",
+      "make": "Geely",
+      "makeSlug": "geely",
+      "model": "Azkarra",
+      "makeAliasesAr": [
+        "جيلي"
+      ],
+      "aliasesAr": [
+        "أزكارا",
+        "ازكارا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "33dc271a-59fa-5793-a909-6320bb44b366",
+      "make": "Geely",
+      "makeSlug": "geely",
+      "model": "Okavango",
+      "makeAliasesAr": [
+        "جيلي"
+      ],
+      "aliasesAr": [
+        "أوكافانجو",
+        "اوكافانجو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "2092add3-581b-5821-858f-cff19387fec7",
+      "make": "Geely",
+      "makeSlug": "geely",
+      "model": "Monjaro",
+      "makeAliasesAr": [
+        "جيلي"
+      ],
+      "aliasesAr": [
+        "مونجارو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "f07c22cb-87a6-5ae7-8a92-fc23b848ecd7",
+      "make": "Soueast",
+      "makeSlug": "soueast",
+      "model": "S06",
+      "makeAliasesAr": [
+        "ساوايست",
+        "سويست"
+      ],
+      "aliasesAr": [
+        "إس 06",
+        "اس 06"
+      ],
+      "aliasesEn": [
+        "S-06"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "cf3bace9-af2c-5f06-bf4b-665ba874c3f3",
+      "make": "Zeekr",
+      "makeSlug": "zeekr",
+      "model": "X",
+      "makeAliasesAr": [
+        "زيكر"
+      ],
+      "aliasesAr": [
+        "إكس",
+        "اكس"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "cited",
+      "verified": false
+    },
+    {
+      "id": "74fd9b97-75fc-5828-893f-99a86ea4ed12",
+      "make": "Zeekr",
+      "makeSlug": "zeekr",
+      "model": "001",
+      "makeAliasesAr": [
+        "زيكر"
+      ],
+      "aliasesAr": [
+        "001"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "cited",
       "verified": false
     }
   ]

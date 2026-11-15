@@ -50,10 +50,14 @@ describe('vehicle catalog integrity', () => {
     expect(WMI_SLUGS.filter((slug) => !catalogSlugs.has(slug))).toEqual([]);
   });
 
-  it('keeps ids unique and every row unverified knowledge', () => {
+  it('keeps ids unique, preserves source tiers, and leaves verified = false', () => {
     expect(new Set(ENTRIES.map((entry) => entry.id)).size).toBe(ENTRIES.length);
+    const cited = ENTRIES.filter((e) => e.sourceTier === 'cited');
+    const knowledge = ENTRIES.filter((e) => e.sourceTier === 'knowledge');
+    expect(cited.length).toBe(51);
+    expect(knowledge.length).toBe(ENTRIES.length - 51);
     for (const entry of ENTRIES) {
-      expect(entry.sourceTier).toBe('knowledge');
+      expect(['cited', 'knowledge']).toContain(entry.sourceTier);
       expect(entry.verified).toBe(false);
       expect(entry.yearFrom).toBeNull();
       expect(entry.yearTo).toBeNull();
