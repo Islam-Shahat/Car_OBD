@@ -5,6 +5,7 @@ import { EmptyState } from '../../app/EmptyState';
 import { PageHeader } from '../../app/PageHeader';
 import { IconAlert, IconCheck, IconScan } from '../../app/icons';
 import { useStorage } from '../../lib/db/StorageProvider';
+import type { LiveDataLogInput, ScanResultInput } from '../../lib/db/types';
 import type { Elm327Driver } from '../../lib/elm327/driver';
 import type { ConnectionInfo } from '../../lib/elm327/connect';
 import { errorMessage, isElmError } from '../../lib/elm327/errors';
@@ -18,6 +19,7 @@ import { isObdError } from '../../lib/obd/errors';
 import { ScanService } from '../../lib/obd/scanService';
 import type { ClearResult, ScanProgress, ScanResult, ScanStep } from '../../lib/obd/scanTypes';
 import { useConnectionStore } from '../connection/connectionStore';
+import { useSelectedVehicleStore } from '../vehicles/vehicleStore';
 import { ScanResultView } from './ScanResultView';
 
 const STEP_KEYS = {
@@ -130,7 +132,64 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
     setProgress(null);
     setResult(null);
     try {
-      setResult(await service.runFullScan(setProgress));
+      const scan = await service.runFullScan(setProgress);
+      setResult(scan);
+
+      // Auto-persist scan session to SQLite
+      if (repositories) {
+        try {
+          const selectedVehicle = useSelectedVehicleStore.getState().selected;
+          const overallStatus =
+            scan.stored.length > 0 || scan.status?.mil.on
+              ? 'fault'
+              : scan.pending.length > 0 || scan.warnings.length > 0
+                ? 'warning'
+                : 'healthy';
+
+          const session = await repositories.scans.createSession({
+            vehicleId: selectedVehicle?.id ?? null,
+            startedAt: new Date(Date.now() - scan.durationMs).toISOString(),
+            finishedAt: new Date(scan.finishedAt).toISOString(),
+            protocol: scan.protocol,
+            adapterInfo: scan.adapter,
+            milStatus: scan.status?.mil ?? null,
+            overallStatus,
+            mode: 'normal',
+          });
+
+          const dtcResults: ScanResultInput[] = [
+            ...scan.stored.map((d) => ({
+              code: d.code,
+              type: 'stored' as const,
+              freezeFrame: scan.freezeFrames.find((f) => f.dtc?.code === d.code) ?? null,
+            })),
+            ...scan.pending.map((d) => ({ code: d.code, type: 'pending' as const })),
+            ...scan.permanent.map((d) => ({ code: d.code, type: 'permanent' as const })),
+          ];
+          if (dtcResults.length > 0) {
+            await repositories.scans.addResults(session.id, dtcResults);
+          }
+
+          if (scan.status) {
+            await repositories.scans.addReadiness(session.id, 'initial', scan.status);
+          }
+
+          const liveLogs: LiveDataLogInput[] = scan.live.flatMap((r) =>
+            r.measurements.map((m) => ({
+              pid: `0x${r.pid.toString(16).toUpperCase().padStart(2, '0')}`,
+              value: m.value,
+              unit: m.unit,
+              ts: new Date(scan.finishedAt).toISOString(),
+            })),
+          );
+          if (liveLogs.length > 0) {
+            await repositories.scans.addLiveData(session.id, liveLogs);
+          }
+        } catch (persistErr) {
+          // Persistence failure must never block scan results display
+          console.warn('Auto-persist scan session failed:', persistErr);
+        }
+      }
     } catch (error) {
       setFailure(failureFor(error, 'scan'));
     } finally {
@@ -186,14 +245,21 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
       )}
 
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
+            autoFocus
             onClick={() => void runScan()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                void runScan();
+              }
+            }}
             disabled={busy}
-            className="inline-flex h-10 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-blue-600 px-6 text-base font-bold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <IconScan className={`size-4 ${scanning ? 'animate-spin' : ''}`} />
+            <IconScan className={`size-5 ${scanning ? 'animate-spin' : ''}`} />
             {scanning ? t('scan.scanning') : t('scan.start')}
           </button>
 
@@ -201,7 +267,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
             type="button"
             onClick={() => setConfirmOpen(true)}
             disabled={!canClear}
-            className="inline-flex h-10 items-center gap-2 rounded-lg border border-amber-300 px-4 text-sm font-semibold text-amber-800 transition-colors hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-amber-500/40 dark:text-amber-300 dark:hover:bg-amber-500/10"
+            className="inline-flex h-12 items-center gap-2 rounded-xl border border-amber-300 px-5 text-sm font-semibold text-amber-800 transition-colors hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-amber-500/40 dark:text-amber-300 dark:hover:bg-amber-500/10"
           >
             {clearing ? t('scan.clearing') : t('scan.clear')}
           </button>

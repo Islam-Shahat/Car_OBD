@@ -4,7 +4,9 @@
     "tagline": "Car fault scanner",
     "version": "Version {{version}}",
     "offline": "Works offline",
-    "disclaimerShort": "Diagnosis only — clearing codes does not fix the fault"
+    "disclaimerShort": "Diagnosis only — clearing codes does not fix the fault",
+    "loadingDatabase": "Initializing local database & DTC fault codes…",
+    "databaseError": "Failed to initialize local database."
   },
   "nav": {
     "connect": "Connect",
@@ -16,7 +18,8 @@
   "common": {
     "comingSoon": "In development",
     "switchLanguage": "Switch language",
-    "toggleTheme": "Toggle theme"
+    "toggleTheme": "Toggle theme",
+    "retry": "Retry"
   },
   "languages": {
     "ar": "العربية",
@@ -70,6 +73,12 @@
     "yearUnknown": "Year not set",
     "addTitle": "Add a car",
     "catalogHint": "Choose make, then model, then year. The list is for selection only and does not verify the car.",
+    "detectedTitle": "Car detected via OBD diagnostic port",
+    "detectedVin": "VIN",
+    "detectedApply": "Use detected vehicle info",
+    "candidateYears": "Candidate years for VIN:",
+    "makeUnknown": "Make not in automatic database (select manually to remember for next time)",
+    "selectYear": "Select year…",
     "freeHint": "Enter the make and model as written on the car. They stay on this device.",
     "make": "Make",
     "makeSearch": "Search makes",
@@ -113,7 +122,13 @@
       "ssangyong": "SsangYong",
       "subaru": "Subaru",
       "tesla": "Tesla",
-      "volvo": "Volvo"
+      "volvo": "Volvo",
+      "seat": "SEAT",
+      "proton": "Proton",
+      "jetour": "Jetour",
+      "baic": "BAIC",
+      "soueast": "Soueast",
+      "zeekr": "Zeekr"
     },
     "model": "Model",
     "modelSearch": "Search models in Arabic or English",
@@ -147,6 +162,13 @@
     "connect": "Connect",
     "connecting": "Connecting…",
     "disconnect": "Disconnect",
+    "plugInGuideTitle": "Plug in the adapter",
+    "plugInStep1": "Plug the ELM327 adapter into the vehicle OBD-II port (usually under the dashboard).",
+    "plugInStep2": "Turn vehicle ignition switch to ON (engine off or running).",
+    "plugInStep3": "Select the COM port from the list and click 'Connect'.",
+    "connectedTitle": "Adapter connected successfully",
+    "proceedToScan": "Proceed to Scan",
+    "proceedToVehicles": "Detect / Select Vehicle",
     "statusTitle": "Connection status",
     "statusIdle": "Not connected. Pick a port and press Connect.",
     "statusConnecting": "Initialising the adapter and checking the engine ECU…",
@@ -191,6 +213,12 @@
       "done": "Done"
     },
     "resultTitle": "Diagnostic result",
+    "overallHealthyTitle": "Overall: Healthy",
+    "overallHealthyBody": "No stored fault codes found and check-engine lamp is off.",
+    "overallWarningTitle": "Overall: Warning — Pending codes or warnings",
+    "overallWarningBody": "Pending codes or system warnings detected. Lamp may be off, but car needs follow up.",
+    "overallFaultTitle": "Overall: Faults Detected",
+    "overallFaultBody": "Stored fault codes detected or Check Engine Light is illuminated.",
     "duration": "Completed in {{seconds}} s",
     "vin": "VIN",
     "vinUnavailable": "Not reported by the ECU",
@@ -297,7 +325,7 @@
       "malformedResponse": "A malformed answer was ignored."
     },
     "clearConfirmTitle": "Clear stored codes?",
-    "clearConfirmBody": "The app saves a full backup first, sends the clear command (Service 04), then re-scans. The check-engine lamp may stay on until the ECU completes its readiness monitors.",
+    "clearConfirmBody": "The app saves a full backup in SQLite first, then sends the clear command (Mode 04). Notice: Clearing codes does NOT fix the physical fault, and resets readiness monitors and freeze frames.",
     "clearConfirmCounts": "Stored: {{stored}} · pending: {{pending}}",
     "clearConfirmKeep": "Cancel",
     "clearConfirmAction": "Save backup and clear",
@@ -319,7 +347,17 @@
       "chassis": "Chassis",
       "network": "Network"
     },
-    "dtcUnreviewed": "Unreviewed translation",
+    "dtcUnreviewed": "Unreviewed machine translation",
+    "dtcDraftReview": "Draft translation pending mechanic review",
+    "dtcShowEnglish": "English",
+    "dtcHideEnglish": "Hide",
+    "severityLabel": "Severity: {{level}}",
+    "severityHeuristic": "(Heuristic estimate)",
+    "severities": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
     "dtcNoDescription": "No description yet for this code. Check the vehicle's service manual.",
     "dtcDetails": "Causes and inspection steps",
     "dtcCauses": "Possible causes",

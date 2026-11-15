@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { PageHeader } from '../../app/PageHeader';
-import { IconAlert, IconPlug, IconRefresh } from '../../app/icons';
+import { IconAlert, IconCar, IconCheck, IconPlug, IconRefresh, IconScan } from '../../app/icons';
 import { ERROR_MESSAGE_KEYS } from '../../lib/i18n/errorKeys';
 import type { SerialPortInfo } from '../../lib/elm327/serialTransport';
 import { useConnectionStore } from './connectionStore';
@@ -131,7 +132,52 @@ export function ConnectionPage() {
           )}
         </section>
 
-        <ConnectionStatusPanel phase={phase} info={info} />
+        <div className="space-y-4">
+          <ConnectionStatusPanel phase={phase} info={info} />
+
+          {connected && (
+            <section className="rounded-xl border border-blue-200 bg-blue-50/70 p-5 shadow-sm dark:border-blue-500/30 dark:bg-blue-500/10">
+              <div className="flex items-center gap-2 text-sm font-semibold text-blue-900 dark:text-blue-200">
+                <IconCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
+                <span>{t('connection.connectedTitle')}</span>
+              </div>
+              <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
+                {info?.protocol ?? t('connection.protocolUnknown')}
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2.5">
+                <Link
+                  to="/scan"
+                  className="inline-flex h-10 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+                >
+                  <IconScan className="size-4" />
+                  {t('connection.proceedToScan')}
+                </Link>
+                <Link
+                  to="/vehicles"
+                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-blue-300 bg-white px-4 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50 dark:border-blue-500/40 dark:bg-slate-900 dark:text-blue-300 dark:hover:bg-slate-800"
+                >
+                  <IconCar className="size-4" />
+                  {t('connection.proceedToVehicles')}
+                </Link>
+              </div>
+            </section>
+          )}
+
+          {!connected && (
+            <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                <IconPlug className="size-4 text-blue-600 dark:text-blue-400" />
+                <span>{t('connection.plugInGuideTitle')}</span>
+              </h3>
+              <ol className="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-300 list-decimal list-inside">
+                <li className="leading-5">{t('connection.plugInStep1')}</li>
+                <li className="leading-5">{t('connection.plugInStep2')}</li>
+                <li className="leading-5">{t('connection.plugInStep3')}</li>
+              </ol>
+            </section>
+          )}
+        </div>
       </div>
 
       <p className="mt-4 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs leading-6 text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">

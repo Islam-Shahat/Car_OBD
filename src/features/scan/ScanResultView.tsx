@@ -41,6 +41,12 @@ const SYSTEM_KEYS = {
   U: 'scan.systems.U',
 } as const satisfies Record<Dtc['system'], string>;
 
+const SEVERITY_KEYS = {
+  high: 'scan.severities.high',
+  medium: 'scan.severities.medium',
+  low: 'scan.severities.low',
+} as const;
+
 const WARNING_KEYS = {
   'pids-unavailable': 'scan.warnings.pidsUnavailable',
   'pid-no-data': 'scan.warnings.pidNoData',
@@ -164,6 +170,7 @@ function DtcGroup({
   const { t, i18n } = useTranslation();
   const { repositories } = useStorage();
   const [lookups, setLookups] = useState<Record<string, DtcLookup>>({});
+  const [showEnglishMap, setShowEnglishMap] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     let cancelled = false;
@@ -187,6 +194,10 @@ function DtcGroup({
   }, [codes, repositories, make]);
 
   const arabic = i18n.resolvedLanguage === 'ar';
+
+  const toggleEnglish = (code: string) => {
+    setShowEnglishMap((prev) => ({ ...prev, [code]: !prev[code] }));
+  };
 
   return (
     <div>
@@ -217,11 +228,12 @@ function DtcGroup({
                 ? record.inspectionStepsAr
                 : record.inspectionStepsEn
               : [];
+            const isEnglishOpen = showEnglishMap[dtc.code] ?? false;
 
             return (
               <li
                 key={dtc.code}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900"
+                className="rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900"
               >
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="font-mono text-sm font-bold">{dtc.code}</span>
@@ -239,35 +251,78 @@ function DtcGroup({
                       {t('scan.ecuId', { id: dtc.ecuId })}
                     </span>
                   )}
-                  {record?.needsReview && (
+                  {record?.translationTier === 1 && (
+                    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-medium text-blue-800 dark:bg-blue-500/15 dark:text-blue-300">
+                      {t('scan.dtcDraftReview')}
+                    </span>
+                  )}
+                  {record?.translationTier === 2 && (
                     <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
                       {t('scan.dtcUnreviewed')}
+                    </span>
+                  )}
+                  {record?.severity && (
+                    <span
+                      className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${
+                        record.severity === 'high'
+                          ? 'bg-red-100 text-red-800 dark:bg-red-500/15 dark:text-red-300'
+                          : record.severity === 'medium'
+                            ? 'bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300'
+                            : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                      }`}
+                    >
+                      {t('scan.severityLabel', {
+                        level: t(
+                          SEVERITY_KEYS[record.severity as keyof typeof SEVERITY_KEYS] ??
+                            'scan.severities.medium',
+                        ),
+                      })}
+                      {record.severitySource === 'heuristic' && (
+                        <span className="ms-1 font-normal opacity-75">
+                          {t('scan.severityHeuristic')}
+                        </span>
+                      )}
                     </span>
                   )}
                 </div>
 
                 {record ? (
-                  <div className="mt-1 space-y-1">
+                  <div className="mt-2 space-y-1.5">
                     <p className="text-xs leading-6 text-slate-700 dark:text-slate-200">
                       {arabic ? record.descriptionAr : record.descriptionEn}
                     </p>
+
                     {arabic && (
-                      <p
-                        dir="ltr"
-                        className="text-[11px] leading-5 text-slate-500 dark:text-slate-400"
-                      >
-                        {record.descriptionEn}
-                      </p>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => toggleEnglish(dtc.code)}
+                          className="text-[11px] font-medium text-blue-600 hover:underline dark:text-blue-400"
+                        >
+                          {isEnglishOpen ? t('scan.dtcHideEnglish') : t('scan.dtcShowEnglish')}
+                        </button>
+                        {isEnglishOpen && (
+                          <p
+                            dir="ltr"
+                            className="mt-1 rounded bg-slate-50 p-2 font-sans text-xs leading-5 text-slate-600 dark:bg-slate-800/50 dark:text-slate-300"
+                          >
+                            {record.descriptionEn}
+                          </p>
+                        )}
+                      </div>
                     )}
+
                     {(causes.length > 0 || steps.length > 0) && (
-                      <details className="text-xs">
-                        <summary className="cursor-pointer text-slate-500 dark:text-slate-400">
+                      <details className="mt-1 text-xs">
+                        <summary className="cursor-pointer text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
                           {t('scan.dtcDetails')}
                         </summary>
                         {causes.length > 0 && (
-                          <div className="mt-1">
-                            <p className="font-semibold">{t('scan.dtcCauses')}</p>
-                            <ul className="list-inside list-disc text-slate-600 dark:text-slate-300">
+                          <div className="mt-1.5">
+                            <p className="font-semibold text-slate-700 dark:text-slate-300">
+                              {t('scan.dtcCauses')}
+                            </p>
+                            <ul className="mt-0.5 list-inside list-disc text-slate-600 dark:text-slate-400">
                               {causes.map((cause) => (
                                 <li key={cause}>{cause}</li>
                               ))}
@@ -275,9 +330,11 @@ function DtcGroup({
                           </div>
                         )}
                         {steps.length > 0 && (
-                          <div className="mt-1">
-                            <p className="font-semibold">{t('scan.dtcSteps')}</p>
-                            <ol className="list-inside list-decimal text-slate-600 dark:text-slate-300">
+                          <div className="mt-1.5">
+                            <p className="font-semibold text-slate-700 dark:text-slate-300">
+                              {t('scan.dtcSteps')}
+                            </p>
+                            <ol className="mt-0.5 list-inside list-decimal text-slate-600 dark:text-slate-400">
                               {steps.map((step) => (
                                 <li key={step}>{step}</li>
                               ))}
@@ -313,6 +370,14 @@ export function ScanResultView({ result }: { result: ScanResult }) {
   const vin = result.vin;
   const hasDriveHistory = Object.values(result.driveHistory).some((value) => value !== null);
 
+  const hasStored = result.stored.length > 0;
+  const isMilOn = Boolean(result.status?.mil.on);
+  const hasPending = result.pending.length > 0;
+  const hasWarnings = result.warnings.length > 0;
+
+  const healthTier: 'healthy' | 'warning' | 'fault' =
+    hasStored || isMilOn ? 'fault' : hasPending || hasWarnings ? 'warning' : 'healthy';
+
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -320,6 +385,50 @@ export function ScanResultView({ result }: { result: ScanResult }) {
         <span className="text-xs text-slate-500 dark:text-slate-400">
           {t('scan.duration', { seconds })}
         </span>
+      </div>
+
+      <div
+        className={`mt-4 rounded-xl border p-4 shadow-sm ${
+          healthTier === 'healthy'
+            ? 'border-emerald-300 bg-emerald-50/80 text-emerald-950 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-100'
+            : healthTier === 'warning'
+              ? 'border-amber-300 bg-amber-50/80 text-amber-950 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100'
+              : 'border-red-300 bg-red-50/80 text-red-950 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-100'
+        }`}
+      >
+        <div className="flex items-start gap-3">
+          <div
+            className={`mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg ${
+              healthTier === 'healthy'
+                ? 'bg-emerald-600 text-white'
+                : healthTier === 'warning'
+                  ? 'bg-amber-500 text-white'
+                  : 'bg-red-600 text-white'
+            }`}
+          >
+            {healthTier === 'healthy' ? (
+              <IconCheck className="size-5" />
+            ) : (
+              <IconAlert className="size-5" />
+            )}
+          </div>
+          <div>
+            <h3 className="text-sm font-bold">
+              {healthTier === 'healthy'
+                ? t('scan.overallHealthyTitle')
+                : healthTier === 'warning'
+                  ? t('scan.overallWarningTitle')
+                  : t('scan.overallFaultTitle')}
+            </h3>
+            <p className="mt-1 text-xs opacity-90 leading-5">
+              {healthTier === 'healthy'
+                ? t('scan.overallHealthyBody')
+                : healthTier === 'warning'
+                  ? t('scan.overallWarningBody')
+                  : t('scan.overallFaultBody')}
+            </p>
+          </div>
+        </div>
       </div>
 
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">

@@ -7,6 +7,8 @@ import { IconAlert, IconCar, IconCheck } from '../../app/icons';
 import { useStorage } from '../../lib/db/StorageProvider';
 import type { CatalogEntry, CatalogMake, Vehicle } from '../../lib/db/types';
 import { searchKey } from '../../lib/i18n/arabic';
+import type { VehicleIdentity } from '../../lib/obd/vinDecode';
+import { useConnectionStore } from '../connection/connectionStore';
 import {
   persistSelectedVehicle,
   restoreSelectedVehicle,
@@ -58,6 +60,12 @@ const MAKE_NAME_KEYS = {
   subaru: 'vehicles.makeNames.subaru',
   tesla: 'vehicles.makeNames.tesla',
   volvo: 'vehicles.makeNames.volvo',
+  seat: 'vehicles.makeNames.seat',
+  proton: 'vehicles.makeNames.proton',
+  jetour: 'vehicles.makeNames.jetour',
+  baic: 'vehicles.makeNames.baic',
+  soueast: 'vehicles.makeNames.soueast',
+  zeekr: 'vehicles.makeNames.zeekr',
 } as const;
 
 type MakeNameKey = (typeof MAKE_NAME_KEYS)[keyof typeof MAKE_NAME_KEYS];
@@ -78,6 +86,7 @@ type FormMode = 'catalog' | 'free';
 export function VehiclesPage() {
   const { t } = useTranslation();
   const { repositories, status: storageStatus, error: storageError } = useStorage();
+  const { phase, identityCache } = useConnectionStore();
   const selected = useSelectedVehicleStore((state) => state.selected);
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -92,10 +101,45 @@ export function VehiclesPage() {
   const [freeMake, setFreeMake] = useState('');
   const [freeModel, setFreeModel] = useState('');
 
+  const [detectedIdentity, setDetectedIdentity] = useState<VehicleIdentity | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [detail, setDetail] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!identityCache || phase !== 'connected') {
+      setDetectedIdentity(null);
+      return undefined;
+    }
+
+    void identityCache
+      .load()
+      .then(async (identity) => {
+        if (cancelled || !identity) return;
+        let resolved = identity;
+        if (!resolved.makeSlug && repositories) {
+          const userMake = await repositories.wmiUserMap.get(resolved.wmi);
+          if (userMake && !cancelled) {
+            resolved = {
+              ...resolved,
+              makeSlug: userMake,
+              manufacturerName: userMake.toUpperCase(),
+            };
+          }
+        }
+        if (!cancelled) setDetectedIdentity(resolved);
+      })
+      .catch(() => {
+        if (!cancelled) setDetectedIdentity(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [identityCache, phase, repositories]);
 
   useEffect(() => {
     let cancelled = false;
@@ -153,6 +197,33 @@ export function VehiclesPage() {
       return searchKey(make.make, make.makeSlug, localName, ...make.aliasesAr).includes(needle);
     });
   }, [makes, makeQuery, t]);
+
+  const uniqueModels = useMemo(() => {
+    const seen = new Set<string>();
+    return models.filter((item) => {
+      const key = item.model.trim().toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [models]);
+
+  const availableYears = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    if (entry && entry.yearFrom !== null && entry.yearTo !== null) {
+      const list: number[] = [];
+      for (let y = entry.yearTo; y >= entry.yearFrom; y--) {
+        list.push(y);
+      }
+      return list;
+    }
+    // When catalog model has no year range, offer free year selection instead of empty list
+    const list: number[] = [];
+    for (let y = currentYear + 1; y >= 1980; y--) {
+      list.push(y);
+    }
+    return list;
+  }, [entry]);
 
   const selectedMake = makes.find((make) => make.makeSlug === makeSlug) ?? null;
   const makeLabel = (make: CatalogMake) => {
@@ -217,6 +288,9 @@ export function VehiclesPage() {
               year: yearNumber,
             },
       );
+      if (detectedIdentity && makeSlug) {
+        void repositories.wmiUserMap.set(detectedIdentity.wmi, makeSlug).catch(() => undefined);
+      }
       setVehicles((current) => [created, ...current]);
       await remember(created);
       resetForm();
@@ -310,6 +384,71 @@ export function VehiclesPage() {
       )}
 
       <section className="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        {detectedIdentity && (
+          <div className="mb-5 rounded-xl border border-blue-200 bg-blue-50/70 p-4 dark:border-blue-500/30 dark:bg-blue-500/10">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold text-blue-900 dark:text-blue-200">
+                  {t('vehicles.detectedTitle')}
+                </p>
+                <p
+                  dir="ltr"
+                  className="mt-0.5 font-mono text-sm font-bold text-slate-800 dark:text-slate-100"
+                >
+                  {detectedIdentity.vin}
+                </p>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
+                  {detectedIdentity.makeSlug
+                    ? makeNameKey(detectedIdentity.makeSlug)
+                      ? t(makeNameKey(detectedIdentity.makeSlug)!)
+                      : detectedIdentity.makeSlug
+                    : t('vehicles.makeUnknown')}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  if (detectedIdentity.makeSlug) {
+                    setMakeSlug(detectedIdentity.makeSlug);
+                    setEntry(null);
+                    setModelQuery('');
+                    setModels([]);
+                  }
+                  if (detectedIdentity.yearCandidates.length > 0) {
+                    setYear(
+                      String(
+                        detectedIdentity.yearCandidates[detectedIdentity.yearCandidates.length - 1],
+                      ),
+                    );
+                  }
+                }}
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-blue-600 px-3 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+              >
+                <IconCheck className="size-3.5" />
+                {t('vehicles.detectedApply')}
+              </button>
+            </div>
+
+            {detectedIdentity.yearCandidates.length > 0 && (
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                <span className="text-slate-500 dark:text-slate-400">
+                  {t('vehicles.candidateYears')}
+                </span>
+                {detectedIdentity.yearCandidates.map((candidateYear) => (
+                  <button
+                    key={candidateYear}
+                    type="button"
+                    onClick={() => setYear(String(candidateYear))}
+                    className="rounded border border-blue-300 bg-white px-2 py-0.5 font-mono text-xs font-medium text-blue-800 transition-colors hover:bg-blue-50 dark:border-blue-500/40 dark:bg-slate-900 dark:text-blue-300"
+                  >
+                    {candidateYear}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <div>
             <h2 className="text-sm font-semibold">{t('vehicles.addTitle')}</h2>
@@ -392,13 +531,13 @@ export function VehiclesPage() {
                   placeholder={t('vehicles.modelSearch')}
                   className="mt-1 h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm dark:border-slate-700 dark:bg-slate-950"
                 />
-                {models.length === 0 ? (
+                {uniqueModels.length === 0 ? (
                   <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
                     {t('vehicles.noResults')}
                   </p>
                 ) : (
                   <ul className="mt-2 grid max-h-56 gap-1 overflow-y-auto sm:grid-cols-2">
-                    {models.map((model) => (
+                    {uniqueModels.map((model) => (
                       <li key={model.id}>
                         <button
                           type="button"
@@ -453,16 +592,30 @@ export function VehiclesPage() {
             <span className="ms-1 font-normal text-slate-500 dark:text-slate-400">
               ({t('vehicles.yearOptional')})
             </span>
-            <input
-              type="number"
-              inputMode="numeric"
-              min={MIN_YEAR}
-              max={MAX_YEAR}
-              value={year}
-              onChange={(event) => setYear(event.target.value)}
-              placeholder={t('vehicles.yearPlaceholder')}
-              className="mt-1 block h-10 w-32 rounded-lg border border-slate-300 bg-white px-3 font-mono text-sm font-normal dark:border-slate-700 dark:bg-slate-950"
-            />
+            <div className="mt-1 flex items-center gap-2">
+              <select
+                value={year}
+                onChange={(event) => setYear(event.target.value)}
+                className="h-10 rounded-lg border border-slate-300 bg-white px-3 font-mono text-sm dark:border-slate-700 dark:bg-slate-950"
+              >
+                <option value="">{t('vehicles.selectYear')}</option>
+                {availableYears.map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={MIN_YEAR}
+                max={MAX_YEAR}
+                value={year}
+                onChange={(event) => setYear(event.target.value)}
+                placeholder={t('vehicles.yearPlaceholder')}
+                className="h-10 w-28 rounded-lg border border-slate-300 bg-white px-3 font-mono text-sm font-normal dark:border-slate-700 dark:bg-slate-950"
+              />
+            </div>
           </label>
 
           <button
