@@ -103,6 +103,7 @@ function engineIsRunning(result: ScanResult): boolean {
 function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionInfo }) {
   const { t, i18n } = useTranslation();
   const identityCache = useConnectionStore((state) => state.identityCache);
+  const isDemo = useConnectionStore((state) => state.isDemo);
   const { repositories, status: storageStatus, error: storageError } = useStorage();
 
   const [result, setResult] = useState<ScanResult | null>(null);
@@ -142,7 +143,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
           const overallStatus =
             scan.stored.length > 0 || scan.status?.mil.on
               ? 'fault'
-              : scan.pending.length > 0 || scan.warnings.length > 0
+              : scan.pending.length > 0
                 ? 'warning'
                 : 'healthy';
 
@@ -233,6 +234,15 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
 
   return (
     <div className="space-y-4">
+      {isDemo && (
+        <div className="rounded-xl border border-purple-300 bg-purple-50/80 p-3 text-xs font-semibold text-purple-900 dark:border-purple-500/30 dark:bg-purple-500/10 dark:text-purple-200">
+          <span className="me-2 rounded bg-purple-600 px-1.5 py-0.5 text-[10px] font-bold text-white uppercase">
+            {t('connection.demoBadge')}
+          </span>
+          {t('scan.demoNotice')}
+        </div>
+      )}
+
       {storageStatus === 'error' && (
         <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-200">
           <p className="font-semibold">{t('scan.storageUnavailable')}</p>

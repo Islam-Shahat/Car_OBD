@@ -373,10 +373,10 @@ export function ScanResultView({ result }: { result: ScanResult }) {
   const hasStored = result.stored.length > 0;
   const isMilOn = Boolean(result.status?.mil.on);
   const hasPending = result.pending.length > 0;
-  const hasWarnings = result.warnings.length > 0;
 
+  // Banner color derives strictly from vehicle fault data (stored, pending, MIL)
   const healthTier: 'healthy' | 'warning' | 'fault' =
-    hasStored || isMilOn ? 'fault' : hasPending || hasWarnings ? 'warning' : 'healthy';
+    hasStored || isMilOn ? 'fault' : hasPending ? 'warning' : 'healthy';
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -605,17 +605,22 @@ export function ScanResultView({ result }: { result: ScanResult }) {
       )}
 
       {result.warnings.length > 0 && (
-        <div className="mt-5">
-          <h3 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
-            {t('scan.warningsTitle')}
-          </h3>
-          <ul className="mt-2 grid gap-2">
+        <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/60">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h3 className="text-xs font-semibold tracking-wide text-slate-600 uppercase dark:text-slate-300">
+              {t('scan.scanNotesTitle')}
+            </h3>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+              {t('scan.scanNotesNotice')}
+            </span>
+          </div>
+          <ul className="mt-3 grid gap-2">
             {result.warnings.map((warning, index) => (
               <li
                 key={`${warning.code}-${index}`}
-                className="flex items-start gap-2 rounded-lg bg-amber-50 px-3 py-2 text-xs leading-6 text-amber-900 dark:bg-amber-500/10 dark:text-amber-200"
+                className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50/80 px-3 py-2 text-xs leading-6 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200"
               >
-                <IconAlert className="mt-1 size-3.5 shrink-0" />
+                <IconAlert className="mt-1 size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
                 <span>
                   <WarningText warning={warning} />
                   {warning.detail && (
