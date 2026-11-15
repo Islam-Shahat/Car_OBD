@@ -491,5 +491,23 @@ for (const harness of HARNESSES) {
       expect(await repos.scanBackups.get('backup-1')).toBeNull();
       expect((await repos.scanBackups.list()).map((row) => row.id)).toEqual(['backup-2']);
     });
+
+    it('stores user-defined WMI to make mappings', async () => {
+      expect(await repos.wmiUserMap.get('LVV')).toBeNull();
+      await repos.wmiUserMap.set('LVV', 'chery');
+      expect(await repos.wmiUserMap.get('lvv')).toBe('chery');
+      expect(await repos.wmiUserMap.get('LVV')).toBe('chery');
+
+      const list = await repos.wmiUserMap.list();
+      expect(list).toHaveLength(1);
+      expect(list[0]).toMatchObject({
+        wmi: 'LVV',
+        makeSlug: 'chery',
+        source: 'user',
+      });
+
+      await repos.wmiUserMap.set('LVV', 'exeed');
+      expect(await repos.wmiUserMap.get('LVV')).toBe('exeed');
+    });
   });
 }

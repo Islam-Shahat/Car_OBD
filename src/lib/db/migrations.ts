@@ -217,6 +217,19 @@ export const MIGRATIONS: readonly Migration[] = [
       },
     ],
   },
+  {
+    version: 6,
+    description: 'user-mapped WMI to make associations',
+    statements: [
+      `CREATE TABLE IF NOT EXISTS wmi_user_map (
+        wmi TEXT PRIMARY KEY,
+        make_slug TEXT NOT NULL,
+        source TEXT NOT NULL DEFAULT 'user',
+        created_at TEXT NOT NULL
+      )`,
+      `CREATE INDEX IF NOT EXISTS wmi_user_map_make_idx ON wmi_user_map(make_slug)`,
+    ],
+  },
 ];
 
 /** Creates the migration ledger and applies every migration not yet recorded. */

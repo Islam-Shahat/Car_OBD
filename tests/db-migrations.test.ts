@@ -64,6 +64,7 @@ const CORE_TABLES = [
   'settings',
   'vehicle_catalog',
   'vehicles',
+  'wmi_user_map',
 ];
 
 describe('database migrations', () => {

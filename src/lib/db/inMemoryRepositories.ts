@@ -15,6 +15,7 @@ import type {
   SettingsRepository,
   VehicleCatalogRepository,
   VehicleRepository,
+  WmiUserMapRepository,
 } from './repositories';
 import { nowIso } from './sql';
 import type {
@@ -38,6 +39,7 @@ import type {
   Vehicle,
   VehicleInput,
   VehicleUpdate,
+  WmiUserMapEntry,
 } from './types';
 
 export interface InMemoryOptions {
@@ -475,6 +477,35 @@ export class InMemoryScanBackupRepository {
   }
 }
 
+export class InMemoryWmiUserMapRepository implements WmiUserMapRepository {
+  private readonly map = new Map<string, { makeSlug: string; createdAt: string }>();
+  private readonly clock: Clock;
+
+  constructor(options: InMemoryOptions = {}) {
+    this.clock = clock(options);
+  }
+
+  async get(wmi: string): Promise<string | null> {
+    return this.map.get(wmi.toUpperCase())?.makeSlug ?? null;
+  }
+
+  async set(wmi: string, makeSlug: string): Promise<void> {
+    const at = this.clock.now();
+    this.map.set(wmi.toUpperCase(), { makeSlug, createdAt: at });
+  }
+
+  async list(): Promise<WmiUserMapEntry[]> {
+    return [...this.map.entries()]
+      .sort(([, a], [, b]) => b.createdAt.localeCompare(a.createdAt))
+      .map(([wmi, entry]) => ({
+        wmi,
+        makeSlug: entry.makeSlug,
+        source: 'user',
+        createdAt: entry.createdAt,
+      }));
+  }
+}
+
 export interface InMemorySeed {
   vehicles?: readonly Vehicle[];
   catalog?: readonly CatalogEntry[];
@@ -495,5 +526,6 @@ export function createInMemoryRepositories(
     remoteConfig: new InMemoryRemoteConfigCacheRepository(options),
     scanBackups: backups,
     backups,
+    wmiUserMap: new InMemoryWmiUserMapRepository(options),
   };
 }

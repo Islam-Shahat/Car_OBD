@@ -10,6 +10,7 @@ import type {
   SettingsRepository,
   VehicleCatalogRepository,
   VehicleRepository,
+  WmiUserMapRepository,
 } from './repositories';
 import {
   fromSqlBool,
@@ -42,6 +43,7 @@ import type {
   Vehicle,
   VehicleInput,
   VehicleUpdate,
+  WmiUserMapEntry,
 } from './types';
 
 export interface SqliteRepositoryOptions {
@@ -954,6 +956,49 @@ export class SqliteScanBackupRepository implements ScanBackupRepository {
   }
 }
 
+export class SqliteWmiUserMapRepository implements WmiUserMapRepository {
+  private readonly db: SqlExecutor;
+  private readonly clock: RepositoryClock;
+
+  constructor(db: SqlExecutor, options: SqliteRepositoryOptions = {}) {
+    this.db = db;
+    this.clock = repositoryClock(options);
+  }
+
+  async get(wmi: string): Promise<string | null> {
+    const [row] = await this.db.select<{ make_slug: string }>(
+      'SELECT make_slug FROM wmi_user_map WHERE wmi = $1',
+      [wmi.toUpperCase()],
+    );
+    return row?.make_slug ?? null;
+  }
+
+  async set(wmi: string, makeSlug: string): Promise<void> {
+    const at = this.clock.now();
+    await this.db.execute(
+      `INSERT INTO wmi_user_map (wmi, make_slug, source, created_at)
+       VALUES ($1, $2, 'user', $3)
+       ON CONFLICT(wmi) DO UPDATE SET make_slug = excluded.make_slug`,
+      [wmi.toUpperCase(), makeSlug, at],
+    );
+  }
+
+  async list(): Promise<WmiUserMapEntry[]> {
+    const rows = await this.db.select<{
+      wmi: string;
+      make_slug: string;
+      source: string;
+      created_at: string;
+    }>('SELECT wmi, make_slug, source, created_at FROM wmi_user_map ORDER BY created_at DESC');
+    return rows.map((row) => ({
+      wmi: row.wmi,
+      makeSlug: row.make_slug,
+      source: 'user',
+      createdAt: row.created_at,
+    }));
+  }
+}
+
 export function createSqliteRepositories(
   db: SqlExecutor,
   options: SqliteRepositoryOptions = {},
@@ -966,5 +1011,6 @@ export function createSqliteRepositories(
     settings: new SqliteSettingsRepository(db, options),
     remoteConfig: new SqliteRemoteConfigCacheRepository(db, options),
     scanBackups: new SqliteScanBackupRepository(db, options),
+    wmiUserMap: new SqliteWmiUserMapRepository(db, options),
   };
 }

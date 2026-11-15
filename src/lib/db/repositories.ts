@@ -20,6 +20,7 @@ import type {
   Vehicle,
   VehicleInput,
   VehicleUpdate,
+  WmiUserMapEntry,
 } from './types';
 
 export interface VehicleRepository {
@@ -83,6 +84,12 @@ export interface RemoteConfigCacheRepository {
   save(input: RemoteConfigCacheInput): Promise<RemoteConfigCacheEntry>;
 }
 
+export interface WmiUserMapRepository {
+  get(wmi: string): Promise<string | null>;
+  set(wmi: string, makeSlug: string): Promise<void>;
+  list(): Promise<WmiUserMapEntry[]>;
+}
+
 export type { ScanBackup, ScanBackupRepository };
 
 export interface Repositories {
@@ -93,4 +100,5 @@ export interface Repositories {
   settings: SettingsRepository;
   remoteConfig: RemoteConfigCacheRepository;
   scanBackups: ScanBackupRepository;
+  wmiUserMap: WmiUserMapRepository;
 }

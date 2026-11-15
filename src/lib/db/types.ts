@@ -108,6 +108,13 @@ export interface DtcCounts {
   needsReview: number;
 }
 
+export interface WmiUserMapEntry {
+  wmi: string;
+  makeSlug: string;
+  source: 'user';
+  createdAt: string;
+}
+
 export type ScanMode = 'normal' | 'pre_purchase';
 export type ScanResultType = 'stored' | 'pending' | 'permanent';
 export type ReadinessPhase = 'before_clear' | 'after_clear' | 'initial';
