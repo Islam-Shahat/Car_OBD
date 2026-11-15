@@ -5,14 +5,18 @@ import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import catalogData from '../src/data/vehicle-catalog.json';
+import type { DtcSeedFile } from '../src/lib/db/dtcPack';
 import { migrate } from '../src/lib/db/migrations';
 import { seedDatabase, type CatalogSeedFile } from '../src/lib/db/seed';
 import { createSqliteRepositories } from '../src/lib/db/sqliteRepositories';
 import { decodeVehicleIdentity } from '../src/lib/obd/vinDecode';
+import type { ScanResult } from '../src/lib/obd/scanTypes';
 import { createTestDatabase, type TestDatabase } from './helpers/sqlite';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SHIPPED_DTC = JSON.parse(readFileSync(join(ROOT, 'public', 'dtc-pack.json'), 'utf8'));
+const SHIPPED_DTC = JSON.parse(
+  readFileSync(join(ROOT, 'public', 'dtc-pack.json'), 'utf8'),
+) as DtcSeedFile;
 
 const ADAPTER_INFO = {
   identity: 'ELM327 v1.5',
@@ -30,7 +34,7 @@ describe('Phase 5 Core Diagnostic & Selection Journey', () => {
   let db: TestDatabase;
 
   beforeEach(async () => {
-    db = await createTestDatabase();
+    db = createTestDatabase();
     await migrate(db);
     await seedDatabase(db, {
       dtcPack: SHIPPED_DTC,
@@ -38,8 +42,8 @@ describe('Phase 5 Core Diagnostic & Selection Journey', () => {
     });
   });
 
-  afterEach(async () => {
-    await db.close();
+  afterEach(() => {
+    db.close();
   });
 
   it('runs the vehicle identification and unmapped WMI mapping flow', async () => {
@@ -171,7 +175,7 @@ describe('Phase 5 Core Diagnostic & Selection Journey', () => {
         monitors: [],
       },
       freezeFrames: [],
-      result: {} as any,
+      result: {} as unknown as ScanResult,
     });
 
     const savedBackup = await repos.scanBackups.get(backupId);
