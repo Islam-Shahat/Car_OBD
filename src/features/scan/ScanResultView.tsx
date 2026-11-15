@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { IconAlert, IconCheck } from '../../app/icons';
 import { useStorage } from '../../lib/db/StorageProvider';
 import type { DtcLookup } from '../../lib/db/types';
 import { dtcCategory, type Dtc } from '../../lib/obd/dtc';
+import { evaluatePrePurchase } from '../../lib/obd/prePurchase';
 import type {
   DriveHistory,
   PidLabelKey,
@@ -14,6 +15,8 @@ import type {
 } from '../../lib/obd/pids';
 import type { MonitorKey } from '../../lib/obd/readiness';
 import type { ScanResult, ScanWarning, ScanWarningCode } from '../../lib/obd/scanTypes';
+import { useSelectedVehicleStore } from '../vehicles/vehicleStore';
+import { ReportModal } from '../reports/ReportModal';
 
 const MONITOR_KEYS = {
   misfire: 'scan.monitors.misfire',
@@ -364,8 +367,19 @@ function DtcGroup({
   );
 }
 
-export function ScanResultView({ result }: { result: ScanResult }) {
+export function ScanResultView({
+  result,
+  mode = 'normal',
+  isDemo = false,
+}: {
+  result: ScanResult;
+  mode?: 'normal' | 'pre_purchase';
+  isDemo?: boolean;
+}) {
   const { t, i18n } = useTranslation();
+  const { repositories } = useStorage();
+  const selectedVehicle = useSelectedVehicleStore((state) => state.selected);
+
   const seconds = (result.durationMs / 1000).toFixed(1);
   const vin = result.vin;
   const hasDriveHistory = Object.values(result.driveHistory).some((value) => value !== null);
@@ -374,17 +388,65 @@ export function ScanResultView({ result }: { result: ScanResult }) {
   const isMilOn = Boolean(result.status?.mil.on);
   const hasPending = result.pending.length > 0;
 
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [allLookups, setAllLookups] = useState<Record<string, DtcLookup>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    const repository = repositories?.dtc;
+    const allCodes = [...result.stored, ...result.pending, ...result.permanent];
+    if (!repository || allCodes.length === 0) return;
+
+    void Promise.all(
+      allCodes.map(
+        async (dtc) =>
+          [dtc.code, await repository.lookup(dtc.code, vin?.makeSlug ?? null)] as const,
+      ),
+    )
+      .then((entries) => {
+        if (!cancelled) setAllLookups(Object.fromEntries(entries));
+      })
+      .catch(() => {
+        if (!cancelled) setAllLookups({});
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [result, repositories, vin]);
+
+  const prePurchase = useMemo(
+    () =>
+      evaluatePrePurchase({
+        status: result.status,
+        driveHistory: result.driveHistory,
+        stored: result.stored,
+        pending: result.pending,
+        permanent: result.permanent,
+      }),
+    [result],
+  );
+
   // Banner color derives strictly from vehicle fault data (stored, pending, MIL)
   const healthTier: 'healthy' | 'warning' | 'fault' =
     hasStored || isMilOn ? 'fault' : hasPending ? 'warning' : 'healthy';
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-semibold">{t('scan.resultTitle')}</h2>
-        <span className="text-xs text-slate-500 dark:text-slate-400">
-          {t('scan.duration', { seconds })}
-        </span>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setReportModalOpen(true)}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-sky-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-2xs hover:bg-sky-500 dark:bg-sky-500 dark:hover:bg-sky-400"
+          >
+            {t('report.viewReport')}
+          </button>
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            {t('scan.duration', { seconds })}
+          </span>
+        </div>
       </div>
 
       <div
@@ -430,6 +492,77 @@ export function ScanResultView({ result }: { result: ScanResult }) {
           </div>
         </div>
       </div>
+
+      {mode === 'pre_purchase' && (
+        <div className="mt-4 rounded-xl border border-sky-200 bg-sky-50/50 p-4 dark:border-sky-800 dark:bg-sky-950/30">
+          <div className="flex items-center justify-between">
+            <span className="rounded bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-800 dark:bg-sky-900/60 dark:text-sky-300">
+              {t('prePurchase.badge')}
+            </span>
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
+                prePurchase.level === 'several_indicators'
+                  ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
+                  : prePurchase.level === 'some_indicators'
+                    ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                    : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+              }`}
+            >
+              {t(
+                `prePurchase.levels.${
+                  prePurchase.level === 'several_indicators'
+                    ? 'several'
+                    : prePurchase.level === 'some_indicators'
+                      ? 'some'
+                      : 'none'
+                }.badge` as any,
+              )}
+            </span>
+          </div>
+          <h4 className="mt-2 text-sm font-bold text-slate-900 dark:text-white">
+            {t(prePurchase.headlineKey as any)}
+          </h4>
+          <p className="mt-1 text-xs leading-5 text-slate-600 dark:text-slate-300">
+            {t(prePurchase.bodyKey as any)}
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
+            <div className="rounded bg-white p-2 text-center shadow-2xs dark:bg-slate-900">
+              <span className="block text-[10px] text-slate-500 dark:text-slate-400">
+                {t('prePurchase.factors.monitors')}
+              </span>
+              <span dir="ltr" className="font-mono font-semibold">
+                {`${prePurchase.rawCounters.incompleteMonitorsCount} / ${prePurchase.rawCounters.supportedMonitorsCount}`}
+              </span>
+            </div>
+            <div className="rounded bg-white p-2 text-center shadow-2xs dark:bg-slate-900">
+              <span className="block text-[10px] text-slate-500 dark:text-slate-400">
+                {t('prePurchase.factors.distanceSinceClear')}
+              </span>
+              <span dir="ltr" className="font-mono font-semibold">
+                {prePurchase.rawCounters.distanceSinceClearedKm !== null
+                  ? `${prePurchase.rawCounters.distanceSinceClearedKm} km`
+                  : 'N/A'}
+              </span>
+            </div>
+            <div className="rounded bg-white p-2 text-center shadow-2xs dark:bg-slate-900">
+              <span className="block text-[10px] text-slate-500 dark:text-slate-400">
+                {t('prePurchase.factors.warmupsSinceClear')}
+              </span>
+              <span dir="ltr" className="font-mono font-semibold">
+                {prePurchase.rawCounters.warmupsSinceCleared ?? 'N/A'}
+              </span>
+            </div>
+            <div className="rounded bg-white p-2 text-center shadow-2xs dark:bg-slate-900">
+              <span className="block text-[10px] text-slate-500 dark:text-slate-400">
+                {t('prePurchase.factors.permanentCodes')}
+              </span>
+              <span dir="ltr" className="font-mono font-semibold">
+                {prePurchase.rawCounters.permanentDtcCount}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
 
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
         <div>
@@ -641,6 +774,66 @@ export function ScanResultView({ result }: { result: ScanResult }) {
           timeStyle: 'short',
         }).format(new Date(result.finishedAt))}
       </p>
+
+      {reportModalOpen && (
+        <ReportModal
+          isOpen={true}
+          onClose={() => setReportModalOpen(false)}
+          data={{
+            mode,
+            isSampleData: isDemo,
+            scanDate: new Date(result.finishedAt).toLocaleString(i18n.resolvedLanguage),
+            vehicle: selectedVehicle
+              ? {
+                  make: selectedVehicle.make,
+                  model: selectedVehicle.model,
+                  year: selectedVehicle.year,
+                  engine: selectedVehicle.engine,
+                  vin: selectedVehicle.vin,
+                }
+              : result.vin
+                ? {
+                    make: result.vin.manufacturerName ?? result.vin.makeSlug,
+                    model: null,
+                    year: result.vin.yearCandidates[0] ?? null,
+                    engine: null,
+                    vin: result.vin.vin,
+                  }
+                : null,
+            adapter: result.adapter
+              ? {
+                  identity: result.adapter.identity,
+                  version: result.adapter.version,
+                  protocol: result.adapter.protocol,
+                }
+              : null,
+            protocol: result.protocol,
+            milStatus: result.status
+              ? { on: result.status.mil.on, dtcCount: result.status.mil.dtcCount }
+              : null,
+            overallStatus: healthTier,
+            storedCodes: result.stored.map((d) => ({
+              code: d.code,
+              type: 'stored',
+              lookup: allLookups[d.code] ?? null,
+            })),
+            pendingCodes: result.pending.map((d) => ({
+              code: d.code,
+              type: 'pending',
+              lookup: allLookups[d.code] ?? null,
+            })),
+            permanentCodes: result.permanent.map((d) => ({
+              code: d.code,
+              type: 'permanent',
+              lookup: allLookups[d.code] ?? null,
+            })),
+            readiness: result.status,
+            driveHistory: result.driveHistory,
+            freezeFrames: result.freezeFrames,
+            prePurchase,
+          }}
+        />
+      )}
     </section>
   );
 }

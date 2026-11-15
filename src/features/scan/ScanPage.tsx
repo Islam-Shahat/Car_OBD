@@ -116,6 +116,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [clearResult, setClearResult] = useState<ClearResult | null>(null);
   const [failure, setFailure] = useState<Failure | null>(null);
+  const [scanMode, setScanMode] = useState<'normal' | 'pre_purchase'>('normal');
 
   const service = useMemo(
     () => new ScanService(driver, info, identityCache ? { identityCache } : {}),
@@ -161,7 +162,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
             adapterInfo: scan.adapter,
             milStatus: scan.status?.mil ?? null,
             overallStatus,
-            mode: 'normal',
+            mode: scanMode,
           });
 
           const dtcResults: ScanResultInput[] = [
@@ -265,6 +266,37 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
           )}
         </div>
       )}
+
+      {/* Scan Mode Selection */}
+      <div className="flex gap-2 rounded-xl border border-slate-200 bg-slate-50 p-1.5 dark:border-slate-800 dark:bg-slate-900/60">
+        <button
+          type="button"
+          onClick={() => setScanMode('normal')}
+          disabled={busy}
+          className={`flex-1 rounded-lg px-4 py-2.5 text-center text-xs transition-all ${
+            scanMode === 'normal'
+              ? 'bg-white font-bold text-slate-900 shadow-2xs dark:bg-slate-800 dark:text-white'
+              : 'font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+          }`}
+        >
+          <div className="text-xs font-bold">{t('prePurchase.modeNormal')}</div>
+          <div className="mt-0.5 text-[11px] font-normal opacity-75">{t('prePurchase.modeNormalDesc')}</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setScanMode('pre_purchase')}
+          disabled={busy}
+          className={`flex-1 rounded-lg px-4 py-2.5 text-center text-xs transition-all ${
+            scanMode === 'pre_purchase'
+              ? 'bg-sky-600 font-bold text-white shadow-2xs dark:bg-sky-500'
+              : 'font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+          }`}
+        >
+          <div className="text-xs font-bold">{t('prePurchase.modePrePurchase')}</div>
+          <div className="mt-0.5 text-[11px] font-normal opacity-85">{t('prePurchase.modePrePurchaseDesc')}</div>
+        </button>
+      </div>
 
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex flex-wrap items-center gap-3">
@@ -402,7 +434,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
         </section>
       )}
 
-      {result && <ScanResultView result={result} />}
+      {result && <ScanResultView result={result} mode={scanMode} isDemo={isDemo} />}
 
       {confirmOpen && result && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">

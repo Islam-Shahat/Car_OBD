@@ -24,7 +24,8 @@
     "comingSoon": "In development",
     "switchLanguage": "Switch language",
     "toggleTheme": "Toggle theme",
-    "retry": "Retry"
+    "retry": "Retry",
+    "note": "Note"
   },
   "languages": {
     "ar": "العربية",
@@ -509,5 +510,117 @@
     "upToDate": "Application is up to date",
     "clearDisabledRemotely": "Fault clearing has been temporarily disabled remotely for vehicle safety",
     "liveDataDisabledRemotely": "Live data telemetry has been temporarily disabled remotely"
+  },
+  "prePurchase": {
+    "title": "Pre-Purchase Inspection",
+    "subtitle": "Analysis of readiness monitors and DTC clearing counters",
+    "badge": "Pre-purchase Mode",
+    "modeNormal": "Standard Diagnostic",
+    "modePrePurchase": "Pre-Purchase Inspection",
+    "modeNormalDesc": "Full scan of engine faults, readiness, freeze frames, and live sensors.",
+    "modePrePurchaseDesc": "Adds suspicious code clearing heuristics, reset counters, and permanent DTC analysis.",
+    "levels": {
+      "none": {
+        "badge": "No clearing indicators",
+        "headline": "No indicators of recent code clearing",
+        "body": "Readiness monitors are complete and drive history counters indicate normal driving cycles since any previous reset."
+      },
+      "some": {
+        "badge": "Some reset indicators",
+        "headline": "Some indicators consistent with recent reset",
+        "body": "One or more readiness monitors or drive counters indicate limited driving since codes or battery were reset."
+      },
+      "several": {
+        "badge": "Multiple clearing indicators",
+        "headline": "Several indicators suggest codes may have been cleared recently",
+        "body": "Multiple readiness monitors are incomplete, distance/warmups since clearing are low, or permanent codes remain. Wording note: repairs or battery disconnect also reset these."
+      }
+    },
+    "limitationsNotice": "Heuristic evaluation only: Battery disconnection, ECU resets, or component repairs also reset readiness monitors and counters. Counters saturate over time (e.g. 255 warm-ups, 65,535 km). This is not proof of fraud or physical vehicle condition.",
+    "factors": {
+      "monitors": "Readiness Monitors (I/M)",
+      "distanceSinceClear": "Distance Since Cleared (PID 0131)",
+      "warmupsSinceClear": "Warm-up Cycles (PID 0130)",
+      "permanentCodes": "Permanent DTCs (Mode 0A)"
+    },
+    "explanations": {
+      "monitorsManyIncomplete": "Multiple emission monitors are incomplete, which is typical immediately after clearing codes or battery disconnection.",
+      "monitorsSomeIncomplete": "Some emission monitors have not finished running their diagnostic drive cycle.",
+      "monitorsComplete": "All supported emission readiness monitors have completed their self-tests.",
+      "distanceVeryLow": "Vehicle has traveled under 25 km since codes were cleared, indicating insufficient drive cycle testing.",
+      "distanceLow": "Vehicle has traveled under 80 km since codes were cleared.",
+      "distanceAdequate": "Vehicle has traveled sufficient distance (>80 km) since last code clear.",
+      "warmupsVeryLow": "Fewer than 3 engine warm-up cycles recorded since last code clear.",
+      "warmupsLow": "Fewer than 10 engine warm-up cycles recorded since last code clear.",
+      "warmupsAdequate": "Normal number of warm-up cycles (10+) recorded since last code clear.",
+      "permanentPresent": "Permanent trouble codes (Mode 0A) were detected. These survive standard clearing until the ECU verifies the fix.",
+      "permanentNone": "No permanent trouble codes detected.",
+      "pidUnavailable": "Parameter not reported by this engine ECU."
+    },
+    "rawCountersTitle": "Raw Counters & Drive History",
+    "counterLabels": {
+      "distanceSinceClear": "Distance since cleared",
+      "warmupsSinceClear": "Warm-ups since cleared",
+      "timeSinceClear": "Engine time since cleared",
+      "runTime": "Run time since engine start",
+      "distanceWithMil": "Distance driven with MIL on",
+      "incompleteMonitors": "Incomplete monitors count",
+      "permanentDtcCount": "Permanent codes count"
+    }
+  },
+  "report": {
+    "title": "Vehicle Diagnostic Report",
+    "prePurchaseTitle": "Pre-Purchase Diagnostic Inspection Report",
+    "badgeStandard": "Standard Diagnostic",
+    "badgePrePurchase": "Pre-Purchase Inspection",
+    "viewReport": "View Full Report / Export PDF",
+    "exportPdf": "Print / Save as PDF",
+    "copyWhatsApp": "Copy for WhatsApp",
+    "copiedWhatsApp": "Copied to clipboard!",
+    "openFolder": "Open Folder",
+    "hideVin": "Mask VIN",
+    "showVin": "Show Full VIN",
+    "vinMaskedNotice": "VIN masked for privacy",
+    "watermarkSample": "SAMPLE - emulator data",
+    "vehicleInfoTitle": "Vehicle & Scan Metadata",
+    "scanDate": "Scan Date",
+    "adapterProtocol": "Adapter & Protocol",
+    "vin": "VIN",
+    "makeModel": "Make & Model",
+    "year": "Year",
+    "engine": "Engine",
+    "disclaimerTitle": "Diagnostic Scope & Legal Notice",
+    "disclaimerBody": "This report is for informational diagnostics only and covers engine and emissions systems. Systems such as ABS, airbags, transmission, body electronics, and chassis components are not included. Clearing trouble codes does not repair underlying mechanical or electrical faults, and resets readiness monitors. Absence of fault codes does not guarantee overall mechanical roadworthiness.",
+    "versionFooter": "OBD Diagnose v{{version}} · Offline Diagnostic Tool",
+    "close": "Close"
+  },
+  "history": {
+    "allVehicles": "All Cars",
+    "filterByVehicle": "Filter by car",
+    "scansCount": "{{count}} scans saved",
+    "viewReport": "View Report",
+    "compareScans": "Compare Scans",
+    "selectToCompare": "Select 2 scans to compare",
+    "cancelCompare": "Cancel selection",
+    "comparing": "Comparing Scans",
+    "deleteScan": "Delete",
+    "deleteConfirmTitle": "Delete scan session?",
+    "deleteConfirmBody": "This scan session and its results will be removed from local history.",
+    "deleteConfirmAction": "Delete",
+    "deleteConfirmCancel": "Cancel",
+    "diffCodesResolved": "Resolved Codes",
+    "diffCodesResolvedDesc": "Codes present in earlier scan that did not appear in later scan",
+    "diffCodesPersistent": "Persistent Codes",
+    "diffCodesPersistentDesc": "Codes present in both scans",
+    "diffCodesNew": "New Codes",
+    "diffCodesNewDesc": "Codes that were not present in earlier scan and appeared in later scan",
+    "diffMonitorsTitle": "Readiness Monitor Status Changes",
+    "diffCountersTitle": "Drive History Progression",
+    "noScansFound": "No saved diagnostic sessions found",
+    "olderScan": "Earlier Scan (A)",
+    "newerScan": "Later Scan (B)",
+    "selectTwoNotice": "Please select exactly two scans to compare.",
+    "deltaDistance": "Distance progression: {{delta}} km",
+    "deltaWarmups": "Warm-up cycles progression: {{delta}}"
   }
 }

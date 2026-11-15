@@ -64,3 +64,47 @@
     @apply outline-2 outline-offset-2 outline-blue-600;
   }
 }
+
+/* Print styles for diagnostic reports and pre-purchase inspections */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 10mm;
+  }
+
+  /* Hide app navigation, toolbars, modal backdrops */
+  nav,
+  header.app-header,
+  .no-print,
+  button {
+    display: none !important;
+  }
+
+  body,
+  html,
+  #root {
+    height: auto !important;
+    overflow: visible !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  /* Ensure colors and backgrounds print faithfully */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .report-paper {
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
