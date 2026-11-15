@@ -110,4 +110,24 @@ describe('vehicle catalog integrity', () => {
     expect(has('فولفو', 'XC60')).toBe(true);
     expect(has('تسلا', 'Model 3')).toBe(true);
   });
+
+  it('keeps Daewoo and Chevrolet cross-listed models unique (one entry per model)', () => {
+    const lanos = ENTRIES.filter((e) => e.model.toLowerCase() === 'lanos');
+    const nubira = ENTRIES.filter((e) => e.model.toLowerCase() === 'nubira');
+    const matiz = ENTRIES.filter((e) => e.model.toLowerCase() === 'matiz');
+    const cielo = ENTRIES.filter((e) => e.model.toLowerCase() === 'cielo');
+
+    expect(lanos).toHaveLength(1);
+    expect(lanos[0]?.makeSlug).toBe('chevrolet');
+    expect(nubira).toHaveLength(1);
+    expect(nubira[0]?.makeSlug).toBe('chevrolet');
+    expect(matiz).toHaveLength(1);
+    expect(matiz[0]?.makeSlug).toBe('chevrolet');
+    expect(cielo).toHaveLength(1);
+    expect(cielo[0]?.makeSlug).toBe('chevrolet');
+
+    // Daewoo retains non-duplicate models
+    const daewooModels = ENTRIES.filter((e) => e.makeSlug === 'daewoo').map((e) => e.model);
+    expect(daewooModels).toEqual(['Leganza', 'Espero']);
+  });
 });

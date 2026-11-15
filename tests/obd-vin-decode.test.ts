@@ -74,6 +74,14 @@ describe('VIN identity decoding', () => {
       yearCandidates: [1996, 2026],
     });
   });
+
+  it('allows userMakeSlug to supply make when WMI is unmapped', () => {
+    expect(decodeVehicleIdentity('LVVDB1248MD000001', 'chery')).toMatchObject({
+      wmi: 'LVV',
+      makeSlug: 'chery',
+      yearCandidates: [1991, 2021],
+    });
+  });
 });
 
 describe('bundled WMI data', () => {

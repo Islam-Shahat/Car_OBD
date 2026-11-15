@@ -28,7 +28,7 @@ const MAKE_ALIASES_AR = {
   toyota: ['تويوتا', 'تيوتا'],
   hyundai: ['هيونداي', 'هونداي', 'هيوندي'],
   nissan: ['نيسان', 'نسان'],
-  chevrolet: ['شيفروليه', 'شيفرولية', 'شيفرولت'],
+  chevrolet: ['شيفروليه', 'شيفرولية', 'شيفرولت', 'دايو'],
   kia: ['كيا'],
   daihatsu: ['دايهاتسو'],
   isuzu: ['إيسوزو', 'ايسوزو'],
@@ -277,10 +277,7 @@ Haval|haval|H6|إتش 6,اتش 6|H-6|suv|knowledge
 Haval|haval|H9|إتش 9,اتش 9|H-9|suv|knowledge
 Haval|haval|Jolion|جوليان||suv|knowledge
 Haval|haval|Dargo|دارجو||suv|knowledge
-Daewoo|daewoo|Lanos|لانوس||sedan|knowledge
-Daewoo|daewoo|Nubira|نوبيرا||sedan|knowledge
 Daewoo|daewoo|Leganza|ليجانزا||sedan|knowledge
-Daewoo|daewoo|Matiz|ماتيز||hatchback|knowledge
 Daewoo|daewoo|Espero|إسبيرو,اسبيرو||sedan|knowledge
 Lada|lada|Niva|نيفا||suv|knowledge
 Lada|lada|Granta|جرانتا||sedan|knowledge

@@ -187,13 +187,13 @@ describe('shipped vehicle catalog', () => {
   it('is a unique, unverified list reconciled with Appendix C', () => {
     expect(catalogData.version).toBe('2026-11-15.appendix-c');
     expect(catalogData.downloadedAt).toBe('2026-11-15');
-    expect(catalogData.entries).toHaveLength(380);
+    expect(catalogData.entries).toHaveLength(377);
     expect(new Set(catalogData.entries.map((entry) => entry.makeSlug)).size).toBe(46);
-    expect(new Set(catalogData.entries.map((entry) => entry.id)).size).toBe(380);
+    expect(new Set(catalogData.entries.map((entry) => entry.id)).size).toBe(377);
     const cited = catalogData.entries.filter((entry) => entry.sourceTier === 'cited');
     const knowledge = catalogData.entries.filter((entry) => entry.sourceTier === 'knowledge');
     expect(cited).toHaveLength(51);
-    expect(knowledge).toHaveLength(329);
+    expect(knowledge).toHaveLength(326);
 
     for (const entry of catalogData.entries) {
       expect(entry.id).toMatch(
