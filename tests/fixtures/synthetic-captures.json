@@ -1,10 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "description": "Real vehicle OBD-II traffic captures across multiple protocols and adapters with all VINs redacted.",
+  "description": "Synthetic vehicle OBD-II traffic captures across multiple protocols and adapters with all VINs redacted.",
   "captures": [
     {
       "id": "can_toyota_corolla_2018_pic18f25k80",
-      "vehicle": "2018 Toyota Corolla 1.6L",
+      "origin": "synthetic",
+      "recorded_by": null,
+      "vehicle": "2018 Toyota Corolla 1.6L (Simulated)",
       "protocol": "ISO 15765-4 (CAN 11/500)",
       "adapter": "OBDLink SX USB (Genuine PIC18F25K80 / STN1110)",
       "quality": "high",
@@ -27,7 +29,9 @@
     },
     {
       "id": "kwp_hyundai_elantra_2006_clone_v15",
-      "vehicle": "2006 Hyundai Elantra XD 1.6L",
+      "origin": "synthetic",
+      "recorded_by": null,
+      "vehicle": "2006 Hyundai Elantra XD 1.6L (Simulated)",
       "protocol": "ISO 14230-4 (KWP FAST)",
       "adapter": "Blue Mini ELM327 Bluetooth (Generic Clone v1.5)",
       "quality": "clone",
@@ -54,7 +58,9 @@
     },
     {
       "id": "iso9141_peugeot_206_2003_v21_clone",
-      "vehicle": "2003 Peugeot 206 1.4L",
+      "origin": "synthetic",
+      "recorded_by": null,
+      "vehicle": "2003 Peugeot 206 1.4L (Simulated)",
       "protocol": "ISO 9141-2 (5 BAUD INIT)",
       "adapter": "ELM327 v2.1 Clone (Fake v2.1 with missing K-line timing)",
       "quality": "clone",
@@ -75,6 +81,8 @@
     },
     {
       "id": "ignition_off_scenario",
+      "origin": "synthetic",
+      "recorded_by": null,
       "vehicle": "Generic Vehicle",
       "condition": "Ignition in OFF position / accessory mode",
       "dialogue": [

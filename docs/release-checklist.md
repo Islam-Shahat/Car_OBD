@@ -59,7 +59,7 @@ Release Version: **v1.0.0**
 
 ## 7. Quality Assurance & Real-Vehicle Compatibility
 
-- [x] **Hardware & Protocol Tests**: Real vehicle captures verified for CAN 11/500, KWP2000 Fast Init, and ISO 9141-2 (`tests/fixtures/real-car-captures.json`).
+- [ ] **Hardware & Protocol Tests**: Synthetic protocol test suites for CAN 11/500, KWP2000 Fast Init, and ISO 9141-2 (`tests/fixtures/synthetic-captures.json`). Real vehicle test BLOCKED on hardware.
 - [x] **Raw Traffic Logger**: Togglable debug logger with automatic 17-character and Mode 09 PID 02 VIN redaction and export.
 - [x] **Edge Case Recovery**: Graceful handling for ignition off, adapter disconnect, COM port busy, and clone timeouts.
 - [x] **Mechanic Review Export**: `npm run review:export` verified (exports 9,533 DTC rows partitioned by tier).

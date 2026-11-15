@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { Elm327Driver } from '../src/lib/elm327/driver';
 import { MockTransport } from '../src/lib/elm327/mockTransport';
 import { isElmError } from '../src/lib/elm327/errors';
-import capturesData from './fixtures/real-car-captures.json';
+import capturesData from './fixtures/synthetic-captures.json';
 
-describe('Real Car Captures & Multi-Protocol Hardware Fixtures', () => {
-  it('parses real 2018 Toyota Corolla CAN traffic correctly', async () => {
+describe('Synthetic Multi-Protocol Hardware Fixtures', () => {
+  it('parses synthetic 2018 Toyota Corolla CAN traffic correctly', async () => {
     const capture = capturesData.captures.find(
       (c) => c.id === 'can_toyota_corolla_2018_pic18f25k80',
     );
@@ -32,7 +32,7 @@ describe('Real Car Captures & Multi-Protocol Hardware Fixtures', () => {
     expect(dtcResponse.lines[0]).toBe('43 01 01 33 00 00');
   });
 
-  it('parses real 2006 Hyundai Elantra KWP FAST traffic with bus init quirks', async () => {
+  it('parses synthetic 2006 Hyundai Elantra KWP FAST traffic with bus init quirks', async () => {
     const capture = capturesData.captures.find(
       (c) => c.id === 'kwp_hyundai_elantra_2006_clone_v15',
     );
