@@ -6,6 +6,7 @@ import { useTheme } from '../lib/theme/useTheme';
 import { isDevPreview } from '../lib/db/runtime';
 import { useStorage } from '../lib/db/StorageProvider';
 import { useConnectionStore } from '../features/connection/connectionStore';
+import { GITHUB_RELEASES_URL } from '../lib/projectUrls';
 import { useFeatureFlag, useRemoteConfigStore } from '../lib/remoteConfig/remoteConfigStore';
 import { RemoteConfigService } from '../lib/remoteConfig/remoteConfigService';
 import { DisabledAppBarrier } from '../features/remoteConfig/DisabledAppBarrier';
@@ -145,7 +146,7 @@ export function AppLayout() {
           <div className="flex items-center gap-2">
             {isUpdateAvailable && (
               <a
-                href="https://github.com/islamshahat/obd-diagnose/releases"
+                href={GITHUB_RELEASES_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-1.5 rounded-lg border border-blue-300 bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-100 dark:border-blue-700/50 dark:bg-blue-950/40 dark:text-blue-300"

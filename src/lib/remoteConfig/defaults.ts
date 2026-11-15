@@ -1,3 +1,4 @@
+import { GITHUB_PAGES_CONFIG_URL } from '../projectUrls';
 import type { RemoteConfigPayload } from './types';
 
 /**
@@ -9,7 +10,7 @@ export const DEFAULT_REMOTE_CONFIG_PUBLIC_KEY = 'ZVRZNYrjEECIBwbxasdiuqIXMIIpVv2
 /**
  * Default static distribution endpoint hosted on GitHub Pages.
  */
-export const DEFAULT_REMOTE_CONFIG_URL = 'https://islamshahat.github.io/obd-diagnose/config.json';
+export const DEFAULT_REMOTE_CONFIG_URL = GITHUB_PAGES_CONFIG_URL;
 
 /**
  * The current application version.

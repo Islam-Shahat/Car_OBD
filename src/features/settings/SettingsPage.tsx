@@ -5,6 +5,7 @@ import { PageHeader } from '../../app/PageHeader';
 import { IconCheck, IconDownload, IconRefresh } from '../../app/icons';
 import { useStorage } from '../../lib/db/StorageProvider';
 import { LANGUAGES, type LanguageCode } from '../../lib/i18n/direction';
+import { GITHUB_RELEASES_URL } from '../../lib/projectUrls';
 import { RemoteConfigService } from '../../lib/remoteConfig/remoteConfigService';
 import { useRemoteConfigStore } from '../../lib/remoteConfig/remoteConfigStore';
 import { useTheme } from '../../lib/theme/useTheme';
@@ -157,7 +158,7 @@ export function SettingsPage() {
 
             {checkStatus === 'available' && isUpdateAvailable && (
               <a
-                href="https://github.com/islamshahat/obd-diagnose/releases"
+                href={GITHUB_RELEASES_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400"

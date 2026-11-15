@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { GITHUB_RELEASES_URL } from '../../lib/projectUrls';
 import { useRemoteConfigStore } from '../../lib/remoteConfig/remoteConfigStore';
 import { CURRENT_APP_VERSION } from '../../lib/remoteConfig/defaults';
 import { IconDownload, IconAlert } from '../../app/icons';
@@ -8,7 +9,7 @@ export function MandatoryUpdatePrompt() {
   const config = useRemoteConfigStore((state) => state.config);
 
   const openReleases = () => {
-    window.open('https://github.com/islamshahat/obd-diagnose/releases', '_blank');
+    window.open(GITHUB_RELEASES_URL, '_blank');
   };
 
   return (
