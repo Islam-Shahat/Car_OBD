@@ -1,7 +1,7 @@
 /**
  * Imports the mechanic's corrected CSV into src/data/dtc-reviews.json.
  *
- * A review overlay is used instead of editing dtc-codes.json directly, so
+ * A review overlay is used instead of editing dtc-pack.json directly, so
  * re-running the upstream import never discards reviewed Arabic text. The next
  * `npm run import:dtc` merges the overlay, sets needs_review = 0 and writes
  * reviewed_by / reviewed_at into the shipped seed.
@@ -13,7 +13,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const defaultSeedPath = join(here, '..', 'src', 'data', 'dtc-codes.json');
+const defaultSeedPath = join(here, '..', 'public', 'dtc-pack.json');
 const defaultOverlayPath = join(here, '..', 'src', 'data', 'dtc-reviews.json');
 
 const args = process.argv.slice(2);
@@ -123,4 +123,4 @@ if (applied === 0) throw new Error('No reviewed rows were applied');
 overlay.updatedAt = reviewedAt;
 writeFileSync(overlayPath, `${JSON.stringify(overlay, null, 2)}\n`, 'utf8');
 console.log(`Applied ${applied} reviews from ${inPath} to ${overlayPath}`);
-console.log('Run npm run import:dtc to rebuild src/data/dtc-codes.json with needs_review = 0.');
+console.log('Run npm run import:dtc to rebuild public/dtc-pack.json with needs_review = 0.');

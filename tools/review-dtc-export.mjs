@@ -1,5 +1,5 @@
 /**
- * Exports every needs_review row of src/data/dtc-codes.json to CSV, Tier 1
+ * Exports every needs_review row of public/dtc-pack.json to CSV, Tier 1
  * first. The mechanic edits description_ar / causes_ar / steps_ar and sends the
  * file back; tools/review-dtc-import.mjs applies it.
  *
@@ -10,7 +10,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const defaultSeedPath = join(here, '..', 'src', 'data', 'dtc-codes.json');
+const defaultSeedPath = join(here, '..', 'public', 'dtc-pack.json');
 
 const args = process.argv.slice(2);
 function option(name, fallback) {

@@ -1,6 +1,7 @@
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 import { parse } from 'yaml';
 
 import { DATA_FILES, DOWNLOADED_AT, SOURCE_NAME, SOURCE_VERSION } from './sources.mjs';
@@ -8,7 +9,8 @@ import { createArabicTitles, describeTitle, loadGlossary } from './translate.mjs
 
 const here = dirname(fileURLToPath(import.meta.url));
 const cacheDir = join(here, '.cache');
-const outputPath = join(here, '..', '..', 'src', 'data', 'dtc-codes.json');
+const outputPath = join(here, '..', '..', 'public', 'dtc-pack.json');
+const manifestPath = join(here, '..', '..', 'src', 'data', 'dtc-pack.manifest.json');
 const reviewsPath = join(here, '..', '..', 'src', 'data', 'dtc-reviews.json');
 
 const TIER1_RANGES = [
@@ -58,21 +60,21 @@ function familyOf(code, title) {
 
 const FAMILY_INTRO = {
   circuit:
-    'تشير الشيفرة إلى خلل في الدائرة الكهربائية أو في الإشارة القادمة من هذا المكون إلى وحدة التحكم.',
+    'قد تشير الشيفرة إلى خلل في الدائرة الكهربائية أو في الإشارة القادمة من هذا المكون إلى وحدة التحكم؛ الفحص يحدد السبب.',
   misfire:
-    'إخفاق الاحتراق يعني عدم احتراق الوقود بشكل صحيح في الأسطوانة، وقد يسبب اهتزازًا وضعفًا في الأداء وارتفاعًا في الانبعاثات.',
+    'قد يرتبط إخفاق الاحتراق بعدم احتراق الوقود بشكل صحيح في الأسطوانة، وقد يسبب اهتزازًا وضعفًا في الأداء وارتفاعًا في الانبعاثات.',
   mixture:
-    'اختلال خليط الهواء والوقود يؤثر على الأداء والانبعاثات، ويجب التحقق من تسرب الهواء وضغط الوقود وقراءات الحساسات.',
+    'قد يؤثر اختلال خليط الهواء والوقود على الأداء والانبعاثات؛ من المفيد التحقق من تسرب الهواء وضغط الوقود وقراءات الحساسات.',
   catalyst:
-    'انخفاض كفاءة المحول الحفاز يعني أن قدرته على تنقية العادم لم تعد كافية، وغالبًا يسبقه عطل إخفاق احتراق أو خليط غني.',
-  evap: 'نظام الأبخرة يمنع تسرب بخار الوقود إلى الجو، وأي تسرب أو خلل في الصمامات يضيء لمبة فحص المحرك.',
-  idle: 'خلل التحكم في الخمول يظهر كسرعة غير مستقرة أو ارتفاع أو انخفاض في دورات المحرك أثناء التوقف.',
+    'قد تشير الشيفرة إلى انخفاض كفاءة المحول الحفاز، وغالبًا يسبقه إخفاق احتراق أو خليط غني. هذا لا يثبت أن المحول تالف قبل الفحص.',
+  evap: 'يمنع نظام الأبخرة تسرب بخار الوقود إلى الجو؛ قد يؤدي تسرب أو خلل في الصمامات إلى إضاءة لمبة فحص المحرك.',
+  idle: 'قد يظهر خلل التحكم في الخمول كسرعة غير مستقرة أو ارتفاع أو انخفاض في دورات المحرك أثناء التوقف.',
   module:
-    'تشير الشيفرة إلى خلل داخلي أو كهربائي في وحدة التحكم أو في تغذيتها وأرضياتها، ويجب فحص البطارية والشحن أولًا.',
+    'قد تشير الشيفرة إلى خلل داخلي أو كهربائي في وحدة التحكم أو في تغذيتها وأرضياتها؛ يُستحسن فحص البطارية والشحن أولًا.',
   transmission:
-    'تشير الشيفرة إلى خلل في ناقل الحركة أو في إشارات التحكم فيه، ويجب فحص الزيت والصمامات والأسلاك قبل الاستبدال.',
+    'قد تشير الشيفرة إلى خلل في ناقل الحركة أو في إشارات التحكم فيه؛ من المفيد فحص الزيت والصمامات والأسلاك قبل أي إصلاح.',
   network:
-    'فقدان الاتصال يعني أن وحدة تحكم لم تعد تتبادل البيانات على ناقل CAN، وقد يكون السبب التغذية أو الأرضي أو الأسلاك أو الوحدة نفسها.',
+    'قد يعني فقدان الاتصال أن وحدة تحكم لم تعد تتبادل البيانات على ناقل CAN؛ قد يكون السبب التغذية أو الأرضي أو الأسلاك أو الوحدة نفسها.',
 };
 
 const FAMILY_COPY = {
@@ -152,14 +154,14 @@ const FAMILY_COPY = {
       'Inspect the exhaust for leaks ahead of the rear oxygen sensor',
       'Watch the rear oxygen sensor switching rate',
       'Compare catalyst inlet and outlet temperature',
-      'Replace the catalyst only after the other causes are excluded',
+      'Do not replace the catalyst until the other causes are excluded',
     ],
     stepsAr: [
       'راجع سجل الأعطال بحثًا عن إخفاق احتراق أو خلل خليط سابق',
       'افحص العادم بحثًا عن تسرب قبل الحساس الخلفي',
       'راقب معدل تبديل إشارة حساس الأكسجين الخلفي',
       'قارن حرارة دخول وخروج المحول الحفاز',
-      'استبدل المحول الحفاز فقط بعد استبعاد الأسباب الأخرى',
+      'لا تستبدل المحول الحفاز قبل استبعاد الأسباب الأخرى',
     ],
   },
   evap: {
@@ -178,14 +180,14 @@ const FAMILY_COPY = {
       'حساس ضغط نظام الأبخرة غير دقيق',
     ],
     stepsEn: [
-      'Inspect and tighten or replace the fuel cap',
+      'Inspect the fuel cap and make sure it seals',
       'Inspect EVAP hoses, pipes and the canister',
       'Smoke-test the EVAP system',
       'Command the purge and vent valves and listen for operation',
       'Check the EVAP pressure sensor reading against a known good value',
     ],
     stepsAr: [
-      'افحص غطاء الوقود وأغلقه بإحكام أو استبدله',
+      'افحص غطاء الوقود وتأكد من إحكام إغلاقه',
       'افحص خراطيم ومواسير نظام الأبخرة وعلبة الفحم',
       'افحص نظام الأبخرة بالدخان',
       'شغّل صمام التطهير وصمام التهوية وتحقق من عملهما',
@@ -238,14 +240,14 @@ const FAMILY_COPY = {
       'Inspect the module connectors, grounds and fuses',
       'Check for a software update or reprogramming',
       'Check the CAN bus between the modules',
-      'Replace the module only after wiring and supply are proven good',
+      'Do not replace the module until wiring and supply are proven good',
     ],
     stepsAr: [
       'اختبر البطارية وجهد الشحن',
       'افحص موصلات وحدة التحكم وأرضياتها وفيوزاتها',
       'تحقق من وجود تحديث للبرنامج أو إعادة برمجة',
       'افحص ناقل CAN بين الوحدات',
-      'استبدل الوحدة فقط بعد التأكد من سلامة الأسلاك والتغذية',
+      'لا تستبدل الوحدة قبل التأكد من سلامة الأسلاك والتغذية',
     ],
   },
   transmission: {
@@ -296,14 +298,14 @@ const FAMILY_COPY = {
       'Inspect CAN wiring and connectors for damage',
       'Measure bus resistance (about 60 ohms across the pair)',
       'Check power and ground at the missing module',
-      'Reprogram or replace the module after the wiring is proven good',
+      'Do not reprogram or replace the module until the wiring is proven good',
     ],
     stepsAr: [
       'اختبر البطارية وجهد الشحن أولًا',
       'افحص أسلاك وموصلات ناقل CAN بحثًا عن تلف',
       'قِس مقاومة الناقل (حوالي 60 أوم بين طرفي الزوج)',
       'افحص التغذية والأرضي عند الوحدة المفقودة',
-      'أعد برمجة الوحدة أو استبدلها بعد التأكد من سلامة الأسلاك',
+      'لا تعد برمجة الوحدة أو تستبدلها قبل التأكد من سلامة الأسلاك',
     ],
   },
 };
@@ -327,14 +329,14 @@ function circuitCopy(baseEn, baseAr) {
       `Inspect the connector and wiring at ${baseEn} for looseness, corrosion or damage`,
       `Measure the supply voltage (usually 5 V) and ground at ${baseEn}`,
       `Compare the live ${baseEn} reading with the expected value`,
-      `Replace ${baseEn} only after the wiring and supply are proven good`,
+      `Do not replace ${baseEn} until the wiring and supply are proven good`,
     ],
     stepsAr: [
       `اقرأ لقطة بيانات لحظة العطل وسجّل سلوك ${baseAr} عند ظهور العطل`,
       `افحص الموصل والأسلاك عند ${baseAr} بحثًا عن ارتخاء أو تآكل أو تلف`,
       `قِس جهد التغذية (5 فولت عادة) والأرضي عند ${baseAr}`,
       `قارن قراءة ${baseAr} في البيانات الحية مع القيمة المتوقعة`,
-      `استبدل ${baseAr} فقط بعد التأكد من سلامة الأسلاك والتغذية`,
+      `لا تستبدل ${baseAr} قبل التأكد من سلامة الأسلاك والتغذية`,
     ],
   };
 }
@@ -392,7 +394,11 @@ function main() {
         category: entry.category ?? 'powertrain',
         descriptionEn: englishTitle,
         descriptionAr: review?.descriptionAr ?? copy.descriptionAr,
+        // The OBDex record carries flags, not a safety rating. This label is
+        // our estimate and is stored with its provenance so nobody mistakes it
+        // for a manufacturer statement.
         severity: severityOf(entry),
+        severitySource: 'heuristic',
         causesEn: copy.causesEn,
         causesAr: review?.causesAr ?? copy.causesAr,
         stepsEn: copy.stepsEn,
@@ -414,14 +420,33 @@ function main() {
   const tier2 = rows.filter((row) => row.tier === 2);
   const needingReview = rows.filter((row) => row.needsReview);
 
+  const version = createHash('sha256').update(JSON.stringify(rows)).digest('hex').slice(0, 16);
   const payload = {
+    version,
     source: SOURCE_NAME,
     sourceVersion: SOURCE_VERSION,
     license: 'CC0-1.0',
     generatedAt: DOWNLOADED_AT,
     codes: rows,
   };
+  mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, `${JSON.stringify(payload)}\n`, 'utf8');
+  writeFileSync(
+    manifestPath,
+    `${JSON.stringify(
+      {
+        version,
+        source: SOURCE_NAME,
+        sourceVersion: SOURCE_VERSION,
+        license: 'CC0-1.0',
+        generatedAt: DOWNLOADED_AT,
+        codeCount: rows.length,
+      },
+      null,
+      2,
+    )}\n`,
+    'utf8',
+  );
 
   // Coverage check: count Latin words left in the Arabic description, so a
   // missing glossary entry surfaces here instead of in the UI.
@@ -434,6 +459,7 @@ function main() {
   const topLeftovers = [...leftovers.entries()].sort((a, b) => b[1] - a[1]).slice(0, 25);
 
   console.log(`Wrote ${outputPath}`);
+  console.log(`Wrote ${manifestPath} (version ${version})`);
   console.log(`Imported: ${rows.length} generic codes`);
   console.log(`Tier 1: ${tier1.length}  Tier 2: ${tier2.length}`);
   console.log(`Needs review: ${needingReview.length}`);
