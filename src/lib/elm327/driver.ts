@@ -1,6 +1,7 @@
 import { assessAdapter } from './adapter';
 import { ElmError, errorMessage, isElmError, type ElmErrorCode } from './errors';
 import { classifyElmFailure, normalizeResponse } from './parse';
+import { trafficLogger } from './trafficLogger';
 import type { Transport } from './transport';
 
 export interface ElmResponse {
@@ -210,6 +211,7 @@ export class Elm327Driver {
     const timeoutMs = timeoutOverride ?? this.effectiveTimeoutMs(command);
     const startedAt = performance.now();
 
+    trafficLogger.logTx(command);
     try {
       await this.transport.write(`${command}\r`);
     } catch (error) {
@@ -217,6 +219,7 @@ export class Elm327Driver {
     }
 
     const raw = this.buffer.includes('>') ? this.takeBuffer() : await this.waitForPrompt(timeoutMs);
+    trafficLogger.logRx(raw, performance.now() - startedAt);
 
     // Adaptive timing should learn from normal commands only; resets and the
     // first protocol search intentionally use longer fixed timeouts.
