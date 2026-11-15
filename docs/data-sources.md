@@ -53,8 +53,142 @@ mismatch only when position 9 is a digit or `X`; an alphabetic position 9 is rep
 "not applicable", because the check digit is not mandatory in every market. This rule is explained
 in the UI beside the VIN status.
 
+## DTC knowledge base (`src/data/dtc-codes.json`)
+
+| Field          | Value                                                   |
+| -------------- | ------------------------------------------------------- |
+| Source         | OBDex — `foerbsnavi/OBDex`                              |
+| Pinned commit  | `9ba1ffa095f3140d9e21b985b322ddea3134bb60`              |
+| Retrieved      | 2026-11-14                                              |
+| Data licence   | CC0 1.0 Universal (public domain dedication)            |
+| Code licence   | MIT (tooling only; no upstream code is shipped)         |
+| Upstream files | Seven `*_enriched.yaml` files under `data/generic/`     |
+| Imported rows  | 9,533 generic codes                                     |
+| Tier 1         | 402 codes with description, causes and inspection steps |
+| Tier 2         | 9,131 codes with description only                       |
+| Needs review   | 9,533 rows (`needs_review = 1`)                         |
+| Build command  | `npm run import:dtc` (`fetch.mjs` then `build.mjs`)     |
+
+### Licence terms
+
+`LICENSE-DATA` at the pinned commit contains:
+
+> Creative Commons Legal Code
+>
+> CC0 1.0 Universal
+>
+> The person who associated a work with this deed has dedicated the work to the public domain by
+> waiving all of his or her rights to the work worldwide under copyright law, including all related
+> and neighboring rights, to the extent allowed by law.
+>
+> You can copy, modify, distribute and perform the work, even for commercial purposes, all without
+> asking permission.
+>
+> Full legal text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+>
+> This dedication applies to the data files contained in this repository (YAML, JSON, schema files
+> describing OBD-II codes and PIDs). The accompanying code is licensed separately under the MIT
+> License, see LICENSE-CODE.
+
+`LICENSE-CODE` at the same commit contains:
+
+> MIT License
+>
+> Copyright (c) 2026 obdex contributors
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+> associated documentation files (the "Software"), to deal in the Software without restriction,
+> including without limitation the rights to use, copy, modify, merge, publish, distribute,
+> sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+> furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all copies or
+> substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+> NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+> NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+> DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+> OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+>
+> This license applies only to the code in this repository (validation scripts, build tooling). Data
+> files are licensed separately under CC0-1.0, see LICENSE-DATA.
+
+Only the CC0 data files are imported. The tooling in `tools/import-dtc` is this project's own MIT
+code and does not copy upstream scripts.
+
+### Reproducible import
+
+`tools/import-dtc/sources.mjs` pins the repository, commit, download date and a SHA-256 for every
+upstream YAML file:
+
+| File                  | SHA-256                                                            |
+| --------------------- | ------------------------------------------------------------------ |
+| `P0xxx_enriched.yaml` | `b3aaf435b442ae0517e80da983d9cc0f0a98dd060d02487b417e6e7aa8ff5751` |
+| `P2xxx_enriched.yaml` | `aceeccaf838e23539077fe0eea06b94d399474d844af1b2ac18cc86119a446a6` |
+| `P3xxx_enriched.yaml` | `bc5264a0c66f982474816bf3b76527ade1f00a321f21a1ce4c657b9b0c560e0f` |
+| `B0xxx_enriched.yaml` | `414c00f8abede7d6b3c8e2eaf2ffc412ed67d7ed1cb6ea3a48a1d211d754b9c3` |
+| `C0xxx_enriched.yaml` | `70a08cacade9ebc2229bde582827732f46d44af17ad26a62a588196b87f0e067` |
+| `U0xxx_enriched.yaml` | `83a88aed8025c60bbaf7ad0846b4069f152aee110580c71a2506e244aab8c3d9` |
+| `U3xxx_enriched.yaml` | `145c5c379f3cccf50c1fb315daa99c8adc1e37283d325d4c09168eae28074a03` |
+
+`fetch.mjs` refuses any file whose bytes do not match its pinned checksum, so a moved or rewritten
+upstream commit fails the import instead of silently changing shipped data. The cache in
+`tools/import-dtc/.cache/` is gitignored; `build.mjs` reads only that verified cache and writes
+`src/data/dtc-codes.json` offline. Rebuilding from a clean checkout therefore needs one network run
+of `npm run import:dtc`, after which the JSON is committed and the app ships fully offline.
+
+Import rules:
+
+- Only generic codes are imported (`make` is `NULL` in `dtc_codes`). Manufacturer-specific Tier 3
+  data is out of scope and is never merged.
+- English text comes from `title.en` and is preserved verbatim. Arabic is generated deterministically
+  from `src/data/glossary-ar.json`; Tier 2 descriptions are explicitly machine drafts. No network
+  machine translation is used.
+- Tier 1 covers numeric-suffix codes in the families `P0100–P0199`, `P0300–P0312`, `P0420–P0431`,
+  `P0440–P0457`, `P0500–P0559`, `P0600–P0629`, `P0641–P0659`, `P0700–P0749` and `U0100–U0199`.
+  Hex-suffix codes such as `P010A` stay Tier 2.
+- Every row records `source = OBDex` and `source_version =` the pinned commit. Every imported Arabic
+  row starts with `needs_review = 1`; no unreviewed text is presented as confirmed.
+- Reviews live in `src/data/dtc-reviews.json`, a project overlay merged by `build.mjs`. Rerunning the
+  upstream import never discards reviewer corrections. `npm run review:export` writes a CSV with
+  Tier 1 first; `npm run review:import` validates it and clears `needs_review` only for reviewed rows.
+
+### Wal33D SQLite source
+
+`Wal33D` (Waleed Judah), HEAD `04c43d72e7db7197658b6f72fe582c5076d9eee8`, was reviewed as an
+optional cross-check. Its `LICENSE` is MIT (`Copyright (c) 2024 Wal33D (Waleed Judah)`). No rows from
+it were imported or merged in v1; OBDex is the single DTC source. If it is used later, it may only
+cross-check individual rows and must not be merged where the licence or provenance of a row is
+unclear.
+
+## Vehicle catalog (`src/data/vehicle-catalog.json`)
+
+| Field         | Value                                                                 |
+| ------------- | --------------------------------------------------------------------- |
+| Source        | Project-maintained knowledge list (no external appendix available)    |
+| Licence       | Project source (no third-party data)                                  |
+| Entries       | 259 models across 33 makes                                            |
+| Years         | `null` for both bounds until a cited source provides real year ranges |
+| Verification  | `verified = 0` for every row                                          |
+| Source tier   | `knowledge`                                                           |
+| Build command | `npm run catalog:build` (`tools/build-catalog.mjs`)                   |
+
+No Appendix C (or equivalent make/model appendix) exists in this repository or its git history. The
+catalog therefore uses the documented fallback: a bilingual selection aid, not a verified vehicle
+database. Each row has a stable UUID derived from `sha256(makeSlug:model)`, a canonical make slug
+(joining `src/data/makes.json`), English and Arabic search aliases, and an explicit `verified = 0`
+flag. Model years are not guessed.
+
+Seeding upserts catalog rows by their stable `id`; it never writes to `vehicles`. A user car keeps
+its own UUID, may reference `catalog_id` or stay free text, and survives every catalog update. When a
+cited manufacturer appendix is adopted, it must be added to this register (source, licence,
+retrieval date, year ranges) and its rows may then move to a cited tier and be marked verified; the
+existing catalog rows must not be silently relabelled.
+
 ## Not yet bundled
 
-DTC descriptions, vehicle make/model/year catalogs and repair data are not part of Phase 3.5.
-They must not be invented in code; each future dataset needs its own row here with a verified
-source, licence and retrieval date.
+Repair procedures, torque specifications, wiring diagrams, manufacturer manuals and
+manufacturer-specific DTCs are not part of v1. They must not be invented in code or scraped; each
+future dataset needs its own row here with a verified source, licence and retrieval date. MechanicDB
+and other unclear-licence datasets are not used.
