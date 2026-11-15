@@ -20,6 +20,7 @@ import { ScanService } from '../../lib/obd/scanService';
 import type { ClearResult, ScanProgress, ScanResult, ScanStep } from '../../lib/obd/scanTypes';
 import { useConnectionStore } from '../connection/connectionStore';
 import { useLiveStore } from '../live/liveStore';
+import { useFeatureFlag, useRemoteConfigStore } from '../../lib/remoteConfig/remoteConfigStore';
 import { useSelectedVehicleStore } from '../vehicles/vehicleStore';
 import { ScanResultView } from './ScanResultView';
 
@@ -119,9 +120,11 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
     () => new ScanService(driver, info, identityCache ? { identityCache } : {}),
     [driver, info, identityCache],
   );
+  const clearCodesEnabled = useFeatureFlag('clear_codes');
   const busy = scanning || clearing;
   const canClear =
     !busy &&
+    clearCodesEnabled &&
     repositories !== null &&
     result !== null &&
     result.stored.length + result.pending.length > 0;
@@ -197,6 +200,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
       setFailure(failureFor(error, 'scan'));
     } finally {
       setScanning(false);
+      useRemoteConfigStore.getState().applyPendingConfig();
     }
   };
 
@@ -227,6 +231,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
       setFailure(failureFor(error, 'clear'));
     } finally {
       setClearing(false);
+      useRemoteConfigStore.getState().applyPendingConfig();
     }
   };
 
@@ -288,6 +293,12 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
           {result && !canClear && result.stored.length + result.pending.length === 0 && (
             <span className="text-xs text-slate-500 dark:text-slate-400">
               {t('scan.clearNoCodes')}
+            </span>
+          )}
+
+          {result && !clearCodesEnabled && result.stored.length + result.pending.length > 0 && (
+            <span className="text-xs font-medium text-amber-600 dark:text-amber-400">
+              {t('remoteConfig.clearDisabledRemotely')}
             </span>
           )}
         </div>

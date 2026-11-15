@@ -1,12 +1,19 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import { useTheme } from '../lib/theme/useTheme';
 import { isDevPreview } from '../lib/db/runtime';
+import { useStorage } from '../lib/db/StorageProvider';
 import { useConnectionStore } from '../features/connection/connectionStore';
+import { useFeatureFlag, useRemoteConfigStore } from '../lib/remoteConfig/remoteConfigStore';
+import { RemoteConfigService } from '../lib/remoteConfig/remoteConfigService';
+import { DisabledAppBarrier } from '../features/remoteConfig/DisabledAppBarrier';
+import { MandatoryUpdatePrompt } from '../features/remoteConfig/MandatoryUpdatePrompt';
 import {
   IconActivity,
   IconCar,
+  IconDownload,
   IconGauge,
   IconGlobe,
   IconHistory,
@@ -29,6 +36,36 @@ export function AppLayout() {
   const { t, i18n } = useTranslation();
   const { resolved, setPreference } = useTheme();
   const isDemo = useConnectionStore((state) => state.isDemo);
+  const { repositories } = useStorage();
+
+  const config = useRemoteConfigStore((state) => state.config);
+  const isUpdateRequired = useRemoteConfigStore((state) => state.isUpdateRequired);
+  const isUpdateAvailable = useRemoteConfigStore((state) => state.isUpdateAvailable);
+  const liveDataEnabled = useFeatureFlag('live_data');
+  const [retrying, setRetrying] = useState(false);
+
+  useEffect(() => {
+    if (!repositories) return;
+    const service = new RemoteConfigService({ repository: repositories.remoteConfig });
+    void service.sync().then((res) => {
+      useRemoteConfigStore.getState().setConfig(res.config, res.status, res.error);
+    });
+  }, [repositories]);
+
+  const handleRetrySync = () => {
+    if (!repositories || retrying) return;
+    setRetrying(true);
+    const service = new RemoteConfigService({ repository: repositories.remoteConfig });
+    void service.sync().then((res) => {
+      useRemoteConfigStore.getState().setConfig(res.config, res.status, res.error);
+      setRetrying(false);
+    });
+  };
+
+  const navItems = NAV_ITEMS.filter((item) => {
+    if (item.to === '/live' && !liveDataEnabled) return false;
+    return true;
+  });
 
   const nextLanguage = i18n.resolvedLanguage === 'ar' ? 'en' : 'ar';
   const languageBadge = nextLanguage === 'en' ? 'EN' : 'ع';
@@ -49,7 +86,7 @@ export function AppLayout() {
         </div>
 
         <nav className="flex-1 space-y-1 p-3" aria-label={t('app.name')}>
-          {NAV_ITEMS.map(({ to, labelKey, Icon, end }) => (
+          {navItems.map(({ to, labelKey, Icon, end }) => (
             <NavLink
               key={to}
               to={to}
@@ -106,6 +143,18 @@ export function AppLayout() {
           </p>
 
           <div className="flex items-center gap-2">
+            {isUpdateAvailable && (
+              <a
+                href="https://github.com/islamshahat/obd-diagnose/releases"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 rounded-lg border border-blue-300 bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-100 dark:border-blue-700/50 dark:bg-blue-950/40 dark:text-blue-300"
+              >
+                <IconDownload className="size-3.5" />
+                <span>{t('remoteConfig.updateAvailable', { version: config.latest_version })}</span>
+              </a>
+            )}
+
             <button
               type="button"
               onClick={() => void i18n.changeLanguage(nextLanguage)}
@@ -138,6 +187,11 @@ export function AppLayout() {
             <Outlet />
           </div>
         </main>
+
+        {!config.app_enabled && (
+          <DisabledAppBarrier onRetry={handleRetrySync} isRetrying={retrying} />
+        )}
+        {config.app_enabled && isUpdateRequired && <MandatoryUpdatePrompt />}
       </div>
     </div>
   );

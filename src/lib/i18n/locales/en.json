@@ -69,6 +69,8 @@
       "themeDark": "Dark",
       "themeSystem": "System",
       "about": "About",
+      "privacyTitle": "Privacy & Transparency",
+      "privacyBody": "This application operates offline-first. Internet access is used exclusively to check for updates and operational status via GitHub. Zero personal information, vehicle VINs, or diagnostic scan results are ever transmitted to any external server.",
       "safetyTitle": "Note",
       "safetyBody": "This app is a diagnostic tool. Clearing codes does not fix the fault; it resets readiness monitors and the freeze frame."
     }
@@ -489,5 +491,23 @@
     "o2HintDownstreamOscillating": "The downstream sensor should remain relatively steady around 0.6V–0.8V. Rapid switching matching the upstream sensor suggests the catalytic converter is no longer storing oxygen efficiently.",
     "o2HintNormalTitle": "Oxygen Sensors Operating Within Normal Range",
     "o2HintNormal": "Sensor activity reflects normal closed-loop air-fuel feedback and catalytic converter operation."
+  },
+  "remoteConfig": {
+    "disabledTitle": "Application Temporarily Disabled",
+    "disabledDefaultMessage": "The application has been temporarily disabled for technical or safety maintenance.",
+    "securityNoticeTitle": "Digitally Signed Protection",
+    "securityNoticeBody": "This disable directive was verified using an Ed25519 digital signature issued by the development team to prevent tampering.",
+    "issuedAt": "Issued at",
+    "updateRequiredTitle": "Mandatory Update Required",
+    "updateRequiredMessage": "This version of the application is deprecated and no longer supported. Please update to the latest release to continue running safely.",
+    "currentVersion": "Current version",
+    "requiredVersion": "Required version",
+    "downloadUpdate": "Download Update",
+    "updateAvailable": "New update available (v{{version}})",
+    "checkUpdates": "Check for Updates",
+    "checking": "Checking…",
+    "upToDate": "Application is up to date",
+    "clearDisabledRemotely": "Fault clearing has been temporarily disabled remotely for vehicle safety",
+    "liveDataDisabledRemotely": "Live data telemetry has been temporarily disabled remotely"
   }
 }
