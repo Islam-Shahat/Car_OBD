@@ -2,22 +2,47 @@
  * Builds src/data/vehicle-catalog.json.
  *
  * Appendix C is not present in this repository or its history, so this is the
- * documented knowledge-based fallback: 33 makes / ~245 models for the Arab
+ * documented knowledge-based fallback: 40 makes / ~284 models for the Arab
  * market, every row `verified = 0` and `sourceTier = "knowledge"`. No year
  * ranges are invented; they stay null until a person checks them.
  *
+ * Every make that `src/data/wmi.json` can decode has at least one model here,
+ * so a scanned VIN never points at a make the selection list cannot show.
  * Ids are derived from make_slug + model, so rebuilding the catalog never
  * orphans a vehicles.catalog_id.
  */
 import { createHash } from 'node:crypto';
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outputPath = join(here, '..', 'src', 'data', 'vehicle-catalog.json');
-const VERSION = '2026-11-14.1';
-const DOWNLOADED_AT = '2026-11-14';
+const VERSION = '2026-11-15.1';
+const DOWNLOADED_AT = '2026-11-15';
+
+/**
+ * Additional Arabic make spellings, keyed by make slug.
+ *
+ * This list is deliberately short: only spellings that are common in the Arab
+ * market and that the maintainer is confident about. Everything here is
+ * unreviewed knowledge and is listed in docs/phase-4-5.md for review; the
+ * canonical name still comes from the i18n make list.
+ */
+const MAKE_ALIASES_AR = {
+  toyota: ['تويوتا', 'تيوتا'],
+  hyundai: ['هيونداي', 'هونداي', 'هيوندي'],
+  nissan: ['نيسان', 'نسان'],
+  chevrolet: ['شيفروليه', 'شيفرولية', 'شيفرولت'],
+  kia: ['كيا'],
+  daihatsu: ['دايهاتسو'],
+  isuzu: ['إيسوزو', 'ايسوزو'],
+  porsche: ['بورش'],
+  ssangyong: ['سانج يونج', 'سانغ يونغ'],
+  subaru: ['سوبارو'],
+  tesla: ['تسلا'],
+  volvo: ['فولفو'],
+};
 
 /** make | makeSlug | model | Arabic aliases (comma separated) | English aliases | body */
 const TABLE = `
@@ -31,7 +56,7 @@ Toyota|toyota|Land Cruiser Prado|برادو,لاند كروزر برادو|Prado
 Toyota|toyota|RAV4|راف فور,راف4|RAV-4|suv
 Toyota|toyota|Avalon|أفالون||sedan
 Toyota|toyota|Hiace|هايس,هايس فان||van
-Nissan|nissan|Sunny|صني||sedan
+Nissan|nissan|Sunny|صني,صنى||sedan
 Nissan|nissan|Sentra|سنترا||sedan
 Nissan|nissan|Altima|التيما||sedan
 Nissan|nissan|Tiida|تيدا||hatchback
@@ -280,6 +305,31 @@ Chrysler|chrysler|300|300||sedan
 Chrysler|chrysler|Sebring|سبرينج||sedan
 Chrysler|chrysler|PT Cruiser|بي تي كروزر|PTCruiser|wagon
 Chrysler|chrysler|Town & Country|تاون اند كونتري|TownCountry|van
+Daihatsu|daihatsu|Terios|تيريوس||suv
+Daihatsu|daihatsu|Sirion|سيريون||hatchback
+Daihatsu|daihatsu|Gran Max|جران ماكس||van
+Isuzu|isuzu|D-Max|ديماكس|DMax|pickup
+Isuzu|isuzu|MU-X|مو إكس|MUX|suv
+Porsche|porsche|Cayenne|كايين||suv
+Porsche|porsche|Macan|ماكان||suv
+Porsche|porsche|Panamera|باناميرا||sedan
+Porsche|porsche|911|911||coupe
+SsangYong|ssangyong|Tivoli|تيفولي||suv
+SsangYong|ssangyong|Korando|كوراندو||suv
+SsangYong|ssangyong|Rexton|ريكستون||suv
+SsangYong|ssangyong|Musso|موسو||pickup
+Subaru|subaru|Impreza|إمبريزا,امبريزا|Impreza|sedan
+Subaru|subaru|Forester|فورستر||suv
+Subaru|subaru|Outback|أوتباك,اوتباك|Outback|wagon
+Subaru|subaru|XV|إكس في,اكس في|XV|suv
+Tesla|tesla|Model 3|موديل 3|Model3|sedan
+Tesla|tesla|Model Y|موديل واي|ModelY|suv
+Tesla|tesla|Model S|موديل إس|ModelS|sedan
+Tesla|tesla|Model X|موديل إكس|ModelX|suv
+Volvo|volvo|XC40|إكس سي 40|XC-40|suv
+Volvo|volvo|XC60|إكس سي 60|XC-60|suv
+Volvo|volvo|XC90|إكس سي 90|XC-90|suv
+Volvo|volvo|S60|إس 60|S-60|sedan
 `.trim();
 
 function uuidFor(key) {
@@ -301,6 +351,7 @@ const entries = TABLE.split('\n').map((line) => {
     make,
     makeSlug,
     model,
+    makeAliasesAr: MAKE_ALIASES_AR[makeSlug] ?? [],
     aliasesAr: aliasesAr ? aliasesAr.split(',') : [],
     aliasesEn: aliasesEn ? aliasesEn.split(',') : [],
     yearFrom: null,
@@ -312,9 +363,23 @@ const entries = TABLE.split('\n').map((line) => {
 });
 
 const makes = new Set(entries.map((entry) => entry.makeSlug));
-if (makes.size !== 33) throw new Error(`Expected 33 makes, built ${makes.size}`);
+if (makes.size !== 40) throw new Error(`Expected 40 makes, built ${makes.size}`);
 if (new Set(entries.map((entry) => entry.id)).size !== entries.length) {
   throw new Error('Duplicate catalog ids');
+}
+
+// Every WMI-decoded make must have at least one model, otherwise a scanned VIN
+// points at a make the user cannot pick.
+const wmiSlugs = new Set(
+  Object.values(
+    JSON.parse(readFileSync(join(here, '..', 'src', 'data', 'wmi.json'), 'utf8')).entries,
+  )
+    .map((entry) => entry.makeSlug)
+    .filter(Boolean),
+);
+const missing = [...wmiSlugs].filter((slug) => !makes.has(slug));
+if (missing.length > 0) {
+  throw new Error(`Catalog has no models for WMI makes: ${missing.join(', ')}`);
 }
 
 writeFileSync(

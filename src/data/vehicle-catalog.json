@@ -1,12 +1,16 @@
 {
-  "version": "2026-11-14.1",
-  "downloadedAt": "2026-11-14",
+  "version": "2026-11-15.1",
+  "downloadedAt": "2026-11-15",
   "entries": [
     {
       "id": "4e52ce56-4200-50fb-abf7-60ad7a2853cc",
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Corolla",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "كورولا"
       ],
@@ -22,6 +26,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Camry",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "كامري"
       ],
@@ -37,6 +45,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Yaris",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "ياريس"
       ],
@@ -52,6 +64,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Hilux",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "هايلكس"
       ],
@@ -67,6 +83,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Fortuner",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "فورتشنر"
       ],
@@ -82,6 +102,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Land Cruiser",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "لاند كروزر",
         "لاندكروزر"
@@ -100,6 +124,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Land Cruiser Prado",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "برادو",
         "لاند كروزر برادو"
@@ -118,6 +146,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "RAV4",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "راف فور",
         "راف4"
@@ -136,6 +168,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Avalon",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "أفالون"
       ],
@@ -151,6 +187,10 @@
       "make": "Toyota",
       "makeSlug": "toyota",
       "model": "Hiace",
+      "makeAliasesAr": [
+        "تويوتا",
+        "تيوتا"
+      ],
       "aliasesAr": [
         "هايس",
         "هايس فان"
@@ -167,8 +207,13 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Sunny",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
-        "صني"
+        "صني",
+        "صنى"
       ],
       "aliasesEn": [],
       "yearFrom": null,
@@ -182,6 +227,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Sentra",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "سنترا"
       ],
@@ -197,6 +246,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Altima",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "التيما"
       ],
@@ -212,6 +265,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Tiida",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "تيدا"
       ],
@@ -227,6 +284,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "X-Trail",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "إكس تريل",
         "اكس تريل"
@@ -245,6 +306,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Patrol",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "باترول"
       ],
@@ -260,6 +325,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Kicks",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "كيكس"
       ],
@@ -275,6 +344,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Pathfinder",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "باثفايندر"
       ],
@@ -290,6 +363,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Urvan",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "أورفان",
         "اورفان"
@@ -306,6 +383,10 @@
       "make": "Nissan",
       "makeSlug": "nissan",
       "model": "Navara",
+      "makeAliasesAr": [
+        "نيسان",
+        "نسان"
+      ],
       "aliasesAr": [
         "نافارا"
       ],
@@ -321,6 +402,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "Elantra",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "إلنترا",
         "النترا"
@@ -337,6 +423,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "Accent",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "أكسنت",
         "اكسنت"
@@ -353,6 +444,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "Verna",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "فيرنا"
       ],
@@ -368,6 +464,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "Sonata",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "سوناتا"
       ],
@@ -383,6 +484,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "Tucson",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "توسان"
       ],
@@ -398,6 +504,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "Creta",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "كريتا"
       ],
@@ -413,6 +524,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "Santa Fe",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "سانتافي",
         "سانتا في"
@@ -431,6 +547,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "i10",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "آي 10",
         "اي 10"
@@ -449,6 +570,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "H1",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "إتش 1",
         "اتش 1"
@@ -467,6 +593,11 @@
       "make": "Hyundai",
       "makeSlug": "hyundai",
       "model": "Azera",
+      "makeAliasesAr": [
+        "هيونداي",
+        "هونداي",
+        "هيوندي"
+      ],
       "aliasesAr": [
         "أزيرا",
         "ازيرا"
@@ -483,6 +614,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Cerato",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "سيراتو"
       ],
@@ -498,6 +632,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Rio",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "ريو"
       ],
@@ -513,6 +650,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Sportage",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "سبورتاج"
       ],
@@ -528,6 +668,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Sorento",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "سورينتو"
       ],
@@ -543,6 +686,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Picanto",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "بيكانتو"
       ],
@@ -558,6 +704,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Optima",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "أوبتيما",
         "اوبتيما"
@@ -574,6 +723,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Carens",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "كارينز"
       ],
@@ -589,6 +741,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Seltos",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "سيلتوس"
       ],
@@ -604,6 +759,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Carnival",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "كارنفال"
       ],
@@ -619,6 +777,9 @@
       "make": "Kia",
       "makeSlug": "kia",
       "model": "Pegas",
+      "makeAliasesAr": [
+        "كيا"
+      ],
       "aliasesAr": [
         "بيجاس"
       ],
@@ -634,6 +795,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Optra",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "أوبترا",
         "اوبترا"
@@ -650,6 +816,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Aveo",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "أفيو",
         "افيو"
@@ -666,6 +837,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Cruze",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "كروز"
       ],
@@ -681,6 +857,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Captiva",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "كابتيفا"
       ],
@@ -696,6 +877,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Tahoe",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "تاهو"
       ],
@@ -711,6 +897,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Malibu",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "ماليبو"
       ],
@@ -726,6 +917,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Spark",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "سبارك"
       ],
@@ -741,6 +937,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Silverado",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "سيلفرادو"
       ],
@@ -756,6 +957,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Trax",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "تراكس"
       ],
@@ -771,6 +977,11 @@
       "make": "Chevrolet",
       "makeSlug": "chevrolet",
       "model": "Trailblazer",
+      "makeAliasesAr": [
+        "شيفروليه",
+        "شيفرولية",
+        "شيفرولت"
+      ],
       "aliasesAr": [
         "تريل بليزر"
       ],
@@ -788,6 +999,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Focus",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "فوكس"
       ],
@@ -803,6 +1015,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Fiesta",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "فييستا"
       ],
@@ -818,6 +1031,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Escape",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إسكيب",
         "اسكيب"
@@ -834,6 +1048,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Explorer",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إكسبلورر",
         "اكسبلورر"
@@ -850,6 +1065,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "F-150",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إف 150",
         "اف 150"
@@ -868,6 +1084,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Edge",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إيدج",
         "ايدج"
@@ -884,6 +1101,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Taurus",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تورس"
       ],
@@ -899,6 +1117,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Ranger",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "رينجر"
       ],
@@ -914,6 +1133,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Transit",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ترانزيت"
       ],
@@ -929,6 +1149,7 @@
       "make": "Ford",
       "makeSlug": "ford",
       "model": "Territory",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيريتوري"
       ],
@@ -944,6 +1165,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "Civic",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سيفيك"
       ],
@@ -959,6 +1181,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "Accord",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أكورد",
         "اكورد"
@@ -975,6 +1198,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "City",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سيتي"
       ],
@@ -990,6 +1214,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "CR-V",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي آر في"
       ],
@@ -1007,6 +1232,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "HR-V",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إتش آر في",
         "اتش ار في"
@@ -1025,6 +1251,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "Pilot",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بايلوت"
       ],
@@ -1040,6 +1267,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "Jazz",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جاز"
       ],
@@ -1055,6 +1283,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "Odyssey",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أوديسي",
         "اوديسي"
@@ -1071,6 +1300,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "BR-V",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بي آر في"
       ],
@@ -1088,6 +1318,7 @@
       "make": "Honda",
       "makeSlug": "honda",
       "model": "ZR-V",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "زد آر في"
       ],
@@ -1105,6 +1336,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "Lancer",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "لانسر"
       ],
@@ -1120,6 +1352,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "Pajero",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "باجيرو"
       ],
@@ -1135,6 +1368,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "Pajero Sport",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "باجيرو سبورت"
       ],
@@ -1152,6 +1386,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "Outlander",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أوتلاندر",
         "اوتلاندر"
@@ -1168,6 +1403,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "Attrage",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أتراج",
         "اتراج"
@@ -1184,6 +1420,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "ASX",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إيه إس إكس",
         "اي اس اكس"
@@ -1200,6 +1437,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "Eclipse Cross",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إكليبس كروس",
         "اكليبس كروس"
@@ -1218,6 +1456,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "L200",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إل 200",
         "ال 200"
@@ -1236,6 +1475,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "Montero Sport",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "مونتيرو سبورت"
       ],
@@ -1253,6 +1493,7 @@
       "make": "Mitsubishi",
       "makeSlug": "mitsubishi",
       "model": "Xpander",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إكسباندر",
         "اكسباندر"
@@ -1269,6 +1510,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "Mazda 2",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "مازدا 2"
       ],
@@ -1286,6 +1528,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "Mazda 3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "مازدا 3"
       ],
@@ -1303,6 +1546,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "Mazda 6",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "مازدا 6"
       ],
@@ -1320,6 +1564,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "CX-3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إكس 3"
       ],
@@ -1337,6 +1582,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "CX-5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إكس 5"
       ],
@@ -1354,6 +1600,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "CX-9",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إكس 9"
       ],
@@ -1371,6 +1618,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "CX-30",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إكس 30"
       ],
@@ -1388,6 +1636,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "BT-50",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بي تي 50"
       ],
@@ -1405,6 +1654,7 @@
       "make": "Mazda",
       "makeSlug": "mazda",
       "model": "MX-5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إم إكس 5"
       ],
@@ -1422,6 +1672,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "Swift",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سويفت"
       ],
@@ -1437,6 +1688,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "Dzire",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "دزاير"
       ],
@@ -1452,6 +1704,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "Vitara",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "فيتارا"
       ],
@@ -1467,6 +1720,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "Jimny",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جيمني"
       ],
@@ -1482,6 +1736,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "SX4",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إس إكس 4"
       ],
@@ -1499,6 +1754,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "Ertiga",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إرتيجا",
         "ارتيجا"
@@ -1515,6 +1771,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "Ciaz",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سياز"
       ],
@@ -1530,6 +1787,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "Baleno",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بالينو"
       ],
@@ -1545,6 +1803,7 @@
       "make": "Suzuki",
       "makeSlug": "suzuki",
       "model": "Celerio",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سيليريو"
       ],
@@ -1560,6 +1819,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Logan",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "لوجان"
       ],
@@ -1575,6 +1835,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Duster",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "داستر"
       ],
@@ -1590,6 +1851,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Megane",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ميجان"
       ],
@@ -1605,6 +1867,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Symbol",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سيمبول"
       ],
@@ -1620,6 +1883,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Captur",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كابتور"
       ],
@@ -1635,6 +1899,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Koleos",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كوليوس"
       ],
@@ -1650,6 +1915,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Sandero",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سانديرو"
       ],
@@ -1665,6 +1931,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Trafic",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ترافيك"
       ],
@@ -1680,6 +1947,7 @@
       "make": "Renault",
       "makeSlug": "renault",
       "model": "Arkana",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أركانا",
         "اركانا"
@@ -1696,6 +1964,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "301",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "301"
       ],
@@ -1711,6 +1980,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "308",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "308"
       ],
@@ -1726,6 +1996,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "3008",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "3008"
       ],
@@ -1741,6 +2012,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "508",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "508"
       ],
@@ -1756,6 +2028,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "2008",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "2008"
       ],
@@ -1771,6 +2044,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "5008",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "5008"
       ],
@@ -1786,6 +2060,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "208",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "208"
       ],
@@ -1801,6 +2076,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "Partner",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بارتنر"
       ],
@@ -1816,6 +2092,7 @@
       "make": "Peugeot",
       "makeSlug": "peugeot",
       "model": "Traveller",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ترافيلر"
       ],
@@ -1831,6 +2108,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "Tipo",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيبو"
       ],
@@ -1846,6 +2124,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "Punto",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بونتو"
       ],
@@ -1861,6 +2140,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "500",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "500"
       ],
@@ -1876,6 +2156,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "Doblo",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "دوبلو"
       ],
@@ -1891,6 +2172,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "Panda",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "باندا"
       ],
@@ -1906,6 +2188,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "Bravo",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "برافو"
       ],
@@ -1921,6 +2204,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "Linea",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "لينيا"
       ],
@@ -1936,6 +2220,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "Scudo",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سكودو"
       ],
@@ -1951,6 +2236,7 @@
       "make": "Fiat",
       "makeSlug": "fiat",
       "model": "Ducato",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "دوكاتو"
       ],
@@ -1966,6 +2252,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Astra",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أسترا",
         "استرا"
@@ -1982,6 +2269,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Corsa",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كورسا"
       ],
@@ -1997,6 +2285,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Insignia",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إنسيجنيا",
         "انسيجنيا"
@@ -2013,6 +2302,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Mokka",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "موكا"
       ],
@@ -2028,6 +2318,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Vectra",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "فيكترا"
       ],
@@ -2043,6 +2334,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Zafira",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "زافيرا"
       ],
@@ -2058,6 +2350,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Crossland",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كروسلاند"
       ],
@@ -2073,6 +2366,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Movano",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "موفانو"
       ],
@@ -2088,6 +2382,7 @@
       "make": "Opel",
       "makeSlug": "opel",
       "model": "Grandland",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جراندلاند"
       ],
@@ -2103,6 +2398,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "Golf",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جولف"
       ],
@@ -2118,6 +2414,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "Passat",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "باسات"
       ],
@@ -2133,6 +2430,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "Jetta",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جيتا"
       ],
@@ -2148,6 +2446,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "Tiguan",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيجوان"
       ],
@@ -2163,6 +2462,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "Touareg",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "طوارق"
       ],
@@ -2178,6 +2478,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "Polo",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بولو"
       ],
@@ -2193,6 +2494,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "Teramont",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيرامونت"
       ],
@@ -2208,6 +2510,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "Caddy",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كادي"
       ],
@@ -2223,6 +2526,7 @@
       "make": "Volkswagen",
       "makeSlug": "volkswagen",
       "model": "ID.4",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "آي دي 4",
         "اي دي 4"
@@ -2241,6 +2545,7 @@
       "make": "Skoda",
       "makeSlug": "skoda",
       "model": "Octavia",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أوكتافيا",
         "اوكتافيا"
@@ -2257,6 +2562,7 @@
       "make": "Skoda",
       "makeSlug": "skoda",
       "model": "Superb",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سوبيرب"
       ],
@@ -2272,6 +2578,7 @@
       "make": "Skoda",
       "makeSlug": "skoda",
       "model": "Kodiaq",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كودياك"
       ],
@@ -2287,6 +2594,7 @@
       "make": "Skoda",
       "makeSlug": "skoda",
       "model": "Fabia",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "فابيا"
       ],
@@ -2302,6 +2610,7 @@
       "make": "Skoda",
       "makeSlug": "skoda",
       "model": "Karoq",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كاروك"
       ],
@@ -2317,6 +2626,7 @@
       "make": "Skoda",
       "makeSlug": "skoda",
       "model": "Rapid",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "رابيد"
       ],
@@ -2332,6 +2642,7 @@
       "make": "Skoda",
       "makeSlug": "skoda",
       "model": "Scala",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سكالا"
       ],
@@ -2347,6 +2658,7 @@
       "make": "Skoda",
       "makeSlug": "skoda",
       "model": "Kamiq",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كاميك"
       ],
@@ -2362,6 +2674,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "3 Series",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "الفئة الثالثة"
       ],
@@ -2379,6 +2692,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "5 Series",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "الفئة الخامسة"
       ],
@@ -2396,6 +2710,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "7 Series",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "الفئة السابعة"
       ],
@@ -2413,6 +2728,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "X1",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إكس 1",
         "اكس 1"
@@ -2431,6 +2747,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "X2",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إكس 2",
         "اكس 2"
@@ -2449,6 +2766,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "X3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إكس 3",
         "اكس 3"
@@ -2467,6 +2785,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "X5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إكس 5",
         "اكس 5"
@@ -2485,6 +2804,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "X6",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إكس 6",
         "اكس 6"
@@ -2503,6 +2823,7 @@
       "make": "BMW",
       "makeSlug": "bmw",
       "model": "iX",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "آي إكس",
         "اي اكس"
@@ -2519,6 +2840,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "C-Class",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "الفئة C",
         "سي كلاس"
@@ -2537,6 +2859,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "E-Class",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "الفئة E",
         "إي كلاس"
@@ -2555,6 +2878,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "S-Class",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "الفئة S",
         "إس كلاس"
@@ -2573,6 +2897,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "GLA",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جي إل إيه"
       ],
@@ -2590,6 +2915,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "GLC",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جي إل سي"
       ],
@@ -2607,6 +2933,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "GLE",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جي إل إي"
       ],
@@ -2624,6 +2951,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "GLS",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جي إل إس"
       ],
@@ -2641,6 +2969,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "Sprinter",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سبرينتر"
       ],
@@ -2656,6 +2985,7 @@
       "make": "Mercedes-Benz",
       "makeSlug": "mercedes-benz",
       "model": "V-Class",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "الفئة V"
       ],
@@ -2673,6 +3003,7 @@
       "make": "Audi",
       "makeSlug": "audi",
       "model": "A3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إيه 3",
         "اي 3"
@@ -2691,6 +3022,7 @@
       "make": "Audi",
       "makeSlug": "audi",
       "model": "A4",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إيه 4",
         "اي 4"
@@ -2709,6 +3041,7 @@
       "make": "Audi",
       "makeSlug": "audi",
       "model": "A6",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إيه 6",
         "اي 6"
@@ -2727,6 +3060,7 @@
       "make": "Audi",
       "makeSlug": "audi",
       "model": "A8",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إيه 8",
         "اي 8"
@@ -2745,6 +3079,7 @@
       "make": "Audi",
       "makeSlug": "audi",
       "model": "Q3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كيو 3"
       ],
@@ -2762,6 +3097,7 @@
       "make": "Audi",
       "makeSlug": "audi",
       "model": "Q5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كيو 5"
       ],
@@ -2779,6 +3115,7 @@
       "make": "Audi",
       "makeSlug": "audi",
       "model": "Q7",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كيو 7"
       ],
@@ -2796,6 +3133,7 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 2",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيجو 2"
       ],
@@ -2813,6 +3151,7 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيجو 3"
       ],
@@ -2830,6 +3169,7 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 4",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيجو 4"
       ],
@@ -2847,6 +3187,7 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 7",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيجو 7"
       ],
@@ -2864,6 +3205,7 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Tiggo 8",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تيجو 8"
       ],
@@ -2881,6 +3223,7 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Arrizo 5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أريزو 5",
         "اريزو 5"
@@ -2899,6 +3242,7 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "Arrizo 6",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أريزو 6",
         "اريزو 6"
@@ -2917,6 +3261,7 @@
       "make": "Chery",
       "makeSlug": "chery",
       "model": "QQ",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كيو كيو"
       ],
@@ -2932,6 +3277,7 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Emgrand 7",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إمجراند 7",
         "امجراند 7"
@@ -2950,6 +3296,7 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Emgrand 8",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إمجراند 8",
         "امجراند 8"
@@ -2968,6 +3315,7 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Emgrand X7",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إمجراند إكس 7",
         "امجراند اكس 7"
@@ -2986,6 +3334,7 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Coolray",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كولراي"
       ],
@@ -3001,6 +3350,7 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Tugella",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "توجيلا"
       ],
@@ -3016,6 +3366,7 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "Atlas",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أطلس",
         "اطلس"
@@ -3032,6 +3383,7 @@
       "make": "Geely",
       "makeSlug": "geely",
       "model": "GS",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جي إس",
         "جي اس"
@@ -3048,6 +3400,7 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "MG3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إم جي 3",
         "ام جي 3"
@@ -3066,6 +3419,7 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "MG5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إم جي 5",
         "ام جي 5"
@@ -3084,6 +3438,7 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "MG6",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إم جي 6",
         "ام جي 6"
@@ -3102,6 +3457,7 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "ZS",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "زد إس",
         "زد اس"
@@ -3118,6 +3474,7 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "HS",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إتش إس",
         "اتش اس"
@@ -3134,6 +3491,7 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "RX5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "آر إكس 5",
         "ار اكس 5"
@@ -3152,6 +3510,7 @@
       "make": "MG",
       "makeSlug": "mg",
       "model": "GT",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جي تي"
       ],
@@ -3167,6 +3526,7 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "F3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إف 3",
         "اف 3"
@@ -3185,6 +3545,7 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "S6",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إس 6",
         "اس 6"
@@ -3203,6 +3564,7 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Song Plus",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سونج بلس"
       ],
@@ -3220,6 +3582,7 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Qin Plus",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تشين بلس"
       ],
@@ -3237,6 +3600,7 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Tang",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تانج"
       ],
@@ -3252,6 +3616,7 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Dolphin",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "دولفين"
       ],
@@ -3267,6 +3632,7 @@
       "make": "BYD",
       "makeSlug": "byd",
       "model": "Atto 3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "أتو 3",
         "اتو 3"
@@ -3285,6 +3651,7 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "Eado",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إيدو",
         "ايدو"
@@ -3301,6 +3668,7 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "Alsvin",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ألسفين",
         "السفين"
@@ -3317,6 +3685,7 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "CS15",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إس 15"
       ],
@@ -3334,6 +3703,7 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "CS35",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إس 35"
       ],
@@ -3351,6 +3721,7 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "CS75",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إس 75"
       ],
@@ -3368,6 +3739,7 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "CS95",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إس 95"
       ],
@@ -3385,6 +3757,7 @@
       "make": "Changan",
       "makeSlug": "changan",
       "model": "Hunter",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "هانتر"
       ],
@@ -3400,6 +3773,7 @@
       "make": "Great Wall",
       "makeSlug": "great-wall",
       "model": "Wingle 5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "وينجل 5"
       ],
@@ -3417,6 +3791,7 @@
       "make": "Great Wall",
       "makeSlug": "great-wall",
       "model": "Wingle 7",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "وينجل 7"
       ],
@@ -3434,6 +3809,7 @@
       "make": "Great Wall",
       "makeSlug": "great-wall",
       "model": "Poer",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بور"
       ],
@@ -3449,6 +3825,7 @@
       "make": "Great Wall",
       "makeSlug": "great-wall",
       "model": "C30",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي 30"
       ],
@@ -3466,6 +3843,7 @@
       "make": "Great Wall",
       "makeSlug": "great-wall",
       "model": "Steed",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ستيد"
       ],
@@ -3481,6 +3859,7 @@
       "make": "Great Wall",
       "makeSlug": "great-wall",
       "model": "Tank 300",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تانك 300"
       ],
@@ -3498,6 +3877,7 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "H2",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إتش 2",
         "اتش 2"
@@ -3516,6 +3896,7 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "H5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إتش 5",
         "اتش 5"
@@ -3534,6 +3915,7 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "H6",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إتش 6",
         "اتش 6"
@@ -3552,6 +3934,7 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "H9",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إتش 9",
         "اتش 9"
@@ -3570,6 +3953,7 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "Jolion",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جوليان"
       ],
@@ -3585,6 +3969,7 @@
       "make": "Haval",
       "makeSlug": "haval",
       "model": "Dargo",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "دارجو"
       ],
@@ -3600,6 +3985,7 @@
       "make": "Daewoo",
       "makeSlug": "daewoo",
       "model": "Lanos",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "لانوس"
       ],
@@ -3615,6 +4001,7 @@
       "make": "Daewoo",
       "makeSlug": "daewoo",
       "model": "Nubira",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "نوبيرا"
       ],
@@ -3630,6 +4017,7 @@
       "make": "Daewoo",
       "makeSlug": "daewoo",
       "model": "Leganza",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ليجانزا"
       ],
@@ -3645,6 +4033,7 @@
       "make": "Daewoo",
       "makeSlug": "daewoo",
       "model": "Matiz",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ماتيز"
       ],
@@ -3660,6 +4049,7 @@
       "make": "Daewoo",
       "makeSlug": "daewoo",
       "model": "Espero",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "إسبيرو",
         "اسبيرو"
@@ -3676,6 +4066,7 @@
       "make": "Lada",
       "makeSlug": "lada",
       "model": "Niva",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "نيفا"
       ],
@@ -3691,6 +4082,7 @@
       "make": "Lada",
       "makeSlug": "lada",
       "model": "Granta",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جرانتا"
       ],
@@ -3706,6 +4098,7 @@
       "make": "Lada",
       "makeSlug": "lada",
       "model": "Vesta",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "فيستا"
       ],
@@ -3721,6 +4114,7 @@
       "make": "Lada",
       "makeSlug": "lada",
       "model": "Priora",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بريورا"
       ],
@@ -3736,6 +4130,7 @@
       "make": "Lada",
       "makeSlug": "lada",
       "model": "Kalina",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كالينا"
       ],
@@ -3751,6 +4146,7 @@
       "make": "Dacia",
       "makeSlug": "dacia",
       "model": "Logan",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "لوجان"
       ],
@@ -3766,6 +4162,7 @@
       "make": "Dacia",
       "makeSlug": "dacia",
       "model": "Sandero",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سانديرو"
       ],
@@ -3781,6 +4178,7 @@
       "make": "Dacia",
       "makeSlug": "dacia",
       "model": "Duster",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "داستر"
       ],
@@ -3796,6 +4194,7 @@
       "make": "Dacia",
       "makeSlug": "dacia",
       "model": "Dokker",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "دوكر"
       ],
@@ -3811,6 +4210,7 @@
       "make": "Dacia",
       "makeSlug": "dacia",
       "model": "Lodgy",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "لودجي"
       ],
@@ -3826,6 +4226,7 @@
       "make": "Citroen",
       "makeSlug": "citroen",
       "model": "C1",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي 1"
       ],
@@ -3843,6 +4244,7 @@
       "make": "Citroen",
       "makeSlug": "citroen",
       "model": "C3",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي 3"
       ],
@@ -3860,6 +4262,7 @@
       "make": "Citroen",
       "makeSlug": "citroen",
       "model": "C4",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي 4"
       ],
@@ -3877,6 +4280,7 @@
       "make": "Citroen",
       "makeSlug": "citroen",
       "model": "C5",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي 5"
       ],
@@ -3894,6 +4298,7 @@
       "make": "Citroen",
       "makeSlug": "citroen",
       "model": "Berlingo",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بيرلينجو"
       ],
@@ -3909,6 +4314,7 @@
       "make": "Citroen",
       "makeSlug": "citroen",
       "model": "C-Elysee",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سي إليسي"
       ],
@@ -3926,6 +4332,7 @@
       "make": "Jeep",
       "makeSlug": "jeep",
       "model": "Cherokee",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "شيروكي"
       ],
@@ -3941,6 +4348,7 @@
       "make": "Jeep",
       "makeSlug": "jeep",
       "model": "Grand Cherokee",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جراند شيروكي"
       ],
@@ -3958,6 +4366,7 @@
       "make": "Jeep",
       "makeSlug": "jeep",
       "model": "Wrangler",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "رانجلر"
       ],
@@ -3973,6 +4382,7 @@
       "make": "Jeep",
       "makeSlug": "jeep",
       "model": "Compass",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "كومباس"
       ],
@@ -3988,6 +4398,7 @@
       "make": "Jeep",
       "makeSlug": "jeep",
       "model": "Renegade",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "رينيجيد"
       ],
@@ -4003,6 +4414,7 @@
       "make": "Jeep",
       "makeSlug": "jeep",
       "model": "Liberty",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "ليبرتي"
       ],
@@ -4018,6 +4430,7 @@
       "make": "Dodge",
       "makeSlug": "dodge",
       "model": "Charger",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تشارجر"
       ],
@@ -4033,6 +4446,7 @@
       "make": "Dodge",
       "makeSlug": "dodge",
       "model": "Challenger",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تشالنجر"
       ],
@@ -4048,6 +4462,7 @@
       "make": "Dodge",
       "makeSlug": "dodge",
       "model": "Durango",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "دورانجو"
       ],
@@ -4063,6 +4478,7 @@
       "make": "Dodge",
       "makeSlug": "dodge",
       "model": "Journey",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "جورني"
       ],
@@ -4078,6 +4494,7 @@
       "make": "Chrysler",
       "makeSlug": "chrysler",
       "model": "300",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "300"
       ],
@@ -4093,6 +4510,7 @@
       "make": "Chrysler",
       "makeSlug": "chrysler",
       "model": "Sebring",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "سبرينج"
       ],
@@ -4108,6 +4526,7 @@
       "make": "Chrysler",
       "makeSlug": "chrysler",
       "model": "PT Cruiser",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "بي تي كروزر"
       ],
@@ -4125,6 +4544,7 @@
       "make": "Chrysler",
       "makeSlug": "chrysler",
       "model": "Town & Country",
+      "makeAliasesAr": [],
       "aliasesAr": [
         "تاون اند كونتري"
       ],
@@ -4134,6 +4554,491 @@
       "yearFrom": null,
       "yearTo": null,
       "bodyType": "van",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "7df0f469-7868-5265-9660-ae2c0945efb9",
+      "make": "Daihatsu",
+      "makeSlug": "daihatsu",
+      "model": "Terios",
+      "makeAliasesAr": [
+        "دايهاتسو"
+      ],
+      "aliasesAr": [
+        "تيريوس"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "212f725d-61f6-5a08-af9d-73afe0b5f110",
+      "make": "Daihatsu",
+      "makeSlug": "daihatsu",
+      "model": "Sirion",
+      "makeAliasesAr": [
+        "دايهاتسو"
+      ],
+      "aliasesAr": [
+        "سيريون"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "hatchback",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "914717d5-243c-52a7-a82c-a843cae04417",
+      "make": "Daihatsu",
+      "makeSlug": "daihatsu",
+      "model": "Gran Max",
+      "makeAliasesAr": [
+        "دايهاتسو"
+      ],
+      "aliasesAr": [
+        "جران ماكس"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "van",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "d3701d97-cd7e-515d-9364-bf46dba5c598",
+      "make": "Isuzu",
+      "makeSlug": "isuzu",
+      "model": "D-Max",
+      "makeAliasesAr": [
+        "إيسوزو",
+        "ايسوزو"
+      ],
+      "aliasesAr": [
+        "ديماكس"
+      ],
+      "aliasesEn": [
+        "DMax"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "pickup",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "3b2f461b-b85d-5609-8cd9-3a4cc3889068",
+      "make": "Isuzu",
+      "makeSlug": "isuzu",
+      "model": "MU-X",
+      "makeAliasesAr": [
+        "إيسوزو",
+        "ايسوزو"
+      ],
+      "aliasesAr": [
+        "مو إكس"
+      ],
+      "aliasesEn": [
+        "MUX"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "e22a5aff-8ca0-5d46-b926-5664676de320",
+      "make": "Porsche",
+      "makeSlug": "porsche",
+      "model": "Cayenne",
+      "makeAliasesAr": [
+        "بورش"
+      ],
+      "aliasesAr": [
+        "كايين"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "e8ff1f41-eab1-5717-90ab-c9c2b0e86911",
+      "make": "Porsche",
+      "makeSlug": "porsche",
+      "model": "Macan",
+      "makeAliasesAr": [
+        "بورش"
+      ],
+      "aliasesAr": [
+        "ماكان"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "a21c0e24-14af-5b06-9f96-3da777b029c4",
+      "make": "Porsche",
+      "makeSlug": "porsche",
+      "model": "Panamera",
+      "makeAliasesAr": [
+        "بورش"
+      ],
+      "aliasesAr": [
+        "باناميرا"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "37cd7807-bb16-56a5-80a3-17a9e2349c90",
+      "make": "Porsche",
+      "makeSlug": "porsche",
+      "model": "911",
+      "makeAliasesAr": [
+        "بورش"
+      ],
+      "aliasesAr": [
+        "911"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "coupe",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "bb11fcd8-7fb5-58a7-a2c0-e27e8cacc884",
+      "make": "SsangYong",
+      "makeSlug": "ssangyong",
+      "model": "Tivoli",
+      "makeAliasesAr": [
+        "سانج يونج",
+        "سانغ يونغ"
+      ],
+      "aliasesAr": [
+        "تيفولي"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "2a5e38d6-df30-5307-81f3-1a472e2849de",
+      "make": "SsangYong",
+      "makeSlug": "ssangyong",
+      "model": "Korando",
+      "makeAliasesAr": [
+        "سانج يونج",
+        "سانغ يونغ"
+      ],
+      "aliasesAr": [
+        "كوراندو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "956cf476-f7a5-57e7-8d84-8a7309bb17d4",
+      "make": "SsangYong",
+      "makeSlug": "ssangyong",
+      "model": "Rexton",
+      "makeAliasesAr": [
+        "سانج يونج",
+        "سانغ يونغ"
+      ],
+      "aliasesAr": [
+        "ريكستون"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "2cac6082-3561-589e-9106-c8fe805ce37e",
+      "make": "SsangYong",
+      "makeSlug": "ssangyong",
+      "model": "Musso",
+      "makeAliasesAr": [
+        "سانج يونج",
+        "سانغ يونغ"
+      ],
+      "aliasesAr": [
+        "موسو"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "pickup",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "e575943e-def5-5ccf-9e18-501587e1f990",
+      "make": "Subaru",
+      "makeSlug": "subaru",
+      "model": "Impreza",
+      "makeAliasesAr": [
+        "سوبارو"
+      ],
+      "aliasesAr": [
+        "إمبريزا",
+        "امبريزا"
+      ],
+      "aliasesEn": [
+        "Impreza"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "780cd251-43ee-5b60-a424-f8c0cbf22d23",
+      "make": "Subaru",
+      "makeSlug": "subaru",
+      "model": "Forester",
+      "makeAliasesAr": [
+        "سوبارو"
+      ],
+      "aliasesAr": [
+        "فورستر"
+      ],
+      "aliasesEn": [],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "f1437050-bbeb-53b5-b23e-b5c62bd8f7aa",
+      "make": "Subaru",
+      "makeSlug": "subaru",
+      "model": "Outback",
+      "makeAliasesAr": [
+        "سوبارو"
+      ],
+      "aliasesAr": [
+        "أوتباك",
+        "اوتباك"
+      ],
+      "aliasesEn": [
+        "Outback"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "wagon",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "aac579bb-0355-5d95-81ab-830f37e5c751",
+      "make": "Subaru",
+      "makeSlug": "subaru",
+      "model": "XV",
+      "makeAliasesAr": [
+        "سوبارو"
+      ],
+      "aliasesAr": [
+        "إكس في",
+        "اكس في"
+      ],
+      "aliasesEn": [
+        "XV"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "b8e7916f-aab5-554f-972d-d48951e20425",
+      "make": "Tesla",
+      "makeSlug": "tesla",
+      "model": "Model 3",
+      "makeAliasesAr": [
+        "تسلا"
+      ],
+      "aliasesAr": [
+        "موديل 3"
+      ],
+      "aliasesEn": [
+        "Model3"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "69e7442d-0a32-5e36-9745-b8d058ccc2b7",
+      "make": "Tesla",
+      "makeSlug": "tesla",
+      "model": "Model Y",
+      "makeAliasesAr": [
+        "تسلا"
+      ],
+      "aliasesAr": [
+        "موديل واي"
+      ],
+      "aliasesEn": [
+        "ModelY"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "f62b72ff-0c4c-5705-b9ba-e81fa1a80753",
+      "make": "Tesla",
+      "makeSlug": "tesla",
+      "model": "Model S",
+      "makeAliasesAr": [
+        "تسلا"
+      ],
+      "aliasesAr": [
+        "موديل إس"
+      ],
+      "aliasesEn": [
+        "ModelS"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "d714d0eb-9816-5f6a-be3d-b1438244013b",
+      "make": "Tesla",
+      "makeSlug": "tesla",
+      "model": "Model X",
+      "makeAliasesAr": [
+        "تسلا"
+      ],
+      "aliasesAr": [
+        "موديل إكس"
+      ],
+      "aliasesEn": [
+        "ModelX"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "11d7ffcc-488c-5fdf-807a-82374e18f320",
+      "make": "Volvo",
+      "makeSlug": "volvo",
+      "model": "XC40",
+      "makeAliasesAr": [
+        "فولفو"
+      ],
+      "aliasesAr": [
+        "إكس سي 40"
+      ],
+      "aliasesEn": [
+        "XC-40"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "779db174-3da4-50e2-8258-47924b875df5",
+      "make": "Volvo",
+      "makeSlug": "volvo",
+      "model": "XC60",
+      "makeAliasesAr": [
+        "فولفو"
+      ],
+      "aliasesAr": [
+        "إكس سي 60"
+      ],
+      "aliasesEn": [
+        "XC-60"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "b8ec3cc7-6f81-5307-8bdb-07fcf55b33ab",
+      "make": "Volvo",
+      "makeSlug": "volvo",
+      "model": "XC90",
+      "makeAliasesAr": [
+        "فولفو"
+      ],
+      "aliasesAr": [
+        "إكس سي 90"
+      ],
+      "aliasesEn": [
+        "XC-90"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "suv",
+      "sourceTier": "knowledge",
+      "verified": false
+    },
+    {
+      "id": "1cd0ca9f-d61c-503c-92e8-5897b4afef88",
+      "make": "Volvo",
+      "makeSlug": "volvo",
+      "model": "S60",
+      "makeAliasesAr": [
+        "فولفو"
+      ],
+      "aliasesAr": [
+        "إس 60"
+      ],
+      "aliasesEn": [
+        "S-60"
+      ],
+      "yearFrom": null,
+      "yearTo": null,
+      "bodyType": "sedan",
       "sourceTier": "knowledge",
       "verified": false
     }
