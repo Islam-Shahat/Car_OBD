@@ -65,6 +65,7 @@ export interface ScanRepository {
   updateSession(id: string, patch: ScanSessionUpdate): Promise<ScanSession | null>;
   getSession(id: string): Promise<ScanSession | null>;
   listSessions(vehicleId?: string | null): Promise<ScanSession[]>;
+  softDelete(id: string): Promise<void>;
   addResults(sessionId: string, results: readonly ScanResultInput[]): Promise<void>;
   resultsFor(sessionId: string): Promise<ScanResultRow[]>;
   addReadiness(sessionId: string, phase: ReadinessPhase, data: unknown): Promise<ReadinessSnapshot>;

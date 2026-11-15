@@ -311,6 +311,15 @@ export class InMemoryScanRepository implements ScanRepository {
       .map(clone);
   }
 
+  async softDelete(id: string): Promise<void> {
+    const row = this.sessions.get(id);
+    if (row && !row.deletedAt) {
+      const at = this.clock.now();
+      row.deletedAt = at;
+      row.updatedAt = at;
+    }
+  }
+
   async addResults(sessionId: string, results: readonly ScanResultInput[]): Promise<void> {
     const at = this.clock.now();
     for (const result of results) {

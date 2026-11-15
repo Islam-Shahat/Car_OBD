@@ -642,6 +642,14 @@ export class SqliteScanRepository implements ScanRepository {
     return rows.map(mapSession);
   }
 
+  async softDelete(id: string): Promise<void> {
+    const at = this.clock.now();
+    await this.db.execute(
+      'UPDATE scan_sessions SET deleted_at = $1, updated_at = $1 WHERE id = $2',
+      [at, id],
+    );
+  }
+
   async addResults(sessionId: string, results: readonly ScanResultInput[]): Promise<void> {
     const at = this.clock.now();
     for (const result of results) {
