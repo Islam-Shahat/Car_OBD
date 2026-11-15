@@ -15,3 +15,13 @@ src-tauri/gen/schemas/
 # Import caches (the pinned upstream files are re-downloaded and checksum-verified)
 tools/import-dtc/.cache/
 dtc-review.csv
+
+# Private keys, certificates, and secrets
+*.key
+*.pem
+*.priv
+*.p12
+*.pfx
+id_ed25519*
+.tauri/
+secrets*
