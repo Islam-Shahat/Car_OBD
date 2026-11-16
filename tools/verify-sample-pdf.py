@@ -22,9 +22,9 @@ for c in cmaps:
             val = int(u_hex[i:i+4], 16)
             all_mapped_chars.add(chr(val))
 
-all_text = "".join(sorted(all_mapped_chars))
+all_text = "".join(sorted([c for c in all_mapped_chars if not ('\ud800' <= c <= '\udfff')]))
 print(f"Total mapped characters across all embedded font subsets: {len(all_text)}")
-print("Mapped chars preview:\n", all_text[:200])
+print("Mapped chars preview:\n", all_text[:200].encode('ascii', 'backslashreplace').decode('ascii'))
 
 # Check for Arabic letters
 ar_chars = [c for c in all_mapped_chars if '\u0600' <= c <= '\u06ff' or '\ufb50' <= c <= '\ufefc']

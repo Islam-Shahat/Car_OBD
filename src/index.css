@@ -73,34 +73,26 @@
   }
 
   /* Hide app navigation, toolbars, modal backdrops */
+  header,
   nav,
-  header.app-header,
+  aside,
   .no-print,
   button {
     display: none !important;
   }
 
-  /* Remove overflow and height clipping so pagination works cleanly across pages */
+  /* Remove overflow and height clipping on layout ancestors so pagination works cleanly across pages */
   html,
-  body {
+  body,
+  #root,
+  #root > div,
+  main {
     height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     overflow: visible !important;
     background-color: #ffffff !important;
     color: #0f172a !important;
-  }
-
-  /* All containers must allow visible overflow so Chromium can paginate */
-  *,
-  *::before,
-  *::after {
-    overflow: visible !important;
-    max-height: none !important;
-  }
-
-  #root,
-  main,
-  div {
-    height: auto !important;
   }
 
   /* Ensure colors and backgrounds print faithfully */

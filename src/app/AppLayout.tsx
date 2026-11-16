@@ -138,7 +138,7 @@ export function AppLayout() {
           </div>
         )}
 
-        <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-slate-200 bg-white/80 px-6 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
+        <header className="app-header flex h-16 shrink-0 items-center justify-between gap-4 border-b border-slate-200 bg-white/80 px-6 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
           <p className="truncate text-xs text-slate-500 dark:text-slate-400">
             {t('app.disclaimerShort')}
           </p>

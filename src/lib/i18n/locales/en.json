@@ -591,6 +591,7 @@
     "engine": "Engine",
     "disclaimerTitle": "Diagnostic Scope & Legal Notice",
     "disclaimerBody": "This report is for informational diagnostics only and covers engine and emissions systems. Systems such as ABS, airbags, transmission, body electronics, and chassis components are not included. Clearing trouble codes does not repair underlying mechanical or electrical faults, and resets readiness monitors. Absence of fault codes does not guarantee overall mechanical roadworthiness.",
+    "mechanicDisclaimer": "This is an indication only and not a substitute for an inspection by a qualified mechanic.",
     "versionFooter": "OBD Diagnose v{{version}} · Offline Diagnostic Tool",
     "close": "Close"
   },

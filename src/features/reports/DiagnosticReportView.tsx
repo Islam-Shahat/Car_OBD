@@ -438,6 +438,9 @@ export function DiagnosticReportView({ data, hideVin = false }: DiagnosticReport
           {t('report.disclaimerTitle')}
         </h4>
         <p className="mt-1 leading-relaxed">{t('report.disclaimerBody')}</p>
+        <p className="mt-2 font-semibold text-slate-800 dark:text-slate-200">
+          {t('report.mechanicDisclaimer')}
+        </p>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 text-[11px] print:border-slate-200 dark:border-slate-800/50">
           <span>{t('report.versionFooter', { version: '0.9.0-rc.1' })}</span>
           <span dir="ltr" className="font-mono">
@@ -482,7 +485,7 @@ function DtcSectionGroup({
         : 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300';
 
   return (
-    <div className="break-inside-avoid rounded-xl border border-slate-200 bg-white p-4 print:border-slate-300 dark:border-slate-800 dark:bg-slate-950/50">
+    <div className="rounded-xl border border-slate-200 bg-white p-4 print:border-slate-300 dark:border-slate-800 dark:bg-slate-950/50">
       <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 dark:border-slate-800">
         <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">{title}</h3>
         <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${badgeClass}`}>

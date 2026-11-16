@@ -14,9 +14,9 @@ function sleep(ms) {
 
 async function startVite() {
   console.log(`Starting Vite on port ${DEV_PORT}...`);
-  const proc = spawn('npx.cmd', ['vite', '--port', String(DEV_PORT), '--strictPort'], {
-    shell: true,
-    stdio: 'pipe',
+  const proc = spawn('cmd.exe', ['/c', 'npx', 'vite', '--port', String(DEV_PORT), '--strictPort'], {
+    shell: false,
+    stdio: 'inherit',
   });
   for (let i = 0; i < 40; i++) {
     try {
@@ -140,10 +140,16 @@ async function main() {
     console.log('window.__TAURI__ present:', hasTauri);
 
     console.log('Navigating to Arabic sample report route in real Tauri app...');
+    await client.send('Page.navigate', { url: 'http://localhost:1420/#/report-preview' });
+    await sleep(1000);
+
     await client.eval(`
       (async () => {
-        localStorage.setItem('obd.language', 'ar');
-        window.location.hash = '#/report-preview';
+        try {
+          localStorage.setItem('obd.language', 'ar');
+        } catch (e) {
+          console.warn('Could not set localStorage', e);
+        }
       })()
     `);
 
