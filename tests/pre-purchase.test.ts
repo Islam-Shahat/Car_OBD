@@ -120,7 +120,47 @@ describe('Pre-purchase inspection heuristics', () => {
     expect(assessment.rawCounters.incompleteMonitorsCount).toBe(1);
   });
 
-  it('handles missing or unsupported PIDs safely without throwing', () => {
+  it('evaluates saturated PID counter values (255 warm-ups, 65,535 km) as normal extended driving', () => {
+    const status: ReadinessStatus = {
+      mil: { on: false, dtcCount: 0 },
+      ignition: 'spark',
+      monitors: [
+        { key: 'misfire', complete: true },
+        { key: 'fuelSystem', complete: true },
+        { key: 'components', complete: true },
+      ],
+    };
+
+    const saturatedHistory: DriveHistory = {
+      ...emptyHistory,
+      distanceSinceClearedKm: 65535, // 2-byte max saturation
+      warmupsSinceCleared: 255, // 1-byte max saturation
+      timeSinceClearedMinutes: 65535,
+      runTimeSeconds: 3600,
+    };
+
+    const assessment = evaluatePrePurchase({
+      status,
+      driveHistory: saturatedHistory,
+      stored: [],
+      pending: [],
+      permanent: [],
+    });
+
+    expect(assessment.level).toBe('no_indicators');
+    expect(assessment.rawCounters.distanceSinceClearedKm).toBe(65535);
+    expect(assessment.rawCounters.warmupsSinceCleared).toBe(255);
+
+    const distFactor = assessment.factors.find((f) => f.id === 'distanceSinceClear');
+    expect(distFactor?.status).toBe('normal');
+    expect(distFactor?.explanationKey).toBe('prePurchase.explanations.distanceAdequate');
+
+    const warmFactor = assessment.factors.find((f) => f.id === 'warmupsSinceClear');
+    expect(warmFactor?.status).toBe('normal');
+    expect(warmFactor?.explanationKey).toBe('prePurchase.explanations.warmupsAdequate');
+  });
+
+  it('handles missing or unsupported PIDs safely without throwing or false positives', () => {
     const assessment = evaluatePrePurchase({
       status: null,
       driveHistory: emptyHistory,
@@ -136,5 +176,10 @@ describe('Pre-purchase inspection heuristics', () => {
 
     const distFactor = assessment.factors.find((f) => f.id === 'distanceSinceClear');
     expect(distFactor?.status).toBe('unavailable');
+    expect(distFactor?.explanationKey).toBe('prePurchase.explanations.pidUnavailable');
+
+    const warmFactor = assessment.factors.find((f) => f.id === 'warmupsSinceClear');
+    expect(warmFactor?.status).toBe('unavailable');
+    expect(warmFactor?.explanationKey).toBe('prePurchase.explanations.pidUnavailable');
   });
 });
