@@ -29,7 +29,7 @@ Release Type: Pre-release Candidate (مرشح إصدار تجريبي)
 This is the **v0.9.0-rc.1** release candidate of **OBD Diagnose**, an offline-first Windows desktop application for passenger car diagnostics using ELM327 OBD-II adapters.
 
 > [!NOTE]
-> This build is a **Release Candidate (RC)** for evaluation and testing. It has been verified against synthetic fixtures and the Python ELM327 emulator, but **has not yet been validated on a physical vehicle or physical adapter**. Phase 7 features (PDF reports, history log viewer, and pre-purchase inspection analysis) are planned for subsequent releases.
+> This build is a **Release Candidate (RC)** for evaluation and testing. It has been verified against synthetic fixtures and the Python ELM327 emulator, but **has not yet been validated on a physical vehicle or physical adapter**. Phase 7 features (PDF reports, history log viewer, and pre-purchase inspection analysis) are implemented and verified only on the emulator and synthetic data.
 
 ### Features & Highlights:
 
@@ -42,11 +42,11 @@ This is the **v0.9.0-rc.1** release candidate of **OBD Diagnose**, an offline-fi
 7. **Privacy & Transparency**: Zero telemetry, zero analytics. Vehicle data never leaves your device.
 8. **Diagnostic Traffic Logging**: Support debug logger with automatic 17-character VIN redaction.
 
-### Planned Features (Phase 7 — Under Active Development):
+### Phase 7 Features (Implemented, Verified on Emulator & Synthetic Data):
 
-- **Historical Scan Session Browser**: View and compare historical diagnostic sessions from local SQLite (`HistoryPage.tsx` placeholder).
-- **Printable HTML / PDF Diagnostic Reports**: Export printable diagnostic reports via native print CSS with full Arabic RTL rendering.
-- **Pre-Purchase Used Car Inspection Mode**: Analyze monitor completion against distance/time since codes cleared to detect suspicious code resets.
+- **Historical Scan Session Browser**: View, filter by vehicle, compare two scans side-by-side, and soft-delete past diagnostic sessions from local SQLite (`HistoryPage.tsx`, `tests/history-flow.test.ts`). *(implemented, verified only on the emulator and synthetic data)*
+- **Printable HTML / PDF Diagnostic Reports**: Export formatted diagnostic reports using WebView2 PrintToPdf and native print CSS with full Arabic RTL Cairo typography (`ReportModal.tsx`, `docs/samples/report-sample.pdf`). *(implemented, verified only on the emulator and synthetic data)*
+- **Pre-Purchase Used Car Inspection Mode**: Multi-factor heuristic analyzing monitor readiness, distance/warmups since clearing, and permanent Mode 0A DTCs with transparent counter displays and mechanic disclaimer (`prePurchase.ts`, `tests/pre-purchase.test.ts`). *(implemented, verified only on the emulator and synthetic data)*
 
 ---
 

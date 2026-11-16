@@ -74,13 +74,13 @@ Release Target: **v0.9.0-rc.1** (Release Candidate)
 
 ---
 
-## 7. Phase 7: History, PDF Reports & Pre-Purchase Mode (Planned)
+## 7. Phase 7: History, PDF Reports & Pre-Purchase Mode
 
 | Status | Item | Verified on | Notes |
 | :---: | :--- | :--- | :--- |
-| [ ] | **Historical Scan Session Browser**: Viewing past scans from SQLite | **not verified** | **NOT IMPLEMENTED**: Page is currently an empty placeholder |
-| [ ] | **Printable HTML / PDF Report Export**: Arabic RTL print stylesheet via `window.print()` | **not verified** | **NOT IMPLEMENTED**: Only decision spike exists (`docs/spike-pdf-arabic.md`) |
-| [ ] | **Pre-Purchase Used Car Mode**: Scoring drive cycles and detecting suspicious code resets | **not verified** | **NOT IMPLEMENTED**: Domain scoring UI not built |
+| [x] | **Historical Scan Session Browser**: Viewing past scans from SQLite, comparing scans, and soft-delete | emulator / synthetic | Implemented, verified only on the emulator and synthetic data (`HistoryPage.tsx`, `tests/history-flow.test.ts`) |
+| [x] | **Printable HTML / PDF Report Export**: Arabic RTL print stylesheet and WebView2 `PrintToPdf` | emulator / synthetic | Implemented, verified only on the emulator and synthetic data (`ReportModal.tsx`, `docs/samples/report-sample.pdf`) |
+| [x] | **Pre-Purchase Used Car Mode**: Scoring drive cycles, monitor readiness, permanent codes, and suspicious resets | emulator / synthetic | Implemented, verified only on the emulator and synthetic data (`prePurchase.ts`, `tests/pre-purchase.test.ts`) |
 
 ---
 

@@ -73,11 +73,11 @@
 - **Decentralized Remote Control**: Asymmetric Ed25519-signed feature flags and emergency kill-switch with anti-rollback and fail-open resilience.
 - **100% Privacy Guarantee**: Zero telemetry, zero analytics. Vehicle and diagnostic records stay strictly on your local disk.
 
-### Planned Features (Phase 7 — Under Development)
+### Diagnostic Features & History (Phase 7 — Implemented, Verified on Emulator)
 
-- 📋 **Historical Scan Session Browser**: Review and compare previous diagnostic sessions saved in local SQLite (planned).
-- 🖨️ **Printable PDF Reports**: Export formatted diagnostic reports using native print CSS with full Arabic RTL support (planned).
-- 🔍 **Pre-Purchase Used Car Inspection Mode**: Detect suspicious code resets and correlate drive cycles with monitor readiness (planned).
+- 📋 **Historical Scan Session Browser**: Review, compare, and soft-delete previous diagnostic sessions saved in local SQLite *(implemented, verified only on the emulator and synthetic data)*.
+- 🖨️ **Printable PDF Reports**: Export formatted diagnostic reports via WebView2 PrintToPdf and native print CSS with full Arabic RTL Cairo typography *(implemented, verified only on the emulator and synthetic data)*.
+- 🔍 **Pre-Purchase Used Car Inspection Mode**: Multi-factor heuristic analyzing monitor readiness, distance/warmups since clearing, and permanent Mode 0A DTCs *(implemented, verified only on the emulator and synthetic data)*.
 
 ### Hardware Adapter Guidelines
 
