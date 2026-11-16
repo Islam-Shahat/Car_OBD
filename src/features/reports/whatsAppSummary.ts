@@ -2,9 +2,26 @@ import type { DiagnosticReportData } from './reportTypes';
 
 export function maskVin(vin: string | null | undefined): string {
   if (!vin) return 'N/A';
-  if (vin.length <= 8) return vin;
-  // Preserve WMI prefix (first 3 chars) and model attributes, mask serial ending
-  return `${vin.slice(0, 8)}${'*'.repeat(vin.length - 8)}`;
+  const clean = vin.trim();
+  if (clean.length === 0) return 'N/A';
+
+  // Standard VIN (ISO 3779 / 17 characters):
+  // - Characters 1–3: World Manufacturer Identifier (WMI)
+  // - Characters 4–8: Vehicle Descriptor Section (VDS) - model, body type, engine code
+  // - Character 9: Security check digit
+  // - Characters 10–17: Vehicle Identifier Section (VIS) - model year, plant code, serial production number
+  //
+  // Privacy rule: keep the manufacturer and model descriptor (first 9 characters)
+  // and mask the serial/production portion (last 8 characters) with asterisks.
+  if (clean.length === 17) {
+    return `${clean.slice(0, 9)}********`;
+  }
+
+  // Non-standard or older VINs (e.g. 11-16 characters):
+  // Mask the last 6 to 8 characters while preserving at least the leading identifier.
+  const maskCount = Math.min(8, Math.max(6, Math.floor(clean.length / 2)));
+  const visibleCount = Math.max(1, clean.length - maskCount);
+  return `${clean.slice(0, visibleCount)}${'*'.repeat(clean.length - visibleCount)}`;
 }
 
 export function generateWhatsAppSummary(

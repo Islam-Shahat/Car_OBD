@@ -49,10 +49,19 @@ describe('History and Scan comparison flow', () => {
     expect(deletedGet).toBeNull();
   });
 
-  it('masks VIN correctly for safe sharing', () => {
-    expect(maskVin('WAUZZZ4G1EN123456')).toBe('WAUZZZ4G*********');
+  it('masks VIN correctly for safe sharing (preserves manufacturer/model, hides serial)', () => {
+    // 17-character standard VIN: preserves first 9 chars (WMI + VDS + check digit), hides last 8 chars (VIS serial)
+    expect(maskVin('WAUZZZ4G1EN123456')).toBe('WAUZZZ4G1********');
+    expect(maskVin('WP0AB2A99MS123456')).toBe('WP0AB2A99********');
+    expect(maskVin('1HGCR2F83HA000000')).toBe('1HGCR2F83********');
+
+    // Edge cases
     expect(maskVin(null)).toBe('N/A');
-    expect(maskVin('12345')).toBe('12345');
+    expect(maskVin('')).toBe('N/A');
+    expect(maskVin('   ')).toBe('N/A');
+
+    // Non-standard length VINs: hides the trailing 6 to 8 serial digits
+    expect(maskVin('123456789012')).toBe('123456******');
   });
 
   it('generates a cautious WhatsApp summary with masked VIN and disclaimer', () => {
@@ -107,7 +116,7 @@ describe('History and Scan comparison flow', () => {
     };
 
     const arabicSummary = generateWhatsAppSummary(report, { language: 'ar', maskVin: true });
-    expect(arabicSummary).toContain('WVWZZZAU*********');
+    expect(arabicSummary).toContain('WVWZZZAUZ********');
     expect(arabicSummary).toContain('Volkswagen Golf');
     expect(arabicSummary).toContain('عدة مؤشرات ترجح احتمالية مسح الأعطال مؤخراً');
     expect(arabicSummary).toContain('الفحص استرشادي ويقتصر على منظومة المحرك والانبعاثات');
