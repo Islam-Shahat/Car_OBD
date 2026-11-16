@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconCheck } from '../../app/icons';
+import { isTauriEnvironment } from '../../lib/db/runtime';
 import { DiagnosticReportView } from './DiagnosticReportView';
 import type { DiagnosticReportData } from './reportTypes';
 import { generateWhatsAppSummary } from './whatsAppSummary';
@@ -15,11 +16,28 @@ export function ReportModal({ data, isOpen, onClose }: ReportModalProps) {
   const { t, i18n } = useTranslation();
   const [hideVin, setHideVin] = useState(true);
   const [copiedWhatsApp, setCopiedWhatsApp] = useState(false);
+  const [isSavingPdf, setIsSavingPdf] = useState(false);
 
   if (!isOpen) return null;
 
-  const handlePrint = () => {
-    window.print();
+  const handlePrint = async () => {
+    if (isTauriEnvironment()) {
+      try {
+        setIsSavingPdf(true);
+        const { invoke } = await import('@tauri-apps/api/core');
+        const savedPath = await invoke<string>('save_pdf', { path: null });
+        if (savedPath) {
+          await invoke('show_in_folder', { path: savedPath });
+        }
+      } catch (err) {
+        console.warn('save_pdf failed, falling back to window.print():', err);
+        window.print();
+      } finally {
+        setIsSavingPdf(false);
+      }
+    } else {
+      window.print();
+    }
   };
 
   const handleCopyWhatsApp = async () => {
@@ -82,10 +100,11 @@ export function ReportModal({ data, isOpen, onClose }: ReportModalProps) {
             {/* Print / Save PDF */}
             <button
               type="button"
+              disabled={isSavingPdf}
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-sky-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-sky-500 focus:outline-hidden focus:ring-2 focus:ring-sky-500 dark:bg-sky-500 dark:hover:bg-sky-400"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-sky-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-sky-500 focus:outline-hidden focus:ring-2 focus:ring-sky-500 disabled:opacity-60 dark:bg-sky-500 dark:hover:bg-sky-400"
             >
-              {t('report.exportPdf')}
+              {isSavingPdf ? t('report.savingPdf') : t('report.exportPdf')}
             </button>
 
             {/* Close */}
