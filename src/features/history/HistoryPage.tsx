@@ -200,7 +200,7 @@ export function HistoryPage() {
       const reportData: DiagnosticReportData = {
         id: session.id,
         mode: session.mode,
-        isSampleData: false,
+        isSampleData: session.sessionType !== 'real',
         scanDate: new Date(session.startedAt).toLocaleString(i18n.resolvedLanguage),
         vehicle: vehicle
           ? {

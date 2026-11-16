@@ -16,6 +16,7 @@ import type {
 import type { MonitorKey } from '../../lib/obd/readiness';
 import type { ScanResult, ScanWarning, ScanWarningCode } from '../../lib/obd/scanTypes';
 import { useSelectedVehicleStore } from '../vehicles/vehicleStore';
+import { useConnectionStore } from '../connection/connectionStore';
 import { ReportModal } from '../reports/ReportModal';
 
 const MONITOR_KEYS = {
@@ -781,7 +782,7 @@ export function ScanResultView({
           onClose={() => setReportModalOpen(false)}
           data={{
             mode,
-            isSampleData: isDemo,
+            isSampleData: isDemo || useConnectionStore.getState().sessionType !== 'real',
             scanDate: new Date(result.finishedAt).toLocaleString(i18n.resolvedLanguage),
             vehicle: selectedVehicle
               ? {

@@ -117,6 +117,7 @@ export interface WmiUserMapEntry {
 }
 
 export type ScanMode = 'normal' | 'pre_purchase';
+export type SessionType = 'real' | 'emulator' | 'demo';
 export type ScanResultType = 'stored' | 'pending' | 'permanent';
 export type ReadinessPhase = 'before_clear' | 'after_clear' | 'initial';
 
@@ -129,6 +130,7 @@ export interface ScanSession extends Entity {
   milStatus: MilStatus | null;
   overallStatus: string | null;
   mode: ScanMode;
+  sessionType: SessionType;
 }
 
 export interface ScanSessionInput {
@@ -140,6 +142,7 @@ export interface ScanSessionInput {
   milStatus?: MilStatus | null;
   overallStatus?: string | null;
   mode?: ScanMode;
+  sessionType?: SessionType;
 }
 
 export interface ScanSessionUpdate {
@@ -150,6 +153,7 @@ export interface ScanSessionUpdate {
   overallStatus?: string | null;
   vehicleId?: string | null;
   mode?: ScanMode;
+  sessionType?: SessionType;
 }
 
 export interface ScanResultRow extends Entity {

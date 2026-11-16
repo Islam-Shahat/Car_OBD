@@ -130,6 +130,7 @@ export const MIGRATIONS: readonly Migration[] = [
         mil_status TEXT,
         overall_status TEXT,
         mode TEXT NOT NULL DEFAULT 'normal' CHECK (mode IN ('normal', 'pre_purchase')),
+        session_type TEXT NOT NULL DEFAULT 'real' CHECK (session_type IN ('real', 'emulator', 'demo')),
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL,
         deleted_at TEXT
@@ -248,6 +249,18 @@ export const MIGRATIONS: readonly Migration[] = [
       `ALTER TABLE wmi_user_map_v2 RENAME TO wmi_user_map`,
       `CREATE INDEX IF NOT EXISTS wmi_user_map_lookup_idx ON wmi_user_map(wmi, last_used_at DESC)`,
       `CREATE INDEX IF NOT EXISTS wmi_user_map_make_idx ON wmi_user_map(make_slug)`,
+    ],
+  },
+  {
+    version: 8,
+    description: 'track session_type (real, emulator, demo) on scan_sessions',
+    statements: [],
+    addColumns: [
+      {
+        table: 'scan_sessions',
+        column: 'session_type',
+        definition: `TEXT NOT NULL DEFAULT 'real' CHECK (session_type IN ('real', 'emulator', 'demo'))`,
+      },
     ],
   },
 ];

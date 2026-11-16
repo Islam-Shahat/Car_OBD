@@ -163,6 +163,7 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
             milStatus: scan.status?.mil ?? null,
             overallStatus,
             mode: scanMode,
+            sessionType: useConnectionStore.getState().sessionType,
           });
 
           const dtcResults: ScanResultInput[] = [

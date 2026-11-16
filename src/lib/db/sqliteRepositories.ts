@@ -498,6 +498,7 @@ interface ScanSessionRow {
   mil_status: string | null;
   overall_status: string | null;
   mode: string;
+  session_type: string;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
@@ -514,6 +515,12 @@ function mapSession(row: ScanSessionRow): ScanSession {
     milStatus: parseJson(row.mil_status),
     overallStatus: row.overall_status,
     mode: row.mode === 'pre_purchase' ? 'pre_purchase' : 'normal',
+    sessionType:
+      row.session_type === 'demo'
+        ? 'demo'
+        : row.session_type === 'emulator'
+          ? 'emulator'
+          : 'real',
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deletedAt: row.deleted_at,
@@ -558,11 +565,12 @@ export class SqliteScanRepository implements ScanRepository {
   async createSession(input: ScanSessionInput): Promise<ScanSession> {
     const at = this.clock.now();
     const id = this.clock.idFactory();
+    const sessionType = input.sessionType ?? 'real';
     await this.db.execute(
       `INSERT INTO scan_sessions (
         id, vehicle_id, started_at, finished_at, protocol, adapter_info, mil_status,
-        overall_status, mode, created_at, updated_at, deleted_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NULL)`,
+        overall_status, mode, session_type, created_at, updated_at, deleted_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NULL)`,
       [
         id,
         input.vehicleId ?? null,
@@ -573,6 +581,7 @@ export class SqliteScanRepository implements ScanRepository {
         jsonOrNull(input.milStatus),
         input.overallStatus ?? null,
         input.mode ?? 'normal',
+        sessionType,
         at,
         at,
       ],
@@ -587,6 +596,7 @@ export class SqliteScanRepository implements ScanRepository {
       milStatus: input.milStatus ?? null,
       overallStatus: input.overallStatus ?? null,
       mode: input.mode ?? 'normal',
+      sessionType,
       createdAt: at,
       updatedAt: at,
       deletedAt: null,
@@ -602,6 +612,7 @@ export class SqliteScanRepository implements ScanRepository {
       overallStatus: 'overall_status',
       vehicleId: 'vehicle_id',
       mode: 'mode',
+      sessionType: 'session_type',
     } as const;
     const entries = Object.entries(patch).filter(([, value]) => value !== undefined) as [
       keyof ScanSessionUpdate,

@@ -8,6 +8,7 @@ import {
 import { errorMessage, isElmError, type ElmErrorCode } from '../../lib/elm327/errors';
 import type { Elm327Driver } from '../../lib/elm327/driver';
 import { listSerialPorts, type SerialPortInfo } from '../../lib/elm327/serialTransport';
+import type { SessionType } from '../../lib/db/types';
 import { VehicleIdentityCache } from '../../lib/obd/vehicleIdentity';
 
 export type ConnectionErrorCode = ElmErrorCode | 'disconnected' | 'ports-unavailable' | 'unknown';
@@ -27,6 +28,7 @@ export interface ConnectionState {
   failure: ConnectionFailure | null;
   driver: Elm327Driver | null;
   isDemo: boolean;
+  sessionType: SessionType;
   /** One VIN identity per connection, warmed right after a successful init. */
   identityCache: VehicleIdentityCache | null;
   refreshPorts: () => Promise<void>;
@@ -47,6 +49,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
   failure: null,
   driver: null,
   isDemo: false,
+  sessionType: 'real',
   identityCache: null,
 
   refreshPorts: async () => {
@@ -142,6 +145,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
         set({
           phase: 'idle',
           isDemo: false,
+          sessionType: 'real',
           info: null,
           driver: null,
           identityCache: null,
@@ -153,6 +157,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
       set({
         phase: 'connected',
         isDemo: true,
+        sessionType: 'demo',
         info: connection.info,
         driver: connectedDriver,
         identityCache,
@@ -164,6 +169,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
       set({
         phase: 'idle',
         isDemo: false,
+        sessionType: 'real',
         failure: {
           code: 'unknown',
           detail: errorMessage(error),
@@ -181,6 +187,7 @@ export const useConnectionStore = create<ConnectionState>((set, get) => ({
     set({
       phase: 'idle',
       isDemo: false,
+      sessionType: 'real',
       info: null,
       driver: null,
       identityCache: null,
