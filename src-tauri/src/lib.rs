@@ -84,7 +84,7 @@ fn save_pdf_for_window(
     #[cfg(target_os = "windows")]
     {
         use std::sync::mpsc;
-        let target_path = generate_next_pdf_path(&pdf_state)?;
+        let target_path = generate_next_pdf_path(pdf_state)?;
         let windows_path = target_path.to_string_lossy().replace('/', "\\");
         let canonical_target = PathBuf::from(&windows_path);
 
@@ -183,16 +183,15 @@ pub fn run() {
         .manage(serial::SerialState::default())
         .manage(PdfExportState::default())
         .setup(move |app| {
-            if sample_pdf_check {
-                if let Some(window) = tauri::Manager::get_webview_window(app, "main") {
-                    std::thread::spawn(move || {
-                        std::thread::sleep(std::time::Duration::from_millis(2000));
-                        let _ = window.eval("window.location.hash = '#/report-preview';");
-                        std::thread::sleep(std::time::Duration::from_millis(2000));
-                        let _ =
-                            window.eval("window.dispatchEvent(new HashChangeEvent('hashchange'));");
-                    });
-                }
+            if sample_pdf_check
+                && let Some(window) = tauri::Manager::get_webview_window(app, "main")
+            {
+                std::thread::spawn(move || {
+                    std::thread::sleep(std::time::Duration::from_millis(2000));
+                    let _ = window.eval("window.location.hash = '#/report-preview';");
+                    std::thread::sleep(std::time::Duration::from_millis(2000));
+                    let _ = window.eval("window.dispatchEvent(new HashChangeEvent('hashchange'));");
+                });
             }
             Ok(())
         })
