@@ -115,6 +115,11 @@ describe('History and Scan comparison flow', () => {
       },
     };
 
+    // Default when maskVin option is omitted is masked (true)
+    const defaultSummary = generateWhatsAppSummary(report);
+    expect(defaultSummary).toContain('WVWZZZAUZ********');
+    expect(defaultSummary).not.toContain('WVWZZZAUZJP123456');
+
     const arabicSummary = generateWhatsAppSummary(report, { language: 'ar', maskVin: true });
     expect(arabicSummary).toContain('WVWZZZAUZ********');
     expect(arabicSummary).toContain('Volkswagen Golf');

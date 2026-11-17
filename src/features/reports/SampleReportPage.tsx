@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { isTauriEnvironment } from '../../lib/db/runtime';
 import { DiagnosticReportView } from './DiagnosticReportView';
 import type { DiagnosticReportData } from './reportTypes';
 
@@ -292,9 +294,30 @@ export const SAMPLE_EMULATOR_REPORT_DATA: DiagnosticReportData = {
 };
 
 export function SampleReportPage() {
+  useEffect(() => {
+    const params = new URLSearchParams(
+      window.location.search || window.location.hash.split('?')[1] || '',
+    );
+    if (params.get('autosave') === '1' && isTauriEnvironment()) {
+      const timer = setTimeout(() => {
+        void (async () => {
+          try {
+            await document.fonts.ready;
+            const { invoke } = await import('@tauri-apps/api/core');
+            await invoke<string>('save_pdf');
+          } catch (err) {
+            console.warn('Autosave PDF failed:', err);
+          }
+        })();
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-100 p-6 dark:bg-slate-950">
-      <DiagnosticReportView data={SAMPLE_EMULATOR_REPORT_DATA} hideVin={false} />
+      <DiagnosticReportView data={SAMPLE_EMULATOR_REPORT_DATA} hideVin={true} />
     </div>
   );
 }

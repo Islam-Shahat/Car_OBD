@@ -8,7 +8,7 @@ interface DiagnosticReportViewProps {
   hideVin?: boolean;
 }
 
-export function DiagnosticReportView({ data, hideVin = false }: DiagnosticReportViewProps) {
+export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportViewProps) {
   const { t, i18n } = useTranslation();
   const isAr = i18n.resolvedLanguage === 'ar';
 
