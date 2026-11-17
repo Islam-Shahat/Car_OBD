@@ -25,7 +25,7 @@ export function ReportModal({ data, isOpen, onClose }: ReportModalProps) {
       try {
         setIsSavingPdf(true);
         const { invoke } = await import('@tauri-apps/api/core');
-        const savedPath = await invoke<string>('save_pdf', { path: null });
+        const savedPath = await invoke<string>('save_pdf');
         if (savedPath) {
           await invoke('show_in_folder', { path: savedPath });
         }
