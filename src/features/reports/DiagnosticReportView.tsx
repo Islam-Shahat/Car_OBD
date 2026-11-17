@@ -61,9 +61,7 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
               </span>
             </div>
             <h1 className="mt-2 text-2xl font-bold text-slate-900 dark:text-white">
-              {data.mode === 'pre_purchase'
-                ? t('report.prePurchaseTitle')
-                : t('report.title')}
+              {data.mode === 'pre_purchase' ? t('report.prePurchaseTitle') : t('report.title')}
             </h1>
           </div>
 
@@ -111,7 +109,10 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
             <span className="block text-[11px] font-semibold text-slate-500 uppercase dark:text-slate-400">
               {t('report.vin')}
             </span>
-            <span dir="ltr" className="mt-0.5 block font-mono text-sm font-semibold text-slate-800 dark:text-slate-200">
+            <span
+              dir="ltr"
+              className="mt-0.5 block font-mono text-sm font-semibold text-slate-800 dark:text-slate-200"
+            >
               {displayVin}
             </span>
             {hideVin && (
@@ -125,7 +126,10 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
             <span className="block text-[11px] font-semibold text-slate-500 uppercase dark:text-slate-400">
               {t('report.year')}
             </span>
-            <span dir="ltr" className="mt-0.5 block font-mono text-sm font-semibold text-slate-800 dark:text-slate-200">
+            <span
+              dir="ltr"
+              className="mt-0.5 block font-mono text-sm font-semibold text-slate-800 dark:text-slate-200"
+            >
               {data.vehicle?.year ?? 'N/A'}
             </span>
           </div>
@@ -174,9 +178,7 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
                   : t('scan.overallHealthyTitle')}
               </h2>
               <p className="mt-1 text-xs leading-5 opacity-90">
-                {hasFaults
-                  ? t('scan.overallFaultBody')
-                  : t('scan.overallHealthyBody')}
+                {hasFaults ? t('scan.overallFaultBody') : t('scan.overallHealthyBody')}
               </p>
             </div>
           </div>
@@ -516,7 +518,10 @@ function DtcSectionGroup({
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span dir="ltr" className="font-mono text-sm font-bold text-slate-900 dark:text-white">
+                  <span
+                    dir="ltr"
+                    className="font-mono text-sm font-bold text-slate-900 dark:text-white"
+                  >
                     {item.code}
                   </span>
                   {rec?.severity && (

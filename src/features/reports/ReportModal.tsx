@@ -65,9 +65,7 @@ export function ReportModal({ data, isOpen, onClose }: ReportModalProps) {
         <div className="no-print flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-6 py-4 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-              {data.mode === 'pre_purchase'
-                ? t('report.prePurchaseTitle')
-                : t('report.title')}
+              {data.mode === 'pre_purchase' ? t('report.prePurchaseTitle') : t('report.title')}
             </h2>
           </div>
 

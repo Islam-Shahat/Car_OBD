@@ -44,7 +44,11 @@ describe('Watermark Decision & Session Type Provenance', () => {
     // Direction 1: Real serial port scan MUST NEVER show watermark, even with emulator-like text
     const realScanWithEmulatorContent = {
       sessionType: 'real' as SessionType,
-      adapterInfo: { identity: 'OBDLink MX+ (Emulator)', version: 'STN1151', protocol: 'ISO 15765-4' },
+      adapterInfo: {
+        identity: 'OBDLink MX+ (Emulator)',
+        version: 'STN1151',
+        protocol: 'ISO 15765-4',
+      },
       vin: 'WP0AB2A99MS123456',
     };
     expect(computeIsSampleData(realScanWithEmulatorContent)).toBe(false);

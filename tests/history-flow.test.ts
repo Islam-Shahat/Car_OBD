@@ -128,7 +128,11 @@ describe('History and Scan comparison flow', () => {
 
     const englishSummary = generateWhatsAppSummary(report, { language: 'en', maskVin: false });
     expect(englishSummary).toContain('WVWZZZAUZJP123456');
-    expect(englishSummary).toContain('Several indicators suggest codes may have been cleared recently');
-    expect(englishSummary).toContain('Diagnostic information only, limited to generic powertrain OBD-II');
+    expect(englishSummary).toContain(
+      'Several indicators suggest codes may have been cleared recently',
+    );
+    expect(englishSummary).toContain(
+      'Diagnostic information only, limited to generic powertrain OBD-II',
+    );
   });
 });

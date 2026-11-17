@@ -1,10 +1,7 @@
 import type { DriveHistory } from './pids';
 import type { ReadinessStatus } from './readiness';
 
-export type PrePurchaseIndicatorLevel =
-  | 'no_indicators'
-  | 'some_indicators'
-  | 'several_indicators';
+export type PrePurchaseIndicatorLevel = 'no_indicators' | 'some_indicators' | 'several_indicators';
 
 export interface PrePurchaseFactor {
   id: string;
@@ -63,10 +60,8 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
   const distanceWithMil = driveHistory.distanceWithMilKm;
   const timeWithMil = driveHistory.timeWithMilMinutes;
 
-  const isDistanceClearMax =
-    distanceSinceClear !== null && distanceSinceClear >= COUNTER_MAX_WORD;
-  const isWarmupsClearMax =
-    warmupsSinceClear !== null && warmupsSinceClear >= COUNTER_MAX_BYTE;
+  const isDistanceClearMax = distanceSinceClear !== null && distanceSinceClear >= COUNTER_MAX_WORD;
+  const isWarmupsClearMax = warmupsSinceClear !== null && warmupsSinceClear >= COUNTER_MAX_BYTE;
   const isTimeClearMax = timeSinceClear !== null && timeSinceClear >= COUNTER_MAX_WORD;
 
   // 1. Evaluate I/M Readiness monitors
@@ -92,9 +87,7 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
     id: 'monitors',
     labelKey: 'prePurchase.factors.monitors',
     status: monitorFactorStatus,
-    rawText: monitorsAvailable
-      ? `${incompleteMonitorsCount} / ${supportedMonitorsCount}`
-      : 'N/A',
+    rawText: monitorsAvailable ? `${incompleteMonitorsCount} / ${supportedMonitorsCount}` : 'N/A',
     explanationKey:
       incompleteMonitorsCount >= 3
         ? 'prePurchase.explanations.monitorsManyIncomplete'
@@ -209,9 +202,7 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
     }
     if (timeWithMil !== null) {
       parts.push(
-        timeWithMil >= COUNTER_MAX_WORD
-          ? `${timeWithMil} min (0xFFFF)`
-          : `${timeWithMil} min`,
+        timeWithMil >= COUNTER_MAX_WORD ? `${timeWithMil} min (0xFFFF)` : `${timeWithMil} min`,
       );
     }
 

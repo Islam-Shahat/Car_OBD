@@ -74,6 +74,13 @@ async fn save_pdf(
     window: tauri::WebviewWindow,
     pdf_state: State<'_, PdfExportState>,
 ) -> Result<String, String> {
+    save_pdf_for_window(&window, &pdf_state)
+}
+
+fn save_pdf_for_window(
+    window: &tauri::WebviewWindow,
+    pdf_state: &PdfExportState,
+) -> Result<String, String> {
     #[cfg(target_os = "windows")]
     {
         use std::sync::mpsc;
@@ -169,10 +176,26 @@ fn show_in_folder(path: String, pdf_state: State<'_, PdfExportState>) -> Result<
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    let sample_pdf_check = std::env::args().any(|arg| arg == "--sample-pdf-check");
+
     tauri::Builder::default()
         .plugin(tauri_plugin_sql::Builder::default().build())
         .manage(serial::SerialState::default())
         .manage(PdfExportState::default())
+        .setup(move |app| {
+            if sample_pdf_check {
+                if let Some(window) = tauri::Manager::get_webview_window(app, "main") {
+                    std::thread::spawn(move || {
+                        std::thread::sleep(std::time::Duration::from_millis(2000));
+                        let _ = window.eval("window.location.hash = '#/report-preview';");
+                        std::thread::sleep(std::time::Duration::from_millis(2000));
+                        let _ =
+                            window.eval("window.dispatchEvent(new HashChangeEvent('hashchange'));");
+                    });
+                }
+            }
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             serial::list_ports,
             serial::open_port,
