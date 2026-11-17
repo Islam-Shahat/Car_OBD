@@ -523,7 +523,7 @@
       "none": {
         "badge": "No clearing indicators",
         "headline": "No indicators of recent code clearing",
-        "body": "Readiness monitors are complete and drive history counters indicate normal driving cycles since any previous reset."
+        "body": "Readiness monitors are complete and drive history counters indicate normal driving cycles since any previous reset. No indicators found does not prove that codes were not cleared. A seller can drive enough distance after clearing."
       },
       "some": {
         "badge": "Some reset indicators",
@@ -536,12 +536,13 @@
         "body": "Multiple readiness monitors are incomplete, distance/warmups since clearing are low, or permanent codes remain. Wording note: repairs or battery disconnect also reset these."
       }
     },
-    "limitationsNotice": "Heuristic evaluation only: Battery disconnection, ECU resets, or component repairs also reset readiness monitors and counters. Counters saturate over time (e.g. 255 warm-ups, 65,535 km). This is not proof of fraud or physical vehicle condition.",
+    "limitationsNotice": "Heuristic evaluation only: Battery disconnection, ECU resets, or component repairs also reset readiness monitors and counters. Values 0xFF (255 warm-ups) and 0xFFFF (65,535 km/min) mean counter at maximum or unavailable and are not treated as reassuring evidence. No indicators found does not prove that codes were not cleared. A seller can drive enough distance after clearing.",
     "factors": {
       "monitors": "Readiness Monitors (I/M)",
       "distanceSinceClear": "Distance Since Cleared (PID 0131)",
       "warmupsSinceClear": "Warm-up Cycles (PID 0130)",
-      "permanentCodes": "Permanent DTCs (Mode 0A)"
+      "permanentCodes": "Permanent DTCs (Mode 0A)",
+      "milHistory": "Distance / Time with MIL On (PID 0121 / 014D)"
     },
     "explanations": {
       "monitorsManyIncomplete": "Multiple emission monitors are incomplete, which is typical immediately after clearing codes or battery disconnection.",
@@ -553,17 +554,23 @@
       "warmupsVeryLow": "Fewer than 3 engine warm-up cycles recorded since last code clear.",
       "warmupsLow": "Fewer than 10 engine warm-up cycles recorded since last code clear.",
       "warmupsAdequate": "Normal number of warm-up cycles (10+) recorded since last code clear.",
+      "counterAtMaxOrUnavailable": "Counter at maximum or unavailable (0xFF / 0xFFFF); not counted as reassuring evidence.",
       "permanentPresent": "Permanent trouble codes (Mode 0A) were detected. These survive standard clearing until the ECU verifies the fix.",
       "permanentNone": "No permanent trouble codes detected.",
+      "milHistoryZero": "Warning light (MIL) distance and time counters are zero.",
+      "milHistoryActive": "Vehicle has recorded driving distance or time with the warning light (MIL) illuminated.",
+      "milHistoryLong": "Warning light (MIL) has been on for a long time (high or saturated 0xFFFF distance/time with MIL on).",
       "pidUnavailable": "Parameter not reported by this engine ECU."
     },
     "rawCountersTitle": "Raw Counters & Drive History",
+    "counterAtMaxOrUnavailable": "counter at maximum or unavailable",
     "counterLabels": {
       "distanceSinceClear": "Distance since cleared",
       "warmupsSinceClear": "Warm-ups since cleared",
       "timeSinceClear": "Engine time since cleared",
       "runTime": "Run time since engine start",
       "distanceWithMil": "Distance driven with MIL on",
+      "timeWithMil": "Engine time with MIL on",
       "incompleteMonitors": "Incomplete monitors count",
       "permanentDtcCount": "Permanent codes count"
     }

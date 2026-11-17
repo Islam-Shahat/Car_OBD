@@ -267,7 +267,9 @@ export function DiagnosticReportView({ data, hideVin = false }: DiagnosticReport
                   </span>
                   <span dir="ltr" className="font-mono font-semibold">
                     {prePurchase.rawCounters.distanceSinceClearedKm !== null
-                      ? `${prePurchase.rawCounters.distanceSinceClearedKm} km`
+                      ? prePurchase.rawCounters.distanceSinceClearedKm >= 65535
+                        ? `${prePurchase.rawCounters.distanceSinceClearedKm} km (${t('prePurchase.counterAtMaxOrUnavailable')})`
+                        : `${prePurchase.rawCounters.distanceSinceClearedKm} km`
                       : 'N/A'}
                   </span>
                 </div>
@@ -276,7 +278,11 @@ export function DiagnosticReportView({ data, hideVin = false }: DiagnosticReport
                     {t('prePurchase.counterLabels.warmupsSinceClear')}
                   </span>
                   <span dir="ltr" className="font-mono font-semibold">
-                    {prePurchase.rawCounters.warmupsSinceCleared ?? 'N/A'}
+                    {prePurchase.rawCounters.warmupsSinceCleared !== null
+                      ? prePurchase.rawCounters.warmupsSinceCleared >= 255
+                        ? `${prePurchase.rawCounters.warmupsSinceCleared} (${t('prePurchase.counterAtMaxOrUnavailable')})`
+                        : prePurchase.rawCounters.warmupsSinceCleared
+                      : 'N/A'}
                   </span>
                 </div>
                 <div className="rounded bg-slate-50 px-2.5 py-1.5 dark:bg-slate-900">
@@ -285,7 +291,9 @@ export function DiagnosticReportView({ data, hideVin = false }: DiagnosticReport
                   </span>
                   <span dir="ltr" className="font-mono font-semibold">
                     {prePurchase.rawCounters.timeSinceClearedMinutes !== null
-                      ? `${prePurchase.rawCounters.timeSinceClearedMinutes} min`
+                      ? prePurchase.rawCounters.timeSinceClearedMinutes >= 65535
+                        ? `${prePurchase.rawCounters.timeSinceClearedMinutes} min (${t('prePurchase.counterAtMaxOrUnavailable')})`
+                        : `${prePurchase.rawCounters.timeSinceClearedMinutes} min`
                       : 'N/A'}
                   </span>
                 </div>

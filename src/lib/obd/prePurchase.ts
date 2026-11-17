@@ -26,6 +26,7 @@ export interface PrePurchaseAssessment {
     timeSinceClearedMinutes: number | null;
     runTimeSeconds: number | null;
     distanceWithMilKm: number | null;
+    timeWithMilMinutes?: number | null;
     incompleteMonitorsCount: number;
     supportedMonitorsCount: number;
     permanentDtcCount: number;
@@ -39,6 +40,9 @@ export interface PrePurchaseInput {
   pending?: readonly { code: string }[];
   permanent: readonly { code: string }[];
 }
+
+export const COUNTER_MAX_BYTE = 0xff; // 255 (warm-up cycles)
+export const COUNTER_MAX_WORD = 0xffff; // 65,535 (distance km or time min)
 
 /**
  * Evaluates whether vehicle readiness monitors and drive history counters
@@ -57,6 +61,13 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
   const timeSinceClear = driveHistory.timeSinceClearedMinutes;
   const runTimeSeconds = driveHistory.runTimeSeconds;
   const distanceWithMil = driveHistory.distanceWithMilKm;
+  const timeWithMil = driveHistory.timeWithMilMinutes;
+
+  const isDistanceClearMax =
+    distanceSinceClear !== null && distanceSinceClear >= COUNTER_MAX_WORD;
+  const isWarmupsClearMax =
+    warmupsSinceClear !== null && warmupsSinceClear >= COUNTER_MAX_BYTE;
+  const isTimeClearMax = timeSinceClear !== null && timeSinceClear >= COUNTER_MAX_WORD;
 
   // 1. Evaluate I/M Readiness monitors
   let incompleteMonitorsCount = 0;
@@ -93,8 +104,9 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
   });
 
   // 2. Distance traveled since DTCs cleared (PID 0131)
+  // 0xFFFF (65,535) can mean maximum reached or not available; treat as unavailable, not reassuring.
   let distanceStatus: PrePurchaseFactor['status'] = 'normal';
-  if (distanceSinceClear === null) {
+  if (distanceSinceClear === null || isDistanceClearMax) {
     distanceStatus = 'unavailable';
   } else if (distanceSinceClear < 25) {
     distanceStatus = 'suspicious';
@@ -106,20 +118,28 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
     id: 'distanceSinceClear',
     labelKey: 'prePurchase.factors.distanceSinceClear',
     status: distanceStatus,
-    rawText: distanceSinceClear !== null ? `${distanceSinceClear} km` : 'N/A',
+    rawText:
+      distanceSinceClear === null
+        ? 'N/A'
+        : isDistanceClearMax
+          ? `${distanceSinceClear} km (0xFFFF — counter at maximum or unavailable)`
+          : `${distanceSinceClear} km`,
     explanationKey:
       distanceSinceClear === null
         ? 'prePurchase.explanations.pidUnavailable'
-        : distanceSinceClear < 25
-          ? 'prePurchase.explanations.distanceVeryLow'
-          : distanceSinceClear < 80
-            ? 'prePurchase.explanations.distanceLow'
-            : 'prePurchase.explanations.distanceAdequate',
+        : isDistanceClearMax
+          ? 'prePurchase.explanations.counterAtMaxOrUnavailable'
+          : distanceSinceClear < 25
+            ? 'prePurchase.explanations.distanceVeryLow'
+            : distanceSinceClear < 80
+              ? 'prePurchase.explanations.distanceLow'
+              : 'prePurchase.explanations.distanceAdequate',
   });
 
   // 3. Warm-up cycles since DTCs cleared (PID 0130)
+  // 0xFF (255) can mean maximum reached or not available; treat as unavailable, not reassuring.
   let warmupsStatus: PrePurchaseFactor['status'] = 'normal';
-  if (warmupsSinceClear === null) {
+  if (warmupsSinceClear === null || isWarmupsClearMax) {
     warmupsStatus = 'unavailable';
   } else if (warmupsSinceClear < 3) {
     warmupsStatus = 'suspicious';
@@ -131,15 +151,22 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
     id: 'warmupsSinceClear',
     labelKey: 'prePurchase.factors.warmupsSinceClear',
     status: warmupsStatus,
-    rawText: warmupsSinceClear !== null ? `${warmupsSinceClear}` : 'N/A',
+    rawText:
+      warmupsSinceClear === null
+        ? 'N/A'
+        : isWarmupsClearMax
+          ? `${warmupsSinceClear} (0xFF — counter at maximum or unavailable)`
+          : `${warmupsSinceClear}`,
     explanationKey:
       warmupsSinceClear === null
         ? 'prePurchase.explanations.pidUnavailable'
-        : warmupsSinceClear < 3
-          ? 'prePurchase.explanations.warmupsVeryLow'
-          : warmupsSinceClear < 10
-            ? 'prePurchase.explanations.warmupsLow'
-            : 'prePurchase.explanations.warmupsAdequate',
+        : isWarmupsClearMax
+          ? 'prePurchase.explanations.counterAtMaxOrUnavailable'
+          : warmupsSinceClear < 3
+            ? 'prePurchase.explanations.warmupsVeryLow'
+            : warmupsSinceClear < 10
+              ? 'prePurchase.explanations.warmupsLow'
+              : 'prePurchase.explanations.warmupsAdequate',
   });
 
   // 4. Permanent DTCs (Mode 0A)
@@ -160,29 +187,83 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
         : 'prePurchase.explanations.permanentNone',
   });
 
-  // 5. Correlate and synthesize overall level
+  // 5. Distance / Time with MIL on (PIDs 0121 and 014D)
+  // Inverse polarity from "since codes cleared":
+  // 0 = MIL has not been on; > 0 or saturated (0xFFFF) = warning light has been on for a long time.
+  // Never score a low/zero MIL counter as suspicious, and flag non-zero/high/saturated MIL counters.
+  if (distanceWithMil !== null || timeWithMil !== null) {
+    const milDistActive = distanceWithMil !== null && distanceWithMil > 0;
+    const milTimeActive = timeWithMil !== null && timeWithMil > 0;
+    const milActive = milDistActive || milTimeActive;
+    const milLongOrSaturated =
+      (distanceWithMil !== null && distanceWithMil >= 50) ||
+      (timeWithMil !== null && timeWithMil >= 60);
+
+    const parts: string[] = [];
+    if (distanceWithMil !== null) {
+      parts.push(
+        distanceWithMil >= COUNTER_MAX_WORD
+          ? `${distanceWithMil} km (0xFFFF)`
+          : `${distanceWithMil} km`,
+      );
+    }
+    if (timeWithMil !== null) {
+      parts.push(
+        timeWithMil >= COUNTER_MAX_WORD
+          ? `${timeWithMil} min (0xFFFF)`
+          : `${timeWithMil} min`,
+      );
+    }
+
+    factors.push({
+      id: 'milHistory',
+      labelKey: 'prePurchase.factors.milHistory',
+      status: milLongOrSaturated ? 'suspicious' : milActive ? 'caution' : 'normal',
+      rawText: parts.join(' / '),
+      explanationKey: milLongOrSaturated
+        ? 'prePurchase.explanations.milHistoryLong'
+        : milActive
+          ? 'prePurchase.explanations.milHistoryActive'
+          : 'prePurchase.explanations.milHistoryZero',
+    });
+  }
+
+  // 6. Correlate and synthesize overall level
   let suspicionScore = 0;
 
   if (incompleteMonitorsCount >= 3) suspicionScore += 2;
   else if (incompleteMonitorsCount >= 1) suspicionScore += 1;
 
-  if (distanceSinceClear !== null) {
+  if (distanceSinceClear !== null && !isDistanceClearMax) {
     if (distanceSinceClear < 25) suspicionScore += 2;
     else if (distanceSinceClear < 80) suspicionScore += 1;
   }
 
-  if (warmupsSinceClear !== null) {
+  if (warmupsSinceClear !== null && !isWarmupsClearMax) {
     if (warmupsSinceClear < 3) suspicionScore += 2;
     else if (warmupsSinceClear < 10) suspicionScore += 1;
   }
 
-  if (timeSinceClear !== null && timeSinceClear < 60) {
+  if (timeSinceClear !== null && !isTimeClearMax && timeSinceClear < 60) {
     suspicionScore += 1;
   }
 
   if (permanentCount > 0) {
     // Permanent DTC surviving clear is a significant flag
     suspicionScore += 3;
+  }
+
+  // PID 0121 / 014D: high or saturated MIL-on distance/time means the warning light has been on for a long time
+  if (
+    (distanceWithMil !== null && distanceWithMil >= 50) ||
+    (timeWithMil !== null && timeWithMil >= 60)
+  ) {
+    suspicionScore += 2;
+  } else if (
+    (distanceWithMil !== null && distanceWithMil > 0) ||
+    (timeWithMil !== null && timeWithMil > 0)
+  ) {
+    suspicionScore += 1;
   }
 
   let level: PrePurchaseIndicatorLevel = 'no_indicators';
@@ -218,6 +299,7 @@ export function evaluatePrePurchase(input: PrePurchaseInput): PrePurchaseAssessm
       timeSinceClearedMinutes: timeSinceClear,
       runTimeSeconds,
       distanceWithMilKm: distanceWithMil,
+      timeWithMilMinutes: timeWithMil,
       incompleteMonitorsCount,
       supportedMonitorsCount,
       permanentDtcCount: permanentCount,
