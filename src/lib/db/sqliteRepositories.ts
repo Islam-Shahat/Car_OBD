@@ -516,11 +516,13 @@ function mapSession(row: ScanSessionRow): ScanSession {
     overallStatus: row.overall_status,
     mode: row.mode === 'pre_purchase' ? 'pre_purchase' : 'normal',
     sessionType:
-      row.session_type === 'demo'
-        ? 'demo'
-        : row.session_type === 'emulator'
-          ? 'emulator'
-          : 'real',
+      row.session_type === 'real'
+        ? 'real'
+        : row.session_type === 'demo'
+          ? 'demo'
+          : row.session_type === 'emulator'
+            ? 'emulator'
+            : 'unknown',
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deletedAt: row.deleted_at,
@@ -565,7 +567,7 @@ export class SqliteScanRepository implements ScanRepository {
   async createSession(input: ScanSessionInput): Promise<ScanSession> {
     const at = this.clock.now();
     const id = this.clock.idFactory();
-    const sessionType = input.sessionType ?? 'real';
+    const sessionType = input.sessionType ?? 'unknown';
     await this.db.execute(
       `INSERT INTO scan_sessions (
         id, vehicle_id, started_at, finished_at, protocol, adapter_info, mil_status,

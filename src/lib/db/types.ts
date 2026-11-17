@@ -117,7 +117,7 @@ export interface WmiUserMapEntry {
 }
 
 export type ScanMode = 'normal' | 'pre_purchase';
-export type SessionType = 'real' | 'emulator' | 'demo';
+export type SessionType = 'real' | 'emulator' | 'demo' | 'unknown';
 export type ScanResultType = 'stored' | 'pending' | 'permanent';
 export type ReadinessPhase = 'before_clear' | 'after_clear' | 'initial';
 

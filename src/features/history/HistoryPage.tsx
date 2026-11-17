@@ -359,6 +359,11 @@ export function HistoryPage() {
                           {t('prePurchase.badge')}
                         </span>
                       )}
+                      {session.sessionType === 'unknown' && (
+                        <span className="rounded bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                          {t('history.originUnknown')}
+                        </span>
+                      )}
                     </div>
 
                     <div className="mt-1 flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">

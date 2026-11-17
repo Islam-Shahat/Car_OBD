@@ -44,6 +44,16 @@ async function applyThrough(database: TestDatabase, version: number): Promise<vo
     )`,
   );
   for (const migration of MIGRATIONS.filter((entry) => entry.version <= version)) {
+    for (const addition of migration.addColumns ?? []) {
+      const columns = await database.select<{ name: string }>(
+        `PRAGMA table_info(${addition.table})`,
+      );
+      if (!columns.some((col) => col.name === addition.column)) {
+        await database.execute(
+          `ALTER TABLE ${addition.table} ADD COLUMN ${addition.column} ${addition.definition}`,
+        );
+      }
+    }
     for (const statement of migration.statements) await database.execute(statement);
     await database.execute(
       'INSERT INTO schema_migrations (version, description, applied_at) VALUES ($1, $2, $3)',
@@ -230,5 +240,55 @@ describe('database migrations', () => {
     expect(await columnNames(database, 'vehicle_catalog')).toEqual(
       expect.arrayContaining(['make_aliases_ar', 'search_text']),
     );
+  });
+
+  it('produces an identical schema on a fresh database vs a database upgraded from version 7, and marks existing sessions as unknown', async () => {
+    const freshDb = createTestDatabase();
+    const upgradedDb = createTestDatabase();
+    try {
+      await migrate(freshDb);
+
+      await applyThrough(upgradedDb, 7);
+      // Insert a legacy session before Migration 8 existed (origin was not recorded)
+      await upgradedDb.execute(
+        `INSERT INTO scan_sessions (id, started_at, mode, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $4)`,
+        ['legacy-session-1', '2026-11-10T10:00:00.000Z', 'normal', '2026-11-10T10:00:00.000Z'],
+      );
+
+      await migrate(upgradedDb);
+
+      expect(await tableNames(upgradedDb)).toEqual(await tableNames(freshDb));
+      expect(await indexNames(upgradedDb)).toEqual(await indexNames(freshDb));
+
+      for (const table of CORE_TABLES) {
+        const freshInfo = await freshDb.select<{
+          cid: number;
+          name: string;
+          type: string;
+          notnull: number;
+          dflt_value: string | null;
+          pk: number;
+        }>(`PRAGMA table_info(${table})`);
+        const upgradedInfo = await upgradedDb.select<{
+          cid: number;
+          name: string;
+          type: string;
+          notnull: number;
+          dflt_value: string | null;
+          pk: number;
+        }>(`PRAGMA table_info(${table})`);
+        expect(upgradedInfo).toEqual(freshInfo);
+      }
+
+      const [legacyRow] = await upgradedDb.select<{ session_type: string }>(
+        'SELECT session_type FROM scan_sessions WHERE id = $1',
+        ['legacy-session-1'],
+      );
+      expect(legacyRow?.session_type).toBe('unknown');
+    } finally {
+      freshDb.close();
+      upgradedDb.close();
+    }
   });
 });

@@ -27,11 +27,11 @@ describe('Watermark Decision & Session Type Provenance', () => {
     });
     expect(demoSession.sessionType).toBe('demo');
 
-    // Default when omitted is 'real'
+    // Default when omitted is 'unknown' (origin not recorded, never claimed as real)
     const defaultSession = await repo.createSession({
       startedAt: '2026-11-15T15:00:00Z',
     });
-    expect(defaultSession.sessionType).toBe('real');
+    expect(defaultSession.sessionType).toBe('unknown');
   });
 
   it('determines watermark visibility strictly from sessionType, never from content', () => {
@@ -64,5 +64,13 @@ describe('Watermark Decision & Session Type Provenance', () => {
       vin: null,
     };
     expect(computeIsSampleData(demoScan)).toBe(true);
+
+    // Direction 4: Unknown origin session is never claimed as real
+    const unknownScan = {
+      sessionType: 'unknown' as SessionType,
+      adapterInfo: null,
+      vin: null,
+    };
+    expect(computeIsSampleData(unknownScan)).toBe(true);
   });
 });

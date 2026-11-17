@@ -283,7 +283,7 @@ export class InMemoryScanRepository implements ScanRepository {
       milStatus: input.milStatus ?? null,
       overallStatus: input.overallStatus ?? null,
       mode: input.mode ?? 'normal',
-      sessionType: input.sessionType ?? 'real',
+      sessionType: input.sessionType ?? 'unknown',
       createdAt: at,
       updatedAt: at,
       deletedAt: null,

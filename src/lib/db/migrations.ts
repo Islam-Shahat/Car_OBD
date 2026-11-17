@@ -130,7 +130,6 @@ export const MIGRATIONS: readonly Migration[] = [
         mil_status TEXT,
         overall_status TEXT,
         mode TEXT NOT NULL DEFAULT 'normal' CHECK (mode IN ('normal', 'pre_purchase')),
-        session_type TEXT NOT NULL DEFAULT 'real' CHECK (session_type IN ('real', 'emulator', 'demo')),
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL,
         deleted_at TEXT
@@ -253,13 +252,13 @@ export const MIGRATIONS: readonly Migration[] = [
   },
   {
     version: 8,
-    description: 'track session_type (real, emulator, demo) on scan_sessions',
+    description: 'track session_type (real, emulator, demo, unknown) on scan_sessions',
     statements: [],
     addColumns: [
       {
         table: 'scan_sessions',
         column: 'session_type',
-        definition: `TEXT NOT NULL DEFAULT 'real' CHECK (session_type IN ('real', 'emulator', 'demo'))`,
+        definition: `TEXT NOT NULL DEFAULT 'unknown' CHECK (session_type IN ('real', 'emulator', 'demo', 'unknown'))`,
       },
     ],
   },

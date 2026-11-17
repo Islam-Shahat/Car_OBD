@@ -623,6 +623,7 @@
     "newerScan": "Later Scan (B)",
     "selectTwoNotice": "Please select exactly two scans to compare.",
     "deltaDistance": "Distance progression: {{delta}} km",
-    "deltaWarmups": "Warm-up cycles progression: {{delta}}"
+    "deltaWarmups": "Warm-up cycles progression: {{delta}}",
+    "originUnknown": "origin not recorded"
   }
 }
