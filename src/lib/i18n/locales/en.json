@@ -73,7 +73,14 @@
       "privacyTitle": "Privacy & Transparency",
       "privacyBody": "This application operates offline-first. Internet access is used exclusively to check for updates and operational status via GitHub. Zero personal information, vehicle VINs, or diagnostic scan results are ever transmitted to any external server.",
       "safetyTitle": "Note",
-      "safetyBody": "This app is a diagnostic tool. Clearing codes does not fix the fault; it resets readiness monitors and the freeze frame."
+      "safetyBody": "This app is a diagnostic tool. Clearing codes does not fix the fault; it resets readiness monitors and the freeze frame.",
+      "trafficLogTitle": "Raw ELM327 Traffic Log",
+      "trafficLogDesc": "Capture raw adapter commands and responses for troubleshooting. Sensitive VIN data is automatically redacted.",
+      "trafficLogEnable": "Enable Traffic Logging",
+      "trafficLogDisable": "Disable Traffic Logging",
+      "trafficLogExport": "Export Traffic Log",
+      "trafficLogClear": "Clear Log",
+      "trafficLogEntries": "Logged entries: {{count}}"
     }
   },
   "vehicles": {

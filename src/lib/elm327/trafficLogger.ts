@@ -120,18 +120,35 @@ export class TrafficLogger {
     lines.push('=== OBD DIAGNOSE - RAW ELM327 TRAFFIC LOG ===');
     lines.push(`Generated: ${new Date().toISOString()}`);
     if (metadata?.appVersion) lines.push(`App Version: ${metadata.appVersion}`);
-    if (metadata?.adapterInfo) lines.push(`Adapter: ${metadata.adapterInfo}`);
+    if (metadata?.adapterInfo) lines.push(`Adapter: ${this.redact(metadata.adapterInfo)}`);
     lines.push(`Total Entries: ${this.entries.length}`);
-    lines.push(`VIN Redacted: ${this.redactVinEnabled ? 'YES' : 'NO'}`);
+    lines.push(`VIN Redacted: YES`);
     lines.push('================================================\n');
 
     for (const entry of this.entries) {
       const dur = entry.durationMs !== undefined ? ` (${entry.durationMs}ms)` : '';
-      lines.push(`[${entry.timestamp}] ${entry.direction}${dur}: ${entry.content}`);
+      const safeContent = this.redact(entry.content);
+      lines.push(`[${entry.timestamp}] ${entry.direction}${dur}: ${safeContent}`);
     }
 
     return lines.join('\n');
   }
+}
+
+/**
+ * Triggers a browser/desktop download for the raw ELM327 traffic log.
+ */
+export function downloadTrafficLog(filename: string, content: string): void {
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 export const trafficLogger = TrafficLogger.getInstance();

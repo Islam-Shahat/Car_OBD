@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { PageHeader } from '../../app/PageHeader';
 import { IconCheck, IconDownload, IconRefresh } from '../../app/icons';
 import { useStorage } from '../../lib/db/StorageProvider';
+import { downloadTrafficLog, trafficLogger } from '../../lib/elm327/trafficLogger';
 import { LANGUAGES, type LanguageCode } from '../../lib/i18n/direction';
 import { GITHUB_RELEASES_URL } from '../../lib/projectUrls';
 import { RemoteConfigService } from '../../lib/remoteConfig/remoteConfigService';
@@ -39,8 +40,30 @@ export function SettingsPage() {
 
   const [checking, setChecking] = useState(false);
   const [checkStatus, setCheckStatus] = useState<'available' | 'uptodate' | 'error' | null>(null);
+  const [loggingEnabled, setLoggingEnabled] = useState(() => trafficLogger.isEnabled());
+  const [logCount, setLogCount] = useState(() => trafficLogger.getEntries().length);
   const config = useRemoteConfigStore((state) => state.config);
   const isUpdateAvailable = useRemoteConfigStore((state) => state.isUpdateAvailable);
+
+  const handleToggleLogging = () => {
+    const next = !loggingEnabled;
+    trafficLogger.setEnabled(next);
+    setLoggingEnabled(next);
+    setLogCount(trafficLogger.getEntries().length);
+  };
+
+  const handleExportLog = () => {
+    const logContent = trafficLogger.exportLog({
+      appVersion: __APP_VERSION__,
+    });
+    const dateStr = new Date().toISOString().replace(/[:.]/g, '-');
+    downloadTrafficLog(`elm327-traffic-${dateStr}.log`, logContent);
+  };
+
+  const handleClearLog = () => {
+    trafficLogger.clear();
+    setLogCount(0);
+  };
 
   const handleCheckUpdates = async () => {
     if (!repositories || checking) return;
@@ -124,6 +147,56 @@ export function SettingsPage() {
         <p className="mt-1 text-xs leading-relaxed text-blue-900/80 dark:text-blue-300/80">
           {t('pages.settings.privacyBody')}
         </p>
+      </section>
+
+      {/* Raw ELM327 Traffic Logging */}
+      <section className="mt-4 rounded-xl border border-slate-200 bg-white p-5 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="text-sm font-semibold">{t('pages.settings.trafficLogTitle')}</h2>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              {t('pages.settings.trafficLogDesc')}
+            </p>
+            <p className="mt-2 font-mono text-xs text-slate-600 dark:text-slate-300">
+              {t('pages.settings.trafficLogEntries', { count: logCount })}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={handleToggleLogging}
+              className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition ${
+                loggingEnabled
+                  ? 'border-emerald-500 bg-emerald-50 text-emerald-700 dark:border-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-300'
+                  : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200'
+              }`}
+            >
+              {loggingEnabled
+                ? t('pages.settings.trafficLogDisable')
+                : t('pages.settings.trafficLogEnable')}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleExportLog}
+              disabled={logCount === 0}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-xs hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            >
+              <IconDownload className="size-3.5" />
+              {t('pages.settings.trafficLogExport')}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleClearLog}
+              disabled={logCount === 0}
+              className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+            >
+              {t('pages.settings.trafficLogClear')}
+            </button>
+          </div>
+        </div>
       </section>
 
       <section className="mt-4 rounded-xl border border-slate-200 bg-white p-5 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">

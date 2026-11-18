@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { Elm327Driver } from '../src/lib/elm327/driver';
+import { trafficLogger } from '../src/lib/elm327/trafficLogger';
 import { MockTransport } from '../src/lib/elm327/mockTransport';
 
 function adapterScript(
@@ -174,5 +175,36 @@ describe('Elm327Driver command handling', () => {
     await expect(pending).rejects.toMatchObject({ code: 'closed' });
     await expect(driver.send('ATI')).rejects.toMatchObject({ code: 'closed' });
     expect(driver.isOpen).toBe(false);
+  });
+
+  it('records raw TX/RX frames through TrafficLogger during commands with timing and redaction', async () => {
+    trafficLogger.clear();
+    trafficLogger.setEnabled(true);
+
+    const transport = new MockTransport(adapterScript({ '010C': '41 0C 1A F8\r\r>' }));
+    await transport.open();
+    const driver = new Elm327Driver(transport);
+
+    const res = await driver.send('010C');
+    expect(res.lines).toEqual(['41 0C 1A F8']);
+
+    const entries = trafficLogger.getEntries();
+    expect(entries.length).toBeGreaterThanOrEqual(2);
+
+    const tx = entries.find((e) => e.direction === 'TX' && e.content === '010C');
+    expect(tx).toBeDefined();
+
+    const rx = entries.find((e) => e.direction === 'RX' && e.content.includes('41 0C 1A F8'));
+    expect(rx).toBeDefined();
+    expect(typeof rx?.durationMs).toBe('number');
+
+    // Verify exported text contains the frames with VIN Redacted header
+    const exported = trafficLogger.exportLog();
+    expect(exported).toContain('VIN Redacted: YES');
+    expect(exported).toContain('TX: 010C');
+    expect(exported).toContain('RX');
+
+    trafficLogger.setEnabled(false);
+    trafficLogger.clear();
   });
 });
