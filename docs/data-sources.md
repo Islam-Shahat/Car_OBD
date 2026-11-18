@@ -42,9 +42,10 @@ code repeats. The app does not infer the model.
 | Entries | 61 slugs                                                                  |
 | Purpose | Stable join key for the Phase 4 vehicle catalog and WMI `makeSlug` values |
 
-No Appendix C (or equivalent make/model appendix) exists in this repository or its git history, so
-this list is the canonical set for the current phase. When a manufacturer appendix is adopted, it
-must be added here with its source, licence and retrieval date before the slugs change.
+The make list is reconciled with Appendix C (`docs/appendix-c-vehicle-catalog.md`), covering 46
+canonical makes joining the vehicle catalog and WMI `makeSlug` values. When a manufacturer
+appendix is adopted or modified, it must be added here with its source, licence and retrieval date
+before the slugs change.
 
 ## VIN check digit
 
@@ -172,19 +173,20 @@ unclear.
 
 | Field         | Value                                                                 |
 | ------------- | --------------------------------------------------------------------- |
-| Source        | Project-maintained knowledge list (no external appendix available)    |
+| Source        | Reconciled with Appendix C (`docs/appendix-c-vehicle-catalog.md`)     |
+| Version       | `2026-11-15.appendix-c`                                               |
 | Licence       | Project source (no third-party data)                                  |
-| Entries       | 259 models across 33 makes                                            |
+| Entries       | 377 models across 46 makes                                            |
 | Years         | `null` for both bounds until a cited source provides real year ranges |
 | Verification  | `verified = 0` for every row                                          |
-| Source tier   | `knowledge`                                                           |
+| Source tier   | `cited` (51 models) / `knowledge` (326 models)                         |
 | Build command | `npm run catalog:build` (`tools/build-catalog.mjs`)                   |
 
-No Appendix C (or equivalent make/model appendix) exists in this repository or its git history. The
-catalog therefore uses the documented fallback: a bilingual selection aid, not a verified vehicle
-database. Each row has a stable UUID derived from `sha256(makeSlug:model)`, a canonical make slug
-(joining `src/data/makes.json`), English and Arabic search aliases, and an explicit `verified = 0`
-flag. Model years are not guessed.
+The vehicle catalog (`src/data/vehicle-catalog.json`, version `2026-11-15.appendix-c`) is reconciled
+with Appendix C (`docs/appendix-c-vehicle-catalog.md`), containing 377 models across 46 makes. The
+catalog is a bilingual selection aid, not a verified real-vehicle database. Each row has a stable
+UUID derived from `sha256(makeSlug:model)`, a canonical make slug (joining `src/data/makes.json`),
+English and Arabic search aliases, and an explicit `verified = 0` flag. Model years are not guessed.
 
 Seeding upserts catalog rows by their stable `id`; it never writes to `vehicles`. A user car keeps
 its own UUID, may reference `catalog_id` or stay free text, and survives every catalog update. When a

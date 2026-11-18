@@ -1,7 +1,7 @@
 Part 0: Permanent project context (CLAUDE.md)
 
 Product
-A lightweight Windows desktop app (laptop) that connects to a passenger car through an ELM327 OBD-II adapter (USB or Bluetooth, both appear as a COM port), lets the user pick the car (make / model / year), runs a scan, reads fault codes (DTCs), shows a clear Arabic/English explanation, can clear codes safely, and shows live sensor data. Phase 7 features (scan history browser, printable PDF reports, and pre-purchase used car inspection mode) are PLANNED and not yet implemented.
+A lightweight Windows desktop app (laptop) that connects to a passenger car through an ELM327 OBD-II adapter (USB or Bluetooth, both appear as a COM port), lets the user pick the car (make / model / year), runs a scan, reads fault codes (DTCs), shows a clear Arabic/English explanation, can clear codes safely, and shows live sensor data. Phase 7 features (scan history browser, printable PDF reports, and pre-purchase used car inspection mode) are implemented, verified on the emulator only.
 
 Hard decisions already made (do not revisit)
 • Stack: Tauri v2 + React + TypeScript (strict). NOT Electron. Goal: small installer (a few MB) and low RAM. OBD logic lives in TypeScript; Rust is only a thin serial-port bridge.
@@ -35,12 +35,12 @@ Fault-code data and lookup
 
 Car identification
 • VIN first (Mode 09 PID 02, offline WMI decode to a make slug via `wmi.json`, year candidates the user confirms, never infer the model).
-• Fallback is manual selection from `vehicle_catalog` (reconciled with Appendix C, 46 makes / 380 models) with Arabic/English search and a free-text option. Never block a scan because of VIN.
+• Fallback is manual selection from `vehicle_catalog` (reconciled with Appendix C, 46 makes / 377 models) with Arabic/English search and a free-text option. Never block a scan because of VIN.
 
 Repo layout
 /src-tauri Rust: serial bridge, updater/plugin wiring
 /src
-/features/connection, scan, vehicles, dtc, livedata, settings (history and reports are planned)
+/features/connection, scan, vehicles, dtc, livedata, settings, history, reports (implemented, verified on the emulator only)
 /lib/elm327, obd, db, i18n, remote-config
 /data dtc manifest, vehicle catalog, glossary, wmi (JSON)
 /tests, /docs

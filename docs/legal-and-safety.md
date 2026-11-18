@@ -1,7 +1,7 @@
 # Legal Notices, Safety Terms, and Privacy Policy
 
 Date: 2026-11-15  
-Application: OBD Diagnose (v1.0.0)
+Application: OBD Diagnose (0.9.0-rc.1)
 
 ---
 

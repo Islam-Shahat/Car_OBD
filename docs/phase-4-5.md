@@ -40,7 +40,7 @@ All 402 Tier 1 DTC definitions were audited and rewritten:
 ### Summary
 
 - **Total Makes**: 46 makes (all 33 makes from Appendix C + 13 makes preserved from prior market knowledge and WMI decodability).
-- **Total Models**: 380 models.
+- **Total Models**: 377 models (originally 380 before Daewoo/Chevrolet duplicates were reconciled in Phase 5).
 - **Source Tiers**:
   - `source_tier = 'cited'`: 51 models (all models listed in "Seen in sources" in Appendix C).
   - `source_tier = 'knowledge'`: 329 models (all models listed in "Added, to verify" in Appendix C + models added for WMI makes).
