@@ -12,6 +12,7 @@ Verification: 246 tests passing across 33 test files (`npm test`), clean build (
 Phase 7 delivers historical vehicle record management, printable PDF reporting with bilingual Arabic/English typography, and a dedicated Pre-Purchase Inspection Mode:
 
 ### 1.1 History Management (`src/features/history/`)
+
 - **Vehicle-Grouped Session Browser (`HistoryPage.tsx`)**:
   - Filter historical diagnostic sessions by vehicle or view all records chronologically.
   - Cards summarize session date, vehicle identity (VIN / make / model / year), overall status badge, and DTC count.
@@ -28,6 +29,7 @@ Phase 7 delivers historical vehicle record management, printable PDF reporting w
   - History UI excludes soft-deleted sessions and prompts with a modal dialog before deleting.
 
 ### 1.2 Diagnostic Report & PDF Export (`src/features/reports/`)
+
 - **Printable Report Component (`DiagnosticReportView.tsx`)**:
   - Structured printable A4 layout designed with Tailwind CSS and dedicated `@media print` rules in `src/index.css`.
   - Uses the Cairo variable font for Arabic and Latin text, guaranteeing typography consistency across desktop and print renderers.
@@ -45,6 +47,7 @@ Phase 7 delivers historical vehicle record management, printable PDF reporting w
   - **WhatsApp Summary (`whatsAppSummary.ts`)**: Generates an emoji-structured, clean text summary in Arabic or English with vehicle info, status, DTC list, readiness overview, and disclaimer for quick messaging.
 
 ### 1.3 Pre-Purchase Inspection Mode (`src/lib/obd/prePurchase.ts` & `docs/pre-purchase-inspection.md`)
+
 - **Dedicated Diagnostic Mode**:
   - User selectable on the Scan page (`normal` vs `pre_purchase`).
   - Persisted in session metadata (`scan_sessions.mode = 'pre_purchase'`).
@@ -61,7 +64,7 @@ Phase 7 delivers historical vehicle record management, printable PDF reporting w
     - `no_indicators`: Normal driving cycle completed with monitors ready.
     - `some_indicators`: Partial drive cycle or ambiguous conditions (e.g. recent battery disconnect or short commute).
     - `several_indicators`: Incomplete readiness monitors paired with near-zero distance/warmups or surviving Mode 0A permanent codes.
-  - **Strictly Non-Accusatory Wording**: Uses cautious phrasing such as *"Indicators suggest codes may have been cleared recently"*; never asserts fraud or seller intent.
+  - **Strictly Non-Accusatory Wording**: Uses cautious phrasing such as _"Indicators suggest codes may have been cleared recently"_; never asserts fraud or seller intent.
   - Displays all raw counters in the report to allow human mechanics and buyers to form their own judgment.
   - Explicitly states technical limitations: repairs, battery disconnects, and ECU resets reset counters; monitor drive cycles take time; counters saturate (e.g. 255 warm-ups, 65,535 km).
 
@@ -72,10 +75,12 @@ Phase 7 delivers historical vehicle record management, printable PDF reporting w
 As required, a real sample PDF was generated from an emulator scan journey and thoroughly verified:
 
 ### 2.1 Artifacts Generated
+
 - Sample PDF: `docs/samples/report-sample.pdf` (1,237,569 bytes)
 - Visual Preview: `docs/samples/report-sample-preview.png` (151,292 bytes)
 
 ### 2.2 Verification Methodology & Results
+
 1. **Generation Pipeline (`tools/generate-sample-report.mjs`)**:
    - Spawns local preview server and headless Chromium via Chrome DevTools Protocol (CDP).
    - Simulates pre-purchase inspection scan session with Arabic locale.
@@ -108,6 +113,7 @@ Test Files  33 passed | 3 skipped (36)
 ```
 
 ### New Tests Added:
+
 - `tests/pre-purchase.test.ts`:
   - `evaluates recently cleared codes as several_indicators`: Simulates low km (12 km), 1 warmup, 4 incomplete monitors, and 1 permanent DTC $\rightarrow$ flags `several_indicators`.
   - `evaluates normal extended driving as no_indicators`: Simulates 1,850 km, 64 warmups, all monitors complete $\rightarrow$ flags `no_indicators`.

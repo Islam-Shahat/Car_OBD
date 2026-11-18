@@ -281,7 +281,9 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
           }`}
         >
           <div className="text-xs font-bold">{t('prePurchase.modeNormal')}</div>
-          <div className="mt-0.5 text-[11px] font-normal opacity-75">{t('prePurchase.modeNormalDesc')}</div>
+          <div className="mt-0.5 text-[11px] font-normal opacity-75">
+            {t('prePurchase.modeNormalDesc')}
+          </div>
         </button>
 
         <button
@@ -295,7 +297,9 @@ function ScanSession({ driver, info }: { driver: Elm327Driver; info: ConnectionI
           }`}
         >
           <div className="text-xs font-bold">{t('prePurchase.modePrePurchase')}</div>
-          <div className="mt-0.5 text-[11px] font-normal opacity-85">{t('prePurchase.modePrePurchaseDesc')}</div>
+          <div className="mt-0.5 text-[11px] font-normal opacity-85">
+            {t('prePurchase.modePrePurchaseDesc')}
+          </div>
         </button>
       </div>
 

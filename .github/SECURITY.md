@@ -4,10 +4,10 @@
 
 Only the latest release candidate and release versions receive active security updates.
 
-| Version | Supported |
-| :--- | :--- |
+| Version                  | Supported          |
+| :----------------------- | :----------------- |
 | `0.9.0-rc.1` (and newer) | :white_check_mark: |
-| `< 0.9.0` | :x: |
+| `< 0.9.0`                | :x:                |
 
 ---
 
@@ -26,6 +26,7 @@ We take the security of Car OBD seriously. If you discover a security vulnerabil
    - Any proposed remediation or patch.
 
 ### What to Expect
+
 - A maintainer will acknowledge receipt of your vulnerability report within 72 hours.
 - We will coordinate validation and prepare a fix prior to public disclosure.
 - Please do not submit public GitHub issues for sensitive security vulnerabilities.

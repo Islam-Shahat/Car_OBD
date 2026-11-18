@@ -81,21 +81,24 @@ export function generateWhatsAppSummary(
       if (data.storedCodes.length > 0) {
         lines.push(`*أعطال مؤكدة (Stored):*`);
         for (const item of data.storedCodes) {
-          const desc = item.lookup?.record?.descriptionAr || item.lookup?.record?.descriptionEn || '';
+          const desc =
+            item.lookup?.record?.descriptionAr || item.lookup?.record?.descriptionEn || '';
           lines.push(`  • ${item.code}${desc ? `: ${desc}` : ''}`);
         }
       }
       if (data.pendingCodes.length > 0) {
         lines.push(`*أعطال قيد الانتظار (Pending):*`);
         for (const item of data.pendingCodes) {
-          const desc = item.lookup?.record?.descriptionAr || item.lookup?.record?.descriptionEn || '';
+          const desc =
+            item.lookup?.record?.descriptionAr || item.lookup?.record?.descriptionEn || '';
           lines.push(`  • ${item.code}${desc ? `: ${desc}` : ''}`);
         }
       }
       if (data.permanentCodes.length > 0) {
         lines.push(`*أعطال دائمة (Permanent):*`);
         for (const item of data.permanentCodes) {
-          const desc = item.lookup?.record?.descriptionAr || item.lookup?.record?.descriptionEn || '';
+          const desc =
+            item.lookup?.record?.descriptionAr || item.lookup?.record?.descriptionEn || '';
           lines.push(`  • ${item.code}${desc ? `: ${desc}` : ''}`);
         }
       }

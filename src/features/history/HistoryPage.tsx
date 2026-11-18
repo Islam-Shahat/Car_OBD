@@ -4,12 +4,7 @@ import { EmptyState } from '../../app/EmptyState';
 import { IconAlert, IconCheck, IconHistory } from '../../app/icons';
 import { PageHeader } from '../../app/PageHeader';
 import { useStorage } from '../../lib/db/StorageProvider';
-import type {
-  ReadinessSnapshot,
-  ScanResultRow,
-  ScanSession,
-  Vehicle,
-} from '../../lib/db/types';
+import type { ReadinessSnapshot, ScanResultRow, ScanSession, Vehicle } from '../../lib/db/types';
 import { evaluatePrePurchase } from '../../lib/obd/prePurchase';
 import type { DriveHistory } from '../../lib/obd/pids';
 import type { ReadinessStatus } from '../../lib/obd/readiness';
@@ -49,10 +44,7 @@ export function HistoryPage() {
   useEffect(() => {
     let cancelled = false;
     if (!repositories) return;
-    void Promise.all([
-      repositories.scans.listSessions(),
-      repositories.vehicles.list(),
-    ])
+    void Promise.all([repositories.scans.listSessions(), repositories.vehicles.list()])
       .then(([allSessions, allVehicles]) => {
         if (!cancelled) {
           setSessions(allSessions);
@@ -258,7 +250,10 @@ export function HistoryPage() {
       {/* Vehicle Filter & Compare Bar */}
       <div className="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-xs dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center gap-2">
-          <label htmlFor="vehicle-filter" className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+          <label
+            htmlFor="vehicle-filter"
+            className="text-xs font-semibold text-slate-700 dark:text-slate-300"
+          >
             {t('history.filterByVehicle')}:
           </label>
           <select
@@ -371,9 +366,7 @@ export function HistoryPage() {
                       <span dir="ltr" className="font-mono">
                         {new Date(session.startedAt).toLocaleString(i18n.resolvedLanguage)}
                       </span>
-                      {session.protocol && (
-                        <span>· {session.protocol}</span>
-                      )}
+                      {session.protocol && <span>· {session.protocol}</span>}
                     </div>
                   </div>
                 </div>

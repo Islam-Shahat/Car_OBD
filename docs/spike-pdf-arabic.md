@@ -14,14 +14,14 @@ Compare approaches for generating diagnostic and pre-purchase inspection PDF rep
 
 ## 2. Comparison of Approaches
 
-| Criteria | Approach 1: HTML + `@media print` via WebView2 / Browser | Approach 2: Client-side JS Library (`jspdf` / `pdfmake` / `@react-pdf`) |
-| :--- | :--- | :--- |
-| **Arabic Shaping** | **Native Chromium (HarfBuzz)**: Contextual glyph joining (initial, medial, final, isolated) and ligatures (Lam-Alef) render correctly out of the box. | **Poor / Fragile**: Detached letters (`م ح ر ك`), broken ligatures without manual reshaping pipelines (`bidi.js` + manual font embedding). |
-| **Bi-directional Flow** | **Native (ICU BiDi)**: Mixed Arabic prose with English codes (e.g. `P0300 - احتراق عشوائي`) and metrics (`1726 RPM`, `85°C`) maintain proper visual order. | **Prone to Reversal**: Numbers and Latin codes often reverse or shift to the wrong end of sentences upon line wrapping. |
-| **Font Integration** | Seamlessly uses the local Cairo font (`cairo-arabic.woff2` and `cairo-latin.woff2`) already bundled in the app. | Requires base64 embedding of entire TrueType fonts into JavaScript bundles (+1.5 MB to 3 MB). |
-| **Bundle Size Overhead** | **0 KB**: Built into Chromium / WebView2. | **500 KB – 3 MB** additional runtime dependencies. |
-| **Template Maintenance** | **Single source of truth**: The report is a standard React component styled with Tailwind and print CSS. Usable for on-screen preview, print dialog, and PDF export. | **Dual maintenance**: Requires maintaining a separate PDF-specific layout tree (PDF primitives or PDFMake JSON schema). |
-| **PDF Generation Path** | `window.print()` triggers the native Windows Print dialog ("Save as PDF" / "Microsoft Print to PDF"). | Programmatic `doc.save('report.pdf')` or Blob download. |
+| Criteria                 | Approach 1: HTML + `@media print` via WebView2 / Browser                                                                                                             | Approach 2: Client-side JS Library (`jspdf` / `pdfmake` / `@react-pdf`)                                                                    |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Arabic Shaping**       | **Native Chromium (HarfBuzz)**: Contextual glyph joining (initial, medial, final, isolated) and ligatures (Lam-Alef) render correctly out of the box.                | **Poor / Fragile**: Detached letters (`م ح ر ك`), broken ligatures without manual reshaping pipelines (`bidi.js` + manual font embedding). |
+| **Bi-directional Flow**  | **Native (ICU BiDi)**: Mixed Arabic prose with English codes (e.g. `P0300 - احتراق عشوائي`) and metrics (`1726 RPM`, `85°C`) maintain proper visual order.           | **Prone to Reversal**: Numbers and Latin codes often reverse or shift to the wrong end of sentences upon line wrapping.                    |
+| **Font Integration**     | Seamlessly uses the local Cairo font (`cairo-arabic.woff2` and `cairo-latin.woff2`) already bundled in the app.                                                      | Requires base64 embedding of entire TrueType fonts into JavaScript bundles (+1.5 MB to 3 MB).                                              |
+| **Bundle Size Overhead** | **0 KB**: Built into Chromium / WebView2.                                                                                                                            | **500 KB – 3 MB** additional runtime dependencies.                                                                                         |
+| **Template Maintenance** | **Single source of truth**: The report is a standard React component styled with Tailwind and print CSS. Usable for on-screen preview, print dialog, and PDF export. | **Dual maintenance**: Requires maintaining a separate PDF-specific layout tree (PDF primitives or PDFMake JSON schema).                    |
+| **PDF Generation Path**  | `window.print()` triggers the native Windows Print dialog ("Save as PDF" / "Microsoft Print to PDF").                                                                | Programmatic `doc.save('report.pdf')` or Blob download.                                                                                    |
 
 ---
 
@@ -48,11 +48,11 @@ Compare approaches for generating diagnostic and pre-purchase inspection PDF rep
 ## 4. Known Limitations & Mitigations
 
 1. **Print Dialog Flow in Browser / Fallback Mode**:
-   - *Limitation*: When falling back to `window.print()`, the standard browser/system print dialog appears, requiring the user to verify the printer destination and choose a file path. Windows cannot be assumed to always default to "Save as PDF" if hardware printers are installed.
-   - *Mitigation*: The app uses native `PrintToPdf` in Tauri by default, bypassing the print dialog entirely.
+   - _Limitation_: When falling back to `window.print()`, the standard browser/system print dialog appears, requiring the user to verify the printer destination and choose a file path. Windows cannot be assumed to always default to "Save as PDF" if hardware printers are installed.
+   - _Mitigation_: The app uses native `PrintToPdf` in Tauri by default, bypassing the print dialog entirely.
 2. **Background Graphics & Colors**:
-   - *Limitation*: By default, some print dialogs disable background colors/borders.
-   - *Mitigation*: Enforce `print-color-adjust: exact; -webkit-print-color-adjust: exact;` in print CSS so badges, severity colors, and table headers retain their styling on paper and PDF.
+   - _Limitation_: By default, some print dialogs disable background colors/borders.
+   - _Mitigation_: Enforce `print-color-adjust: exact; -webkit-print-color-adjust: exact;` in print CSS so badges, severity colors, and table headers retain their styling on paper and PDF.
 3. **Page Breaks**:
-   - *Limitation*: Long DTC lists or freeze frame tables could split across page boundaries awkwardly if container constraints are misconfigured.
-   - *Mitigation*: Avoid `break-inside-avoid` on multi-item container groups; instead apply `break-inside: avoid` (`page-break-inside: avoid`) strictly on individual fault cards, readiness tables, and disclaimer blocks.
+   - _Limitation_: Long DTC lists or freeze frame tables could split across page boundaries awkwardly if container constraints are misconfigured.
+   - _Mitigation_: Avoid `break-inside-avoid` on multi-item container groups; instead apply `break-inside: avoid` (`page-break-inside: avoid`) strictly on individual fault cards, readiness tables, and disclaimer blocks.

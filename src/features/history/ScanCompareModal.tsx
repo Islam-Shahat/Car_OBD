@@ -89,12 +89,17 @@ export function ScanCompareModal({
               <span className="text-[11px] font-semibold text-slate-500 uppercase dark:text-slate-400">
                 {t('history.olderScan')}
               </span>
-              <p dir="ltr" className="mt-1 font-mono text-sm font-bold text-slate-900 dark:text-white">
+              <p
+                dir="ltr"
+                className="mt-1 font-mono text-sm font-bold text-slate-900 dark:text-white"
+              >
                 {new Date(older.startedAt).toLocaleString(i18n.resolvedLanguage)}
               </p>
               <div className="mt-2 flex items-center gap-2 text-xs">
                 <span className="rounded bg-slate-200 px-2 py-0.5 font-medium dark:bg-slate-800">
-                  {older.mode === 'pre_purchase' ? t('prePurchase.badge') : t('report.badgeStandard')}
+                  {older.mode === 'pre_purchase'
+                    ? t('prePurchase.badge')
+                    : t('report.badgeStandard')}
                 </span>
                 <span className="text-slate-600 dark:text-slate-400">
                   {oldCodes.length} {isAr ? 'أكواد' : 'codes'}
@@ -106,12 +111,17 @@ export function ScanCompareModal({
               <span className="text-[11px] font-semibold text-sky-700 uppercase dark:text-sky-300">
                 {t('history.newerScan')}
               </span>
-              <p dir="ltr" className="mt-1 font-mono text-sm font-bold text-slate-900 dark:text-white">
+              <p
+                dir="ltr"
+                className="mt-1 font-mono text-sm font-bold text-slate-900 dark:text-white"
+              >
                 {new Date(newer.startedAt).toLocaleString(i18n.resolvedLanguage)}
               </p>
               <div className="mt-2 flex items-center gap-2 text-xs">
                 <span className="rounded bg-sky-200 px-2 py-0.5 font-medium text-sky-800 dark:bg-sky-900/60 dark:text-sky-200">
-                  {newer.mode === 'pre_purchase' ? t('prePurchase.badge') : t('report.badgeStandard')}
+                  {newer.mode === 'pre_purchase'
+                    ? t('prePurchase.badge')
+                    : t('report.badgeStandard')}
                 </span>
                 <span className="text-slate-600 dark:text-slate-400">
                   {newCodes.length} {isAr ? 'أكواد' : 'codes'}
@@ -152,7 +162,9 @@ export function ScanCompareModal({
                   ))}
                 </div>
               ) : (
-                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('scan.noCodes')}</p>
+                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                  {t('scan.noCodes')}
+                </p>
               )}
             </div>
 
@@ -182,7 +194,9 @@ export function ScanCompareModal({
                   ))}
                 </div>
               ) : (
-                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('scan.noCodes')}</p>
+                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                  {t('scan.noCodes')}
+                </p>
               )}
             </div>
 
@@ -212,7 +226,9 @@ export function ScanCompareModal({
                   ))}
                 </div>
               ) : (
-                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('scan.noCodes')}</p>
+                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                  {t('scan.noCodes')}
+                </p>
               )}
             </div>
           </div>
@@ -245,7 +261,11 @@ export function ScanCompareModal({
                           {om?.complete ? 'Ready' : 'Not Ready'}
                         </span>
                         <span className="text-slate-400">→</span>
-                        <span className={nm.complete ? 'font-bold text-emerald-600' : 'font-bold text-rose-600'}>
+                        <span
+                          className={
+                            nm.complete ? 'font-bold text-emerald-600' : 'font-bold text-rose-600'
+                          }
+                        >
                           {nm.complete ? 'Ready' : 'Not Ready'}
                         </span>
                       </div>

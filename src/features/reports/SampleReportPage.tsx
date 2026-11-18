@@ -366,8 +366,7 @@ export const SAMPLE_EMULATOR_REPORT_DATA: DiagnosticReportData = {
 export function SampleReportPage() {
   useEffect(() => {
     const isAutosave =
-      window.location.href.includes('autosave=1') ||
-      window.location.hash.includes('autosave=1');
+      window.location.href.includes('autosave=1') || window.location.hash.includes('autosave=1');
     if (isAutosave && isTauriEnvironment()) {
       const timer = setTimeout(() => {
         void (async () => {

@@ -158,7 +158,9 @@ async function run() {
     await page.eval(`window.location.hash = '#/scan'`);
     await sleep(1500);
 
-    const scanButtons = await page.eval(`Array.from(document.querySelectorAll('button')).map(b => b.textContent.trim())`);
+    const scanButtons = await page.eval(
+      `Array.from(document.querySelectorAll('button')).map(b => b.textContent.trim())`,
+    );
     console.log('Scan page buttons:', scanButtons);
 
     // Select Pre-Purchase Inspection mode
@@ -180,7 +182,9 @@ async function run() {
     console.log('Waiting for scan to complete...');
     await sleep(4000);
 
-    const afterScanButtons = await page.eval(`Array.from(document.querySelectorAll('button')).map(b => b.textContent.trim())`);
+    const afterScanButtons = await page.eval(
+      `Array.from(document.querySelectorAll('button')).map(b => b.textContent.trim())`,
+    );
     console.log('Buttons after scan:', afterScanButtons);
 
     // Open Report Modal
@@ -197,7 +201,9 @@ async function run() {
     const screenBuffer = Buffer.from(screenData, 'base64');
     const previewPath = join(SAMPLES_DIR, 'report-sample-preview.png');
     writeFileSync(previewPath, screenBuffer);
-    console.log(`Saved screenshot preview: ${previewPath} (${Math.round(screenBuffer.length / 1024)} KB)`);
+    console.log(
+      `Saved screenshot preview: ${previewPath} (${Math.round(screenBuffer.length / 1024)} KB)`,
+    );
 
     // Generate real PDF via Chromium printToPDF
     console.log('Printing to PDF via Page.printToPDF...');

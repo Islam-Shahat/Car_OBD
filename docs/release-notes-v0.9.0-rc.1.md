@@ -44,9 +44,9 @@ This is the **v0.9.0-rc.1** release candidate of **OBD Diagnose**, an offline-fi
 
 ### Phase 7 Features (Implemented, Verified on Emulator & Synthetic Data):
 
-- **Historical Scan Session Browser**: View, filter by vehicle, compare two scans side-by-side, and soft-delete past diagnostic sessions from local SQLite (`HistoryPage.tsx`, `tests/history-flow.test.ts`). *(implemented, verified only on the emulator and synthetic data)*
-- **Printable HTML / PDF Diagnostic Reports**: Export formatted diagnostic reports using WebView2 PrintToPdf and native print CSS with full Arabic RTL Cairo typography (`ReportModal.tsx`, `docs/samples/report-sample.pdf`). *(implemented, verified only on the emulator and synthetic data)*
-- **Pre-Purchase Used Car Inspection Mode**: Multi-factor heuristic analyzing monitor readiness, distance/warmups since clearing, and permanent Mode 0A DTCs with transparent counter displays and mechanic disclaimer (`prePurchase.ts`, `tests/pre-purchase.test.ts`). *(implemented, verified only on the emulator and synthetic data)*
+- **Historical Scan Session Browser**: View, filter by vehicle, compare two scans side-by-side, and soft-delete past diagnostic sessions from local SQLite (`HistoryPage.tsx`, `tests/history-flow.test.ts`). _(implemented, verified only on the emulator and synthetic data)_
+- **Printable HTML / PDF Diagnostic Reports**: Export formatted diagnostic reports using WebView2 PrintToPdf and native print CSS with full Arabic RTL Cairo typography (`ReportModal.tsx`, `docs/samples/report-sample.pdf`). _(implemented, verified only on the emulator and synthetic data)_
+- **Pre-Purchase Used Car Inspection Mode**: Multi-factor heuristic analyzing monitor readiness, distance/warmups since clearing, and permanent Mode 0A DTCs with transparent counter displays and mechanic disclaimer (`prePurchase.ts`, `tests/pre-purchase.test.ts`). _(implemented, verified only on the emulator and synthetic data)_
 
 ---
 

@@ -7,6 +7,7 @@ This document details the third-party datasets, fonts, and open-source libraries
 ## 1. Bundled Diagnostic Datasets
 
 ### OBDex
+
 - **Upstream Repository**: [https://github.com/opencode/obdex](https://github.com/opencode/obdex)
 - **Component**: Standard Diagnostic Trouble Code (DTC) definitions and descriptions (`src/data/`).
 - **Data License**: Creative Commons Zero v1.0 Universal (CC0 1.0 Universal - Public Domain Dedication).
@@ -18,6 +19,7 @@ This document details the third-party datasets, fonts, and open-source libraries
 ## 2. Bundled Fonts
 
 ### Cairo Font Family
+
 - **Source**: [https://fonts.google.com/specimen/Cairo](https://fonts.google.com/specimen/Cairo)
 - **Copyright**: Copyright 2016 The Cairo Project Authors.
 - **License**: SIL Open Font License, Version 1.1 (OFL-1.1).
@@ -31,6 +33,7 @@ This document details the third-party datasets, fonts, and open-source libraries
 This project relies on third-party open-source libraries managed via npm (`package.json`) and Cargo (`src-tauri/Cargo.toml`).
 
 These dependencies are distributed under their respective open-source licenses, including but not limited to:
+
 - MIT License
 - Apache License, Version 2.0
 - BSD 2-Clause and 3-Clause Licenses

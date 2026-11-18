@@ -23,6 +23,7 @@
 ## 2. Item-by-Item Changes & Evidence
 
 ### Item 1: SerialTransport Non-Fatal Streaming UTF-8 Decoder
+
 - **Files Touched**: `src/lib/elm327/serialTransport.ts`, `tests/serial-transport.test.ts`
 - **Changes Made**:
   - Replaced `{ fatal: true }` in `TextDecoder` with `{ fatal: false }` to prevent stray high-bit noise bytes (common on dirty serial connections before baud lock) from crashing or terminating the connection.
@@ -34,6 +35,7 @@
   - Feeds first half of 'ع' (`0xD8`), verifies empty chunk buffered; feeds second half (`0xB9`) + `>`, verifies decoded `'ع>'`; feeds stray high-bit byte (`0xFF`) and subsequent `'OK\r'`, verifies connection remained open without error.
 
 ### Item 2: Fix 16 ESLint Errors in Phase 7 UI Files
+
 - **Files Touched**:
   - `src/features/history/HistoryPage.tsx`
   - `src/features/reports/ReportModal.tsx`
@@ -49,6 +51,7 @@
 - **Verification**: `npm run lint` exits 0 with 0 errors and 0 warnings. `npm run typecheck` exits 0.
 
 ### Item 3: Wire TrafficLogger into Driver and Settings UI Export
+
 - **Files Touched**:
   - `src/lib/elm327/trafficLogger.ts`
   - `src/lib/elm327/driver.ts`
@@ -66,6 +69,7 @@
   - `tests/i18n-resources.test.ts`: confirms exact key parity between `en.json` and `ar.json`.
 
 ### Item 4: Test Count Discrepancy Reconciliation
+
 - **Findings & Explanation**:
   - **Test File Count**:
     - Repository contains **37 test files** at `fad636f` and `a4b930b`.
@@ -74,7 +78,7 @@
       1. `tests/elm327-emulator.test.ts` (1 skipped)
       2. `tests/live-emulator.test.ts` (1 skipped)
       3. `tests/obd-emulator.test.ts` (2 skipped)
-      (Total 4 skipped tests).
+         (Total 4 skipped tests).
     - Earlier reports stating "36 test files" reflected the repository prior to commit `a1013dc` (which added `tests/traffic-logger.test.ts`).
   - **Individual Test Count Progression**:
     - At `fad636f`: 249 tests passed (4 skipped).
@@ -89,6 +93,7 @@
     - Zero tests were deleted, skipped, or hidden to force numbers to match.
 
 ### Item 5: Live Telemetry Recording Persistence in SQLite
+
 - **Files Touched**:
   - `src/features/live/liveRecording.ts`
   - `src/features/live/LivePage.tsx`
@@ -100,6 +105,7 @@
   - `tests/live-data-flow.test.ts`: "creates a scan session and stores recorded live samples in live_data_logs" verifying session creation and row insertion into `live_data_logs`.
 
 ### Item 6: Documentation & CI Branch Reconciliation
+
 - **Files Touched**:
   - `CLAUDE.md`: updated Phase 7 feature status to "implemented, verified on the emulator only"; updated catalog count to 377 models / 46 makes.
   - `README.md`: updated Phase 7 feature descriptions from "planned" to "implemented, verified on the emulator only".
@@ -111,6 +117,7 @@
   - `.github/workflows/release.yml`: confirmed trigger on `v*` tags.
 
 ### Item 7: Audit of `--sample-pdf-check` Flag in Release Builds
+
 - **Files Touched**:
   - `src-tauri/src/lib.rs`
   - `src/features/reports/SampleReportPage.tsx`
@@ -121,10 +128,12 @@
   4. **Hardening**: Constrained `SampleReportPage.tsx` to require the explicit `autosave=1` query/hash parameter rather than autosaving on any Tauri load.
 
 ### Item 8: Creation of Phase Reports
+
 - `docs/phase-7-6.md`: Documents all 7 commits of Phase 7.6 (`7b5e9d9`–`a4b930b`), test proofs, and honest limitations.
 - `docs/phase-7-7.md`: Documents all follow-up remediations, test count reconciliations, and gate verification.
 
 ### Item 9: PDF Copy/Paste Order Confirmation
+
 - **Status**: Confirmed in `docs/samples/pdf-visual-inspection.md` section 3.2.
 - **Finding**: WebView2 / Chromium Skia `PrintToPdf` writes Arabic glyphs in visual coordinate order (`/ReversedChars`), causing text extractors and copy/paste to produce reversed glyph/word sequences. Visual rendering and physical printing are unaffected.
 - **Workaround**: The "Copy for WhatsApp" button in the Report Modal extracts the clean Unicode representation directly from report data and copies it to the clipboard.
@@ -133,11 +142,11 @@
 
 ## 3. Verification Summary
 
-| Gate / Command | Status | Output Evidence |
-| :--- | :--- | :--- |
-| `npm test` | **PASS** | 35 test files passed, 3 skipped (38 files); 254 tests passed, 4 skipped (258 tests) |
-| `npm run typecheck` | **PASS** | 0 TypeScript errors (`tsc -b`) |
-| `npm run lint` | **PASS** | 0 ESLint errors, 0 warnings (`eslint .`) |
-| `cargo fmt --check` | **PASS** | Clean format |
-| `cargo clippy -- -D warnings` | **PASS** | Clean (0 warnings) |
-| Git Remotes / Tags | **UNTOUCHED** | Local-only branch `master`, no remote operations |
+| Gate / Command                | Status        | Output Evidence                                                                     |
+| :---------------------------- | :------------ | :---------------------------------------------------------------------------------- |
+| `npm test`                    | **PASS**      | 35 test files passed, 3 skipped (38 files); 254 tests passed, 4 skipped (258 tests) |
+| `npm run typecheck`           | **PASS**      | 0 TypeScript errors (`tsc -b`)                                                      |
+| `npm run lint`                | **PASS**      | 0 ESLint errors, 0 warnings (`eslint .`)                                            |
+| `cargo fmt --check`           | **PASS**      | Clean format                                                                        |
+| `cargo clippy -- -D warnings` | **PASS**      | Clean (0 warnings)                                                                  |
+| Git Remotes / Tags            | **UNTOUCHED** | Local-only branch `master`, no remote operations                                    |

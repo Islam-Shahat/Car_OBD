@@ -27,9 +27,11 @@ The application fetches the cryptographically signed emergency kill-switch and f
 `https://islam-shahat.github.io/Car_OBD/config.json`
 
 ### Why GitHub Pages is Needed
+
 Car OBD operates offline-first. To provide emergency kill-switch capability and feature status updates without running an always-on dedicated server, the application pulls static, Ed25519-signed JSON payloads from GitHub Pages over HTTPS.
 
 ### Steps to Configure Pages:
+
 1. Navigate to **Settings -> Pages** in the GitHub repository.
 2. Under **Build and deployment -> Source**, select **Deploy from a branch** (e.g. branch `gh-pages` or a `/docs` folder on `main`).
 3. Place `config.json` at the root of the serving branch.
@@ -46,6 +48,7 @@ Car OBD operates offline-first. To provide emergency kill-switch capability and 
 For automated releases and self-updating binaries, configure the repository secrets under **Settings -> Secrets and variables -> Actions**:
 
 ### Required Secrets for `.github/workflows/release.yml`:
+
 1. `TAURI_SIGNING_PRIVATE_KEY`:
    - The Minisign / Tauri private key string.
    - If not yet generated, generate a new updater key pair locally:
@@ -62,16 +65,20 @@ For automated releases and self-updating binaries, configure the repository secr
 ## 4. Code Signing & Windows SmartScreen
 
 ### Proprietary License Impact
+
 - Open-source signing services (such as SignPath Foundation Free) require an approved open-source license (OSI-approved). Because Car OBD is proprietary (All rights reserved), SignPath free open-source signing **does not apply**.
 
 ### Production Code Signing Options:
+
 1. **Commercial OV/EV Code Signing Certificate**: Purchase an Authenticode certificate from a trusted CA (e.g. Sectigo, DigiCert) with a hardware USB token or cloud HSM.
 2. **Azure Trusted Signing (formerly Azure Code Signing)**: Cloud-based signing integrated into GitHub Actions via Microsoft Azure.
 
 ### Running Unsigned in Early Releases (v0.9.0-rc.1):
+
 Until a commercial certificate is provisioned:
+
 - Windows Defender SmartScreen will display an unknown publisher prompt:
-  > *"Windows protected your PC — Microsoft Defender SmartScreen prevented an unrecognized app from starting."*
+  > _"Windows protected your PC — Microsoft Defender SmartScreen prevented an unrecognized app from starting."_
 - Instruct users to click:
   1. **More info** (المزيد من المعلومات)
   2. **Run anyway** (تشغيل على أي حال)
@@ -136,6 +143,7 @@ Automated builds and releases are triggered when a Git version tag is pushed:
 ## 7. Offline Backup Recommendation
 
 GitHub is a hosting and collaboration platform, not a fault-tolerant offline backup:
+
 - Regularly create an offline mirror of the complete repository:
   ```bash
   git clone --mirror https://github.com/Islam-Shahat/Car_OBD.git Car_OBD-mirror.git

@@ -179,7 +179,7 @@ unclear.
 | Entries       | 377 models across 46 makes                                            |
 | Years         | `null` for both bounds until a cited source provides real year ranges |
 | Verification  | `verified = 0` for every row                                          |
-| Source tier   | `cited` (51 models) / `knowledge` (326 models)                         |
+| Source tier   | `cited` (51 models) / `knowledge` (326 models)                        |
 | Build command | `npm run catalog:build` (`tools/build-catalog.mjs`)                   |
 
 The vehicle catalog (`src/data/vehicle-catalog.json`, version `2026-11-15.appendix-c`) is reconciled

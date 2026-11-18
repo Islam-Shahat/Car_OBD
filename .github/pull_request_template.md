@@ -1,7 +1,9 @@
 ## Summary of Changes
+
 Provide a brief summary of the changes proposed in this Pull Request and reference any related issues.
 
 ## Type of Change
+
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] Catalog or dataset update (WMI or vehicle model additions)
 - [ ] Localization improvement (Arabic / English strings)
@@ -9,6 +11,7 @@ Provide a brief summary of the changes proposed in this Pull Request and referen
 - [ ] Refactoring / performance improvement
 
 ## Contributor Checklist
+
 Before submitting this pull request, please verify the following:
 
 - [ ] **Tests pass**: `npm test` runs with all test suites passing.

@@ -254,7 +254,9 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
                         {factor.rawText}
                       </span>
                     </div>
-                    <p className="mt-1 text-[11px] opacity-90">{t(factor.explanationKey as TranslationKey)}</p>
+                    <p className="mt-1 text-[11px] opacity-90">
+                      {t(factor.explanationKey as TranslationKey)}
+                    </p>
                   </div>
                 );
               })}
