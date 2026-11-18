@@ -10,7 +10,7 @@ import { openTauriStorage } from '../src/lib/db/runtime';
 import arLocale from '../src/lib/i18n/locales/ar.json';
 import enLocale from '../src/lib/i18n/locales/en.json';
 
-describe('Phase 5.5 Review Fixes & Browser Preview Safety', () => {
+describe('Browser Preview Safety & Production Invariants', () => {
   describe('A. Safe Browser Preview & Production Invariant', () => {
     it('fails loudly in production when Tauri bridge is unavailable', async () => {
       await expect(openTauriStorage({ allowDevFallback: false })).rejects.toThrow(

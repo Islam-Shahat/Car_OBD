@@ -1,4 +1,4 @@
-# Spike: PDF Generation Approaches & Arabic/RTL Rendering
+# PDF Generation Architecture & Arabic/RTL Rendering
 
 **Date**: 2026-11-15  
 **Status**: Decided & Verified (Approach 1: HTML + CSS Print via WebView2)  

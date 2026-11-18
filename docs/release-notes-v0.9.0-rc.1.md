@@ -12,7 +12,7 @@ Release Type: Pre-release Candidate (مرشح إصدار تجريبي)
 نقدم مرشح الإصدار التجريبي الأول **v0.9.0-rc.1** من برنامج **OBD Diagnose**، وهو برنامج مجاني مفتوح المصدر ومصمم للعمل دون اتصال بالإنترنت (Offline-first) لتشخيص وفحص أعطال سيارات الركاب عبر محولات ELM327 (عبر منافذ USB أو Bluetooth COM).
 
 > [!NOTE]
-> هذا الإصدار هو **مرشح إصدار (Release Candidate)** مخصص للاختبار والمراجعة، ولم يتم اختباره بعد على مركبات حقيقية أو محولات فعلية على أرض الواقع. كما أن ميزات المرحلة السابعة (تصدير تقارير PDF وسجل الفحوصات وفحص ما قبل الشراء) تم تنفيذها والتحقق منها على المحاكي فقط.
+> هذا الإصدار هو **مرشح إصدار (Release Candidate)** مخصص للاختبار والمراجعة، ولم يتم اختباره بعد على مركبات حقيقية أو محولات فعلية على أرض الواقع. ميزات تصدير تقارير PDF وسجل الفحوصات وفحص ما قبل الشراء تم تنفيذها والتحقق منها برمجياً وعلى المحاكي.
 
 - **واجهة عربية متكاملة (RTL)**: دعم كامل للغة العربية من اليمين لليسار مع إمكانية التبديل للإنجليزية بضغطة زر.
 - **تحديد هوية السيارة عبر رقم الهيكل (VIN)**: قراءة رقم الهيكل تلقائيًا وتحديد الشركة المصنعة ونطاق سنوات الموديل، مع فهرس يدوي يضم 377 طرازًا لأكثر من 46 شركة.
@@ -29,7 +29,7 @@ Release Type: Pre-release Candidate (مرشح إصدار تجريبي)
 This is the **v0.9.0-rc.1** release candidate of **OBD Diagnose**, an offline-first Windows desktop application for passenger car diagnostics using ELM327 OBD-II adapters.
 
 > [!NOTE]
-> This build is a **Release Candidate (RC)** for evaluation and testing. It has been verified against synthetic fixtures and the Python ELM327 emulator, but **has not yet been validated on a physical vehicle or physical adapter**. Phase 7 features (PDF reports, history log viewer, and pre-purchase inspection analysis) are implemented and verified only on the emulator and synthetic data.
+> This build is a **Release Candidate (RC)** for evaluation and testing. It has been verified against synthetic fixtures and the Python ELM327 emulator, but **has not yet been validated on a physical vehicle or physical adapter**. Reporting and inspection features (PDF reports, history log viewer, and pre-purchase inspection analysis) are implemented and verified on the emulator and test fixtures.
 
 ### Features & Highlights:
 
@@ -42,7 +42,7 @@ This is the **v0.9.0-rc.1** release candidate of **OBD Diagnose**, an offline-fi
 7. **Privacy & Transparency**: Zero telemetry, zero analytics. Vehicle data never leaves your device.
 8. **Diagnostic Traffic Logging**: Support debug logger with automatic 17-character VIN redaction.
 
-### Phase 7 Features (Implemented, Verified on Emulator & Synthetic Data):
+### Reporting & Inspection Features:
 
 - **Historical Scan Session Browser**: View, filter by vehicle, compare two scans side-by-side, and soft-delete past diagnostic sessions from local SQLite (`HistoryPage.tsx`, `tests/history-flow.test.ts`). _(implemented, verified only on the emulator and synthetic data)_
 - **Printable HTML / PDF Diagnostic Reports**: Export formatted diagnostic reports using WebView2 PrintToPdf and native print CSS with full Arabic RTL Cairo typography (`ReportModal.tsx`, `docs/samples/report-sample.pdf`). _(implemented, verified only on the emulator and synthetic data)_

@@ -43,7 +43,7 @@ Release Target: **v0.9.0-rc.1** (Release Candidate)
 | Status | Item                                                                                                            | Verified on      | Notes                                                  |
 | :----: | :-------------------------------------------------------------------------------------------------------------- | :--------------- | :----------------------------------------------------- |
 |  [x]   | **Scan Modes**: Reads Stored (03), Pending (07), Permanent (0A), Readiness (0101), Freeze Frame (02)            | emulator         | Verified against Python `scripts/emulator-dtc.py`      |
-|  [x]   | **Banner Wording & Severity**: Neutral green state ("لم يتم العثور على أكواد أعطال") with powertrain disclaimer | mock / code      | Verified in `tests/phase-5-5-review.test.ts`           |
+|  [x]   | **Banner Wording & Severity**: Neutral green state ("لم يتم العثور على أكواد أعطال") with powertrain disclaimer | mock / code      | Verified in `tests/browser-preview-safety.test.ts`     |
 |  [x]   | **Separate Scan Notes**: Protocol/adapter notices isolated without coloring green banner                        | mock / code      | Isolated in UI                                         |
 |  [x]   | **Safe DTC Clear Interlock**: Mandatory durable SQLite backup before sending Mode 04                            | mock             | Verified in `tests/runtime-storage.test.ts`            |
 |  [ ]   | **Real Vehicle Mode 04 Execution**: Clearing trouble codes on real ECU hardware                                 | **not verified** | **BLOCKED**: Requires testing on a physical automobile |

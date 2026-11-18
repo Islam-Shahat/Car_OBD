@@ -30,7 +30,7 @@ const ADAPTER_INFO = {
   adapterTimeoutMs: 200,
 };
 
-describe('Phase 5 Core Diagnostic & Selection Journey', () => {
+describe('Core Diagnostic & Selection Journey', () => {
   let db: TestDatabase;
 
   beforeEach(async () => {
