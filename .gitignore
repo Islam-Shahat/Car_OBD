@@ -9,8 +9,13 @@ coverage/
 .idea/
 
 # Rust / Tauri
+target/
 src-tauri/target/
 src-tauri/gen/schemas/
+
+# Environment files
+.env
+.env.*
 
 # Import caches (the pinned upstream files are re-downloaded and checksum-verified)
 tools/import-dtc/.cache/

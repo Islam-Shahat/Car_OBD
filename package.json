@@ -2,6 +2,10 @@
   "name": "obd-diagnose",
   "private": true,
   "version": "0.9.0-rc.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Islam-Shahat/Car_OBD.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

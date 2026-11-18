@@ -1,8 +1,7 @@
 # OBD Diagnose (برنامج تشخيص وفحص أعطال السيارات) — v0.9.0-rc.1
 
-[![Build & Release](https://github.com/islamshahat/obd-diagnose/actions/workflows/build.yml/badge.svg)](https://github.com/islamshahat/obd-diagnose/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-0078D6.svg)](https://github.com/islamshahat/obd-diagnose/releases)
+[![Build & Release](https://github.com/Islam-Shahat/Car_OBD/actions/workflows/build.yml/badge.svg)](https://github.com/Islam-Shahat/Car_OBD/actions)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-0078D6.svg)](https://github.com/Islam-Shahat/Car_OBD/releases)
 
 ---
 
@@ -43,7 +42,7 @@
 
 ### خطوات البدء السريع
 
-1. حمّل ملف التثبيت (`obd-diagnose-setup.exe` أو `.msi`) من صفحة [Releases](https://github.com/islamshahat/obd-diagnose/releases).
+1. حمّل ملف التثبيت من صفحة [Releases](https://github.com/Islam-Shahat/Car_OBD/releases).
 2. ركّب محول ELM327 في منفذ الفحص (OBD-II) بالسيارة (عادةً أسفل عجلة القيادة).
 3. **أدر مفتاح تشغيل السيارة إلى وضع التشغيل ON** (إضاءة لمبات الطبلون، مع إمكانية تشغيل المحرك لقراءة البيانات الحية، أو إيقافه لمسح الأعطال).
 4. افتح البرنامج، اختر منفذ الـ COM الخاص بالمحول، واضغط **اتصال**.
@@ -92,8 +91,8 @@ For the best diagnostic experience, select adapters based on their **internal mi
 
 ```bash
 # Clone the repository
-git clone https://github.com/islamshahat/obd-diagnose.git
-cd obd-diagnose
+git clone https://github.com/Islam-Shahat/Car_OBD.git
+cd Car_OBD
 
 # Install dependencies
 npm ci

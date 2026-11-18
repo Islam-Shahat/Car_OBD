@@ -31,7 +31,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEE2MkJEMDIyMDNGQzM3MTYKUldUbndhU21SVEg0Q0lUYWN3N2N5c1QyNmtSWHpxTXhOc0x5clJmUkFmK29FMTB3T1R0aVBaTncK",
       "endpoints": [
-        "https://github.com/islamshahat/obd-diagnose/releases/latest/download/latest.json"
+        "https://github.com/Islam-Shahat/Car_OBD/releases/latest/download/latest.json"
       ]
     }
   },
