@@ -188,7 +188,7 @@ pub fn run() {
             {
                 std::thread::spawn(move || {
                     std::thread::sleep(std::time::Duration::from_millis(2000));
-                    let _ = window.eval("window.location.hash = '#/report-preview';");
+                    let _ = window.eval("window.location.hash = '#/report-preview?autosave=1';");
                     std::thread::sleep(std::time::Duration::from_millis(2000));
                     let _ = window.eval("window.dispatchEvent(new HashChangeEvent('hashchange'));");
                 });

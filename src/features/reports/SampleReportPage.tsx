@@ -367,8 +367,7 @@ export function SampleReportPage() {
   useEffect(() => {
     const isAutosave =
       window.location.href.includes('autosave=1') ||
-      window.location.hash.includes('autosave=1') ||
-      isTauriEnvironment();
+      window.location.hash.includes('autosave=1');
     if (isAutosave && isTauriEnvironment()) {
       const timer = setTimeout(() => {
         void (async () => {
