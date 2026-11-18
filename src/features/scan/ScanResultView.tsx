@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { ParseKeysWithoutVariables } from 'i18next';
+
+type TranslationKey = ParseKeysWithoutVariables;
 
 import { IconAlert, IconCheck } from '../../app/icons';
 import { useStorage } from '../../lib/db/StorageProvider';
@@ -516,15 +519,15 @@ export function ScanResultView({
                     : prePurchase.level === 'some_indicators'
                       ? 'some'
                       : 'none'
-                }.badge` as any,
+                }.badge` as TranslationKey,
               )}
             </span>
           </div>
           <h4 className="mt-2 text-sm font-bold text-slate-900 dark:text-white">
-            {t(prePurchase.headlineKey as any)}
+            {t(prePurchase.headlineKey as TranslationKey)}
           </h4>
           <p className="mt-1 text-xs leading-5 text-slate-600 dark:text-slate-300">
-            {t(prePurchase.bodyKey as any)}
+            {t(prePurchase.bodyKey as TranslationKey)}
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
             <div className="rounded bg-white p-2 text-center shadow-2xs dark:bg-slate-900">

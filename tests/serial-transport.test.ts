@@ -11,7 +11,7 @@ vi.mock('@tauri-apps/api/event', () => ({
 }));
 
 describe('SerialTransport streaming UTF-8 decoder', () => {
-  it('buffers split multi-byte UTF-8 sequences across chunks and survives stray high-bit noise bytes', async () => {
+  it('buffers split multi-byte UTF-8 sequences across chunks and survives stray high-bit noise bytes', () => {
     const transport = new SerialTransport('COM1', 115200);
 
     const receivedChunks: string[] = [];

@@ -36,7 +36,7 @@ export interface DiagnosticReportData {
     on: boolean;
     dtcCount: number;
   } | null;
-  overallStatus: 'fault' | 'warning' | 'healthy' | string;
+  overallStatus: string;
   storedCodes: readonly ReportDtcItem[];
   pendingCodes: readonly ReportDtcItem[];
   permanentCodes: readonly ReportDtcItem[];

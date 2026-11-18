@@ -5,7 +5,6 @@ import { IconAlert, IconCheck, IconHistory } from '../../app/icons';
 import { PageHeader } from '../../app/PageHeader';
 import { useStorage } from '../../lib/db/StorageProvider';
 import type {
-  DtcLookup,
   ReadinessSnapshot,
   ScanResultRow,
   ScanSession,
@@ -47,25 +46,32 @@ export function HistoryPage() {
   // Full Report View Modal
   const [reportModalData, setReportModalData] = useState<DiagnosticReportData | null>(null);
 
-  const loadData = async () => {
-    if (!repositories) return;
-    setLoading(true);
-    try {
-      const [allSessions, allVehicles] = await Promise.all([
-        repositories.scans.listSessions(),
-        repositories.vehicles.list(),
-      ]);
-      setSessions(allSessions);
-      setVehicles(allVehicles);
-    } catch (err) {
-      console.warn('Failed to load scan history:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    void loadData();
+    let cancelled = false;
+    if (!repositories) return;
+    void Promise.all([
+      repositories.scans.listSessions(),
+      repositories.vehicles.list(),
+    ])
+      .then(([allSessions, allVehicles]) => {
+        if (!cancelled) {
+          setSessions(allSessions);
+          setVehicles(allVehicles);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.warn('Failed to load scan history:', err);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [repositories]);
 
   const filteredSessions =
@@ -138,12 +144,7 @@ export function HistoryPage() {
       const getItems = async (rows: ScanResultRow[], type: 'stored' | 'pending' | 'permanent') => {
         return Promise.all(
           rows.map(async (r): Promise<ReportDtcItem> => {
-            let lookup: DtcLookup | null = null;
-            try {
-              lookup = await repositories.dtc.lookup(r.code, makeSlug);
-            } catch {
-              lookup = null;
-            }
+            const lookup = await repositories.dtc.lookup(r.code, makeSlug).catch(() => null);
             return { code: r.code, type, lookup };
           }),
         );

@@ -1,4 +1,7 @@
 import { useTranslation } from 'react-i18next';
+import type { ParseKeysWithoutVariables } from 'i18next';
+
+type TranslationKey = ParseKeysWithoutVariables;
 import { IconAlert, IconCheck, IconScan } from '../../app/icons';
 import type { DiagnosticReportData, ReportDtcItem } from './reportTypes';
 import { maskVin } from './whatsAppSummary';
@@ -221,10 +224,10 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
 
             <div className="mt-4">
               <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                {t(prePurchase.headlineKey as any)}
+                {t(prePurchase.headlineKey as TranslationKey)}
               </h3>
               <p className="mt-1 text-xs leading-5 text-slate-600 dark:text-slate-300">
-                {t(prePurchase.bodyKey as any)}
+                {t(prePurchase.bodyKey as TranslationKey)}
               </p>
             </div>
 
@@ -246,12 +249,12 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
                     className={`rounded-lg border p-3 text-xs leading-5 ${statusColor} print:border-slate-300`}
                   >
                     <div className="flex items-center justify-between font-semibold">
-                      <span>{t(factor.labelKey as any)}</span>
+                      <span>{t(factor.labelKey as TranslationKey)}</span>
                       <span dir="ltr" className="font-mono">
                         {factor.rawText}
                       </span>
                     </div>
-                    <p className="mt-1 text-[11px] opacity-90">{t(factor.explanationKey as any)}</p>
+                    <p className="mt-1 text-[11px] opacity-90">{t(factor.explanationKey as TranslationKey)}</p>
                   </div>
                 );
               })}
@@ -333,7 +336,7 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
               <span className="font-semibold text-slate-700 dark:text-slate-300">
                 {t('common.note')}:{' '}
               </span>
-              {t(prePurchase.limitationsKey as any)}
+              {t(prePurchase.limitationsKey as TranslationKey)}
             </p>
           </section>
         )}
@@ -422,7 +425,7 @@ export function DiagnosticReportView({ data, hideVin = true }: DiagnosticReportV
                   className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2 text-xs print:border-slate-200 dark:border-slate-800/80 dark:bg-slate-900/60"
                 >
                   <span className="font-medium text-slate-700 dark:text-slate-300">
-                    {t(`scan.monitors.${monitor.key}` as any)}
+                    {t(`scan.monitors.${monitor.key}` as TranslationKey)}
                   </span>
                   {monitor.complete ? (
                     <span className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">

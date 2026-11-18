@@ -82,7 +82,7 @@ export function ReportModal({ data, isOpen, onClose }: ReportModalProps) {
             {/* WhatsApp Copy */}
             <button
               type="button"
-              onClick={handleCopyWhatsApp}
+              onClick={() => void handleCopyWhatsApp()}
               className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-100 dark:border-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 dark:hover:bg-emerald-900/60"
             >
               {copiedWhatsApp ? (
@@ -99,7 +99,7 @@ export function ReportModal({ data, isOpen, onClose }: ReportModalProps) {
             <button
               type="button"
               disabled={isSavingPdf}
-              onClick={handlePrint}
+              onClick={() => void handlePrint()}
               className="inline-flex items-center gap-1.5 rounded-lg bg-sky-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-sky-500 focus:outline-hidden focus:ring-2 focus:ring-sky-500 disabled:opacity-60 dark:bg-sky-500 dark:hover:bg-sky-400"
             >
               {isSavingPdf ? t('report.savingPdf') : t('report.exportPdf')}
