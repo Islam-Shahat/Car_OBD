@@ -28,13 +28,13 @@ export function createSerialTransport(portName: string, baudRate: number): Trans
   return new SerialTransport(portName, baudRate);
 }
 
-class SerialTransport implements Transport {
+export class SerialTransport implements Transport {
   private readonly portName: string;
   private readonly baudRate: number;
   private readonly dataHandlers = new Set<(chunk: string) => void>();
   private readonly closedHandlers = new Set<(reason: string | null) => void>();
   private unlisteners: UnlistenFn[] = [];
-  private decoder = new TextDecoder('utf-8', { fatal: true });
+  private decoder = new TextDecoder('utf-8', { fatal: false });
   private isOpen = false;
 
   constructor(portName: string, baudRate: number) {
@@ -43,7 +43,7 @@ class SerialTransport implements Transport {
   }
 
   async open(): Promise<void> {
-    this.decoder = new TextDecoder('utf-8', { fatal: true });
+    this.decoder = new TextDecoder('utf-8', { fatal: false });
 
     // Register before opening so no early bytes are lost.
     this.unlisteners.push(
@@ -94,7 +94,7 @@ class SerialTransport implements Transport {
     return () => this.closedHandlers.delete(handler);
   }
 
-  private handleBytes(bytes: number[]): void {
+  handleBytes(bytes: number[]): void {
     let chunk: string;
     try {
       chunk = this.decoder.decode(new Uint8Array(bytes), { stream: true });
@@ -103,8 +103,10 @@ class SerialTransport implements Transport {
       return;
     }
 
-    for (const handler of this.dataHandlers) {
-      handler(chunk);
+    if (chunk.length > 0) {
+      for (const handler of this.dataHandlers) {
+        handler(chunk);
+      }
     }
   }
 
