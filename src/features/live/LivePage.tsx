@@ -5,15 +5,17 @@ import { Link } from 'react-router-dom';
 import { EmptyState } from '../../app/EmptyState';
 import { PageHeader } from '../../app/PageHeader';
 import { IconActivity, IconDownload, IconPlay, IconPlug, IconSquare } from '../../app/icons';
+import { useStorage } from '../../lib/db/StorageProvider';
 import { convertMeasurement } from '../../lib/obd/units';
 import { LivePoller } from '../../lib/obd/livePoller';
 import type { PidReading } from '../../lib/obd/pids';
 import { useConnectionStore } from '../connection/connectionStore';
+import { useSelectedVehicleStore } from '../vehicles/vehicleStore';
 import { FuelTrimView } from './FuelTrimView';
 import { Gauge } from './Gauge';
 import { LiveChart } from './LiveChart';
 import { O2SensorView } from './O2SensorView';
-import { downloadCsv, formatTelemetryCsv } from './liveRecording';
+import { downloadCsv, formatTelemetryCsv, saveLiveRecordingSession } from './liveRecording';
 import { useLiveStore } from './liveStore';
 
 type ActiveTab = 'gauges' | 'charts' | 'fuelTrim' | 'o2';
@@ -56,6 +58,10 @@ const AVAILABLE_PIDS: readonly PidOption[] = [
 
 export function LivePage() {
   const { t } = useTranslation();
+  const { repositories } = useStorage();
+  const selectedVehicle = useSelectedVehicleStore((s) => s.selected);
+  const info = useConnectionStore((s) => s.info);
+  const sessionType = useConnectionStore((s) => s.sessionType);
   const [activeTab, setActiveTab] = useState<ActiveTab>('gauges');
   const [pidsOpen, setPidsOpen] = useState(false);
 
@@ -135,6 +141,16 @@ export function LivePage() {
   const handleToggleRecording = () => {
     if (isRecording) {
       stopRecording();
+      if (repositories && recordedSamples.length > 0) {
+        void saveLiveRecordingSession(repositories, recordedSamples, {
+          vehicleId: selectedVehicle?.id ?? null,
+          protocol: info?.protocol,
+          adapterInfo: info,
+          sessionType,
+        }).catch((err) => {
+          console.warn('Failed to save recorded live session:', err);
+        });
+      }
     } else {
       if (status === 'paused' || status === 'stopped') {
         pollerRef.current?.resume();
@@ -143,11 +159,24 @@ export function LivePage() {
     }
   };
 
-  const handleExportCsv = () => {
+  const handleExportCsv = async () => {
     if (recordedSamples.length === 0) return;
     const csv = formatTelemetryCsv(recordedSamples);
     const dateStr = new Date().toISOString().replace(/[:.]/g, '-');
     downloadCsv(`live-telemetry-${dateStr}.csv`, csv);
+
+    if (repositories) {
+      try {
+        await saveLiveRecordingSession(repositories, recordedSamples, {
+          vehicleId: selectedVehicle?.id ?? null,
+          protocol: info?.protocol,
+          adapterInfo: info,
+          sessionType,
+        });
+      } catch (err) {
+        console.warn('Failed to persist live recording session on export:', err);
+      }
+    }
   };
 
   if (phase !== 'connected') {
@@ -251,7 +280,7 @@ export function LivePage() {
           {/* Export CSV Button */}
           <button
             type="button"
-            onClick={handleExportCsv}
+            onClick={() => void handleExportCsv()}
             disabled={recordedSamples.length === 0}
             className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             title={t('live.samplesRecorded', { count: recordedSamples.length })}

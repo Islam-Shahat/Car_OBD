@@ -5,7 +5,11 @@ import type { Elm327Driver } from '../src/lib/elm327/driver';
 import { LivePoller } from '../src/lib/obd/livePoller';
 import type { PidReading } from '../src/lib/obd/pids';
 import { convertMeasurement } from '../src/lib/obd/units';
-import { formatTelemetryCsv, persistRecordedSamples } from '../src/features/live/liveRecording';
+import {
+  formatTelemetryCsv,
+  persistRecordedSamples,
+  saveLiveRecordingSession,
+} from '../src/features/live/liveRecording';
 import { useLiveStore, type RecordedSample } from '../src/features/live/liveStore';
 
 class MockLiveDriver {
@@ -155,5 +159,45 @@ describe('Phase 6: Live Data, Charts, Recording and Diagnostic Views', () => {
     });
     expect(temp.displayUnit).toBe('°F');
     expect(temp.value).toBe(212);
+  });
+
+  it('creates a scan session and stores recorded live samples in live_data_logs', async () => {
+    const repos = createInMemoryRepositories();
+
+    const samples: RecordedSample[] = [
+      {
+        pid: 0x0c,
+        name: 'scan.pids.rpm',
+        value: 2100,
+        unit: 'rpm',
+        timestamp: '2026-11-18T10:00:00.000Z',
+      },
+      {
+        pid: 0x0d,
+        name: 'scan.pids.speed',
+        value: 55,
+        unit: 'kmh',
+        timestamp: '2026-11-18T10:00:00.500Z',
+      },
+    ];
+
+    const sessionId = await saveLiveRecordingSession(repos, samples, {
+      vehicleId: 'test-vehicle-1',
+      protocol: 'ISO 15765-4',
+      sessionType: 'demo',
+    });
+
+    expect(sessionId).not.toBeNull();
+    const session = await repos.scans.getSession(sessionId!);
+    expect(session).toBeDefined();
+    expect(session?.vehicleId).toBe('test-vehicle-1');
+    expect(session?.sessionType).toBe('demo');
+
+    const logs = await repos.scans.liveDataFor(sessionId!);
+    expect(logs.length).toBe(2);
+    expect(logs[0]?.pid).toBe('0x0C');
+    expect(logs[0]?.value).toBe(2100);
+    expect(logs[1]?.pid).toBe('0x0D');
+    expect(logs[1]?.value).toBe(55);
   });
 });

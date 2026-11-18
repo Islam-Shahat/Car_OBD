@@ -1,5 +1,6 @@
 import type { Repositories } from '../../lib/db/repositories';
-import type { LiveDataLogInput } from '../../lib/db/types';
+import type { LiveDataLogInput, SessionType } from '../../lib/db/types';
+import type { AdapterInfo } from '../../lib/elm327/driver';
 import type { RecordedSample } from './liveStore';
 
 /**
@@ -57,4 +58,38 @@ export async function persistRecordedSamples(
   }));
 
   await repositories.scans.addLiveData(sessionId, logs);
+}
+
+/**
+ * Persists recorded samples into SQLite live_data_logs under a new scan_session via repositories.
+ */
+export async function saveLiveRecordingSession(
+  repositories: Repositories,
+  samples: readonly RecordedSample[],
+  options?: {
+    vehicleId?: string | null;
+    protocol?: string | null;
+    adapterInfo?: AdapterInfo | null;
+    sessionType?: SessionType;
+  },
+): Promise<string | null> {
+  if (samples.length === 0) return null;
+
+  const startedAt = samples[0]?.timestamp ?? new Date().toISOString();
+  const finishedAt = samples[samples.length - 1]?.timestamp ?? new Date().toISOString();
+
+  const session = await repositories.scans.createSession({
+    vehicleId: options?.vehicleId ?? null,
+    startedAt,
+    finishedAt,
+    protocol: options?.protocol ?? null,
+    adapterInfo: options?.adapterInfo ?? null,
+    milStatus: null,
+    overallStatus: 'healthy',
+    mode: 'normal',
+    sessionType: options?.sessionType ?? 'unknown',
+  });
+
+  await persistRecordedSamples(repositories, session.id, samples);
+  return session.id;
 }
