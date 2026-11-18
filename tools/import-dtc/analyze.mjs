@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { parse } from 'yaml';
 
-const dir = 'C:/Users/enges/AppData/Local/Temp/opencode/obdex/yaml';
+const dir = process.env.OBDEX_YAML_DIR ?? 'tools/import-dtc/.cache';
 const files = [
   'B0xxx_enriched.yaml',
   'C0xxx_enriched.yaml',
